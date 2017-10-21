@@ -1,19 +1,25 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+    <div id="app">
+        {{test}}
+        <img src="./assets/logo.png">
+        <router-view/>
+    </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'app'
-}
+  name: "app",
+  data: function() {
+    return {
+      test: <string>"Hi there"
+    };
+  }
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
