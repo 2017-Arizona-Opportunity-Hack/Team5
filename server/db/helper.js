@@ -7,13 +7,14 @@ import {
 export class DBHelper {
     constructor() {
         this._connection = null;
+        this.init();
     }
 
     get connection() {
         return this._connection;
     }
 
-    async init() {
+    init() {
         var connection = mysql.createConnection({
             host: DBConfig.host,
             user: DBConfig.username,
@@ -25,6 +26,7 @@ export class DBHelper {
                 throw "Failed to connect to DB";
             }
             this._connection = connection;
+            console.log("DB Connection established:", connection);
         });
     }
 }
