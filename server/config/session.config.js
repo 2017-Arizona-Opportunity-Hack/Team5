@@ -1,3 +1,3 @@
 export let SessionConfig = {
-  secret = 'sunshineacressecret!'
+  secret: 'sunshineacressecret!'
 }
