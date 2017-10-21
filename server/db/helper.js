@@ -1,32 +1,24 @@
-var mysql = require('mysql');
+var mysql = require('promise-mysql');
 
 import {
     DBConfig
 } from "./config";
 
-export class DBHelper {
-    constructor() {
-        this._connection = null;
-        this.init();
-    }
+var connection = null;
 
-    get connection() {
-        return this._connection;
-    }
-
-    init() {
-        var connection = mysql.createConnection({
-            host: DBConfig.host,
-            user: DBConfig.username,
-            password: DBConfig.password
-        });
-
-        connection.connect((err) => {
-            if (err) {
-                throw "Failed to connect to DB";
-            }
-            this._connection = connection;
-            console.log("DB Connection established:", connection);
-        });
-    }
+async function Connect() {
+    var connection = await mysql.createConnection({
+        host: DBConfig.host,
+        user: DBConfig.username,
+        password: DBConfig.password,
+        database: "sunshine_acres"
+    });
+    return connection;
 }
+
+export default async() => {
+    if (!connection) {
+        connection = await new Connect();
+    }
+    return connection;
+};
