@@ -8,6 +8,11 @@ import 'materialize-css/dist/css/materialize.css'
 
 Vue.config.productionTip = false
 
+// Initialize dynamically generated select element.
+$(document).ready(function() {
+  $('select').material_select();
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
