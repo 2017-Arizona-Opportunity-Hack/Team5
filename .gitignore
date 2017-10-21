@@ -2,3 +2,5 @@ trash
 node_modules
 .key.js
 
+
+server/db/config\.js
