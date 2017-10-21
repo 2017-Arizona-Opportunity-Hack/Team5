@@ -6,7 +6,7 @@
     <div class="container col m12">
   
       <div class="input-field selection-fields">
-        <select multiple>
+        <select>
                 <!-- Turn this into a v-for loop with reactive data array of homes. -->
                 <option value="" disabled selected>Choose your option</option>
                 <option value="1">Home 1</option>
@@ -17,7 +17,7 @@
       </div>
   
       <div class="input-field selection-fields">
-        <select multiple>
+        <select>
                 <!-- Turn this into a v-for loop with reactive data array of homes. -->
                 <option value="" disabled selected>Choose your option</option>
                 <option value="1">Child 1</option>
@@ -26,11 +26,21 @@
               </select>
         <label>Child Selection</label>
       </div>
-  
       <h5>Medications</h5>
+      
+      <div class="input-field selection-fields">
+        <select multiple>
+                <!-- Turn this into a v-for loop with reactive data array of homes. -->
+                <option value="" disabled selected>Choose your option</option>
+                <option value="1">Med 1</option>
+                <option value="2">Med 2</option>
+                <option value="3">Med 3</option>
+              </select>
+        <label>Child Selection</label>
+      </div>
   
-      <div class="container">
-        <ul class="collection">
+      <div class="">
+        <ul class="collection col s12">
           <!-- V for loop for listing different medications as li elements -->
           <li class="collection-item avatar">
             <i class="material-icons circle">folder</i>
@@ -50,7 +60,7 @@
       </div>
   
       <!-- Checkout -->
-      <div class="switch">
+      <div class="switch" id="toggleChildStatus">
         <label>Child was away this weekend.</label>
         <br>
         <label>
@@ -85,7 +95,11 @@
   }
   
   .selection-fields {
-    margin-bottom: 45px;
+    margin-bottom: 35px;
+  }
+
+  #toggleChildStatus {
+    margin-bottom: 40px;
   }
   
   h1,
