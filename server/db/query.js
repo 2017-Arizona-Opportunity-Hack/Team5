@@ -1,6 +1,6 @@
 import dbConnection from './helper';
 
-export default (sql) => {
+export default async(sql) => {
     var connection = await dbConnection();
     try {
         var results = await connection.query(sql);
