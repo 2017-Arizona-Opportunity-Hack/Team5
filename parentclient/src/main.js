@@ -3,15 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import 'materialize-css'
-import 'materialize-css/dist/css/materialize.css'
+// import $ from 'jquery'
+// import 'materialize-css'
+// import 'materialize-css/dist/css/materialize.css'
 
 Vue.config.productionTip = false
 
-// Initialize dynamically generated select element.
-$(document).ready(function() {
-  $('select').material_select();
-});
+// window.$ = $;
+
 
 /* eslint-disable no-new */
 new Vue({
