@@ -23,13 +23,12 @@ export default {
   },
   byDateRange: async(minDate, maxDate) => {
     if (!maxDate) {
-      maxDate = new Date();
+      maxDate = Date.now();
     } else {
       maxDate = new Date(parseInt(maxDate));
     }
 
-    minDate = new Date(parseInt(minDate)).toMysqlFormat();
-    maxDate = maxDate.toMysqlFormat();
+    minDate = new Date(parseInt(minDate));
 
     var sql = "SELECT * FROM " + table + " WHERE date > ? AND date < ?";
     sql = mysql.format(sql, [minDate, maxDate]);
