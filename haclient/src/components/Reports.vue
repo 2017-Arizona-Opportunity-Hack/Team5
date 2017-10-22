@@ -70,15 +70,25 @@ export default {
             return this.$store.getters.custody;
         },
     },
-    components: {},
-    methods: {
-        getReport() {
-            this.$store.dispatch('getReport', {
-                child_id: $('#child_id').val(),
-                min_date: $('#min_date').val(),
-                max_date: $('#max_date').val(),
-            });
-        },
+  components: {},
+  methods: {
+    getReport() {
+      var minDateVals = ($('#min_date').val() + '').split('-').map(val => {
+        return parseInt(val);
+      });
+      minDateVals[1]--;
+
+      var maxDateVals = ($('#max_date').val() + '').split('-').map(val => {
+        return parseInt(val);
+      });
+      maxDateVals[1]--;
+
+      this.$store.dispatch('getReport', {
+        child_id: $('#child_id').val(),
+        min_date: new Date(...minDateVals).getTime(),
+        max_date: new Date(...maxDateVals).getTime(),
+      });
     },
+  },
 };
 </script>

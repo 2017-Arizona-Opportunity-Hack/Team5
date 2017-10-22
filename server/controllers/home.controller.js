@@ -107,10 +107,4 @@ export class HomeController extends BaseController {
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
   }
 
-  // route: DELETE /:id
-  // Deletes home object with given id
-  async deleteHome(req, res) {
-    //   let data = await this.db.home.select.all().catch(this.throwError);
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
-  }
 }
