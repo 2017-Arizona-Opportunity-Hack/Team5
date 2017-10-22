@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { SOME_MUTATION } from "./mutation-types";
 
-import { childDict, homeDict, scripDict } from "./storedicts";
+import { childDict, homeDict, scripDict, parentDict } from "./storedicts";
 import Child from "./classes/Child";
 import Home from "./classes/Home";
 import Prescription from "./classes/Prescription";
@@ -15,9 +15,9 @@ export default new Vuex.Store({
     state: {
         children: <childDict>{},
         homes: <homeDict>{},
-        houseparents: {},
+        houseparents: <parentDict>{},
         prescriptions: <scripDict>{},
-        physicians: {},
+        physicians: <any>{},
         hphomes: {}
     },
     getters: {
@@ -31,7 +31,19 @@ export default new Vuex.Store({
             );
         },
         parents: state => {
-            return state.houseparents;
+            return Object.keys(state.houseparents).map(
+                key => state.houseparents[parseInt(key)]
+            );
+        },
+        physicians: state => {
+            return Object.keys(state.physicians).map(
+                key => state.physicians[parseInt(key)]
+            );
+        },
+        prescriptions: state => {
+            return Object.keys(state.prescriptions).map(
+                key => state.prescriptions[parseInt(key)]
+            );
         },
         specificChild: state => (id: number) => {
             return state.children[id];
@@ -41,9 +53,6 @@ export default new Vuex.Store({
         ,
         specificHome: state => (id: number) =>
             state.homes[id]
-        ,
-        prescriptions: state =>
-            Object.keys(state.prescriptions).map(key => state.prescriptions[parseInt(key)])
         ,
         specificScrip: state => (id: number) => state.prescriptions[id]
     },
