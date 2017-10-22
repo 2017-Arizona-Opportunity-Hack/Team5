@@ -7,6 +7,7 @@ import Child from "./classes/Child";
 import Home from "./classes/Home";
 import Prescription from "./classes/Prescription";
 
+
 Vue.use(Vuex);
 //This is an index signature
 
@@ -28,6 +29,9 @@ export default new Vuex.Store({
             return Object.keys(state.children).map(
                 key => state.children[parseInt(key)]
             );
+        },
+        parents: state => {
+            return state.houseparents;
         },
         specificChild: state => (id: number) => {
             return state.children[id];
@@ -54,6 +58,18 @@ export default new Vuex.Store({
             Vue.set(state.children, "0", undefined);
             delete state.children[id];
         },
+        setChildren: (state, children) => {
+            state.children = children;
+        },
+        newParent: (state, parent) => {
+            Vue.set(state.houseparents, parent.id, parent);
+        },
+        newPhysician: (state, physician) => {
+            Vue.set(state.physicians, physician.id, physician);
+        },
+        newPrescription: (state, prescription) => {
+            Vue.set(state.prescriptions, prescription.id, prescription);
+        },
         newHome: (state, home) => {
             Vue.set(state.homes, home.id, home);
         },
@@ -77,20 +93,50 @@ export default new Vuex.Store({
     },
     actions: {
         init({ dispatch, state }) {
-            //mock data
             dispatch("getChildren");
-            
-            dispatch("createChild", new Child(12, "Chuck", 0));
-            dispatch("createChild", new Child(19, "James", 0));
-            dispatch("createHome", new Home(27, "10240 N. 66th St.", "(602) 618-0414"));
-            dispatch("createScrip", new Prescription(12, 13, 14, "adderall", "adhd therapy", "20", "mg", 30, new Date()))
-            
+            dispatch("getParents");
+            dispatch("getPhysicians");
+            dispatch("getPrescriptions");
         },
         getChildren: ({ commit, state }) => {
-            //Do API Call
-            // Commit results
-            $.get('localhost:8000/child').then((response: any) => {
+            $.get('http://localhost:8000/child').then((response: any) => {
                 console.log(response);
+
+                if (response.success) {
+                    for (var child of response.data) {
+                        commit("newChild", child);
+                    }
+                }
+            });
+        },
+        getParents: ({ commit, state }) => {
+            $.get('http://localhost:8000/parent').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var parent of response.data) {
+                        commit("newParent", parent);
+                    }
+                }
+            });
+        },
+        getPhysicians: ({ commit, state }) => {
+            $.get('http://localhost:8000/physician').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var physician of response.data) {
+                        commit("newPhysician", physician);
+                    }
+                }
+            });
+        },
+        getPrescriptions: ({ commit, state }) => {
+            $.get('http://localhost:8000/prescription').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var prescription of response.data) {
+                        commit("newPrescription", prescription);
+                    }
+                }
             });
         },
         createChild: ({ commit, state }, child) => {
