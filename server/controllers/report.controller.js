@@ -62,12 +62,13 @@ export class ReportController extends BaseController {
     let administrationData = await this.db.report.select.byChildIdAndDateRange(data.id, data.minDate, data.maxDate).catch(this.throwError);
     let custodyData = await this.db.custody.select.byChildIdAndDateRange(data.id, data.minDate, data.maxDate).catch(this.throwError);
     let report = {
-      adminstrationData,
+      administrationData,
       custodyData
     }
 
     report = report.toJSON();
-    // let csv
+    let csv;
+    // jsonexport({ lang: 'Node.js', module: 'jsonexport' }, { rowDelimiter: '|' })
     this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
   }
 
@@ -82,7 +83,7 @@ export class ReportController extends BaseController {
     let administrationData = await this.db.report.select.byParentId(data.id).catch(this.throwError);
     let custodyData = await this.db.custody.select.byParentId(data.id).catch(this.throwError);
     let report = {
-      adminstrationData,
+      administrationData,
       custodyData
     }
     this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
@@ -100,7 +101,7 @@ export class ReportController extends BaseController {
     let administrationData = await this.db.report.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
     let custodyData = await this.db.custody.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
     let report = {
-      adminstrationData,
+      administrationData,
       custodyData
     }
     this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
