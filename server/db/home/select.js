@@ -14,13 +14,15 @@ export default {
     },
 
     byParentId: async(id) => {
-        var sql = "SELECT id, address, phone FROM (HP_Home JOIN " + table + " ON HP_Home.home_id=" + table + ".id) WHERE HP_Home.hp_id=?";
+        var hp_home = DBConfig.dbs.parent_home;
+        var sql = "SELECT " + table + ".id, " + table + ".address, " + table + ".phone FROM (" + hp_home + " JOIN " + table + " ON " + hp_home + ".home_id=" + table + ".id) WHERE " + hp_home + ".hp_id=?";
         sql = mysql.format(sql, [id]);
         return executeQuery(sql);
     },
 
     byChildId: async(id) => {
-        var sql = 'SELECT ' + table + '.id, address, phone FROM (Child JOIN ' + table + ' ON Child.home_id=' + table + '.id';
+        var child = DBConfig.dbs.child;
+        var sql = "SELECT " + table + ".id, address, phone FROM (" + child + " JOIN " + table + " ON " + child + ".home_id=" + table + ".id";
         sql = mysql.format(sql, [id]);
         return executeQuery(sql);
     },
