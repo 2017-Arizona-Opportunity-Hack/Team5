@@ -14,11 +14,15 @@ export default {
     },
 
     byPrescriptionId: async(id) => {
-
+        var sql = "SELECT " + table + ".child_id, " + table + ".prescription_id, " + table + ".parent_id, " + table + ".date FROM (" + table + " JOIN " + DBConfig.dbs.prescription + " ON " + DBConfig.dbs.prescription + ".id=" + table + ".prescription_id) WHERE " + DBConfig.dbs.prescription + ".id=?";
+        sql = mysql.format(sql, [id]);
+        return executeQuery(sql);
     },
 
     byParentId: async(id) => {
-
+        var sql = "SELECT " + table + ".child_id, " + table + ".prescription_id, " + table + ".parent_id, " + table + ".date FROM (" + table + " JOIN " + DBConfig.dbs.parent + " ON " + DBConfig.dbs.parent + ".id=" + table + ".parent_id) WHERE " + DBConfig.dbs.parent + ".id=?";
+        sql = mysql.format(sql, [id]);
+        return executeQuery(sql);
     },
 
     all: async() => {
