@@ -1,11 +1,17 @@
 <template>
-    <div class="row">
-        <div class="col">
-            <h1 class="display-3">Welcome</h1>
-            <!-- <p>{{selectedChildren}}</p> -->
-            Pick a table to enter data, or pick reports to generate reports.
-            <!-- <picker collectionSource="children" multiple="true" v-model="selectedChildren"/> -->
+    <div>
+        <div class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1">Welcome</span>
+
         </div>
+
+        <!-- <p>{{selectedChildren}}</p> -->
+        <div class="container-fluid">
+
+        Pick a table to enter data, or pick reports to generate reports.
+        </div>
+        <!-- <picker collectionSource="children" multiple="true" v-model="selectedChildren"/> -->
+    </div>
     </div>
 </template>
 
@@ -17,7 +23,7 @@ export default {
             selectedChildren: []
         }
     },
-    components: {Picker}
+    components: { Picker }
 };
 </script>
 
