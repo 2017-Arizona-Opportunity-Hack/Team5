@@ -14,8 +14,12 @@ test();
 
 
 async function test() {
-    var results = await DB.home.select.all().catch((error) => {
-        console.log("shits fucked");
+    var results = await DB.administration.insert.one({
+        child_id: 1,
+        prescription_id: 1,
+        parent_id: 1
+    }).catch((error) => {
+        console.log("shits fucked", error);
     });
     console.log(results);
 }
