@@ -38,6 +38,14 @@ export class ChildController extends BaseController {
       });
     });
 
+    // Retrieves child object with given home id
+    this.router.get("/byhomeid/:id", (req, res) => {
+      this.getChildByHomeId(req, res).catch(err => {
+        console.log("Error retrieving children by home id: ", err);
+        this.sendServerError(res, "Error retrieving children by home id");
+      });
+    });
+
     // Retrieves child object with given id
     this.router.get("/:id", (req, res) => {
       this.getChildById(req, res).catch(err => {
@@ -117,10 +125,17 @@ export class ChildController extends BaseController {
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all children");
   }
 
-  // route: GET /:id
-  // Retrieves child object with given id
-  async getChildById(req, res) {
+  // route: GET /byparentid/:id
+  // Retrieves children associated with parent id
+  async getChildByParentId(req, res) {
     let data = await this.db.child.select.byParentId(req.params.id).catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving children");
+  }
+
+  // route: GET /byhomeid/:id
+  // Retrieves children associated with home id
+  async getChildByHomeId(req, res) {
+    let data = await this.db.child.select.byHomeId(req.params.id).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving children");
   }
 
