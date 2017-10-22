@@ -1,31 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as getters from './getters'
-import * as actions from './actions'
-import * as mutations from './mutations'
 //modules
 import login from './modules/Login_module.js'
+import Parent_Module from './modules/Parent_Module.js'
 
 Vue.use(Vuex)
-const state = {
-}
+
 const store = new Vuex.Store({
-  actions,
+  actions: {
+  },
   modules: {
     login,
   },
   getters: {
-    retrieveChildLists: state => {
-      return state.childListing;
-    }
   },
-  //modules: {mod1, mod2}, //?
-  mutations,
+  modules: {
+    parentmod: Parent_Module,
+  },
+  mutations: {
+  },
   state: {
-    counterState: 5,
-    homeListing: [],
-    childListing: [],
-    medicationListing: [],
   },
 })
 export default store

@@ -1,6 +1,6 @@
 <template>
    <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper" style="background: #7cbfda;">
       <a href="#" class="brand-logo">Sunshine Acres</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <!-- <li><a href="sass.html">Sass</a></li> -->

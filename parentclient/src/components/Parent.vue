@@ -44,7 +44,7 @@
             <i class="material-icons circle">event_note</i>
             <span class="medicine-title">{{med.name}}</span><span style="margin-left: 15px;">Dosage: {{med.dosage + med.units}}</span>
             <p>Medication Taken:</p>
-            
+            <!-- TODO: Last Taken -->
             <div class="container row">
               <div class="col m6 s6">
                 <label for="datepicker">Date Taken:</label><input type="text" class="datepicker">
@@ -55,7 +55,7 @@
                 <!-- <label for="timepicker">Time Taken:</label><input type="time" class="timepicker"> -->
               </div>
             </div>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            <span v-on:click="submitTime(med.id)" class="secondary-content"><i class="material-icons">add_circle_outline</i></span>
           </li>
           
         </ul>
@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations, mapActions} from 'vuex';
+
 export default {
   name: "parentview",
   props: [],
@@ -77,14 +79,50 @@ export default {
       homeListings: [],
       selectedHomeID: "",
       selectedChildID: "",
+      selectedPrescriptionID: "",
       childListings: [],
       medicineListings: [],
       showMedicineDetails: false,
       showChildSelection: false,
-      dummyCounter: this.$store.state.counterState,
+      // dummyCounter: this.$store.state.counterState,
     };
   },
   methods: {
+    ...mapActions([
+        'getHomeListingsFromServer'
+    ]),
+    submitTime: function(medicationID) {
+      // console.log(medicationID);
+      var chosenDate = $(".datepicker").val();
+      var chosenTime = $(".timepicker").val();
+      if (!(chosenDate === "") && !(chosenTime === "")) {
+          // console.log($(".datepicker").val());
+          // console.log($(".timepicker").val());
+          var fullDateString = chosenDate + " " + chosenTime;
+          console.log(fullDateString);
+          var setDate = new Date(fullDateString).getTime();
+          var adminObj = {
+            "child_id" : this.selectedChildID,
+            "parent_id" : "2",
+            "date" : setDate,
+            "prescription_id" : medicationID,
+          }
+          // console.log(this.selectedChildID);
+          // console.log(setDate);
+          $.ajax({
+            url: 'http://localhost:8000/administration',
+            type: 'POST',
+            data: adminObj,
+            success: (response) => {
+                var resultant = response;
+                console.log(resultant);
+            },
+            error: (error) => {
+                console.log("Error creating post: ", error);
+            }
+        })
+      }
+    },
     toggleMedicineViewing: function() {
       // TODO: Fix toggle states
       // $('#switchChildStatus').prop('checked')
@@ -124,7 +162,7 @@ export default {
             // Initialize time picker as well.
             default: "now", // Set default time: 'now', '1:30AM', '16:30'
             fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
-            twelvehour: true, // Use AM/PM or 24-hour format
+            twelvehour: false, // Use AM/PM or 24-hour format
             donetext: "OK", // text for done-button
             cleartext: "Clear", // text for clear-button
             canceltext: "Cancel", // Text for cancel-button
@@ -180,6 +218,11 @@ export default {
       );
     }
   },
+  computed: {
+    ...mapGetters([
+      'homeListings'
+    ])
+  },
   mounted() {
     $(document).ready(
       function() {
@@ -211,10 +254,9 @@ export default {
       }.bind(this)
     );
   },
-  updated() {
-      console.log($('#switchChildStatus').prop('checked'));
-      // console.log(this.dummyCounter);
-  }
+  // updated() {
+  //     console.log($('#switchChildStatus').prop('checked'));
+  // }
 };
 </script>
 
@@ -244,6 +286,10 @@ export default {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-weight: bold;
+}
+
+.secondary-content:hover {
+  cursor: pointer;
 }
 
 h1,
