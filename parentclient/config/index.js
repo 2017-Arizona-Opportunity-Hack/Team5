@@ -38,6 +38,30 @@ module.exports = {
           secure: false,
           autoRewrite: true
       },
+      '/home': {
+          target: 'http://localhost:8000/',
+          changeOrigin: true,
+          secure: false,
+          autoRewrite: true
+      }, 
+      '/parent': {
+          target: 'http://localhost:8000/',
+          changeOrigin: true,
+          secure: false,
+          autoRewrite: true
+      }, 
+      '/physician': {
+          target: 'http://localhost:8000/',
+          changeOrigin: true,
+          secure: false,
+          autoRewrite: true
+      }, 
+      '/prescription': {
+          target: 'http://localhost:8000/',
+          changeOrigin: true,
+          secure: false,
+          autoRewrite: true
+      }, 
   },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
