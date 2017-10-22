@@ -66,35 +66,43 @@ export class ParentController extends BaseController {
   // route: GET /
   // Retrieves all parent objects
   async getAllParents(req, res) {
-    let data = await this.db.child.select.all().catch(this.throwError);
+    let data = await this.db.parent.select.all().catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all parents");
   }
 
   // route: POST /
   // Creates a new parent object
   async createParent(req, res) {
-    //   let data = await this.db.child.select.byId(req.params.id).catch(this.throwError);
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all parents");
+    let data = {
+      name: req.body.name
+    }
+
+    if (!data.name || typeof data.name != "string") {
+      this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid input");
+    }
+
+    let qData = await this.db.parent.insert.one(data).catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success retrieving all parents");
   }
 
   // route: GET /:id
   // Retrieves a parent object with the given id
   async getParentById(req, res) {
-    let data = await this.db.child.select.byId(req.params.id).catch(this.throwError);
+    let data = await this.db.parent.select.byId(req.params.id).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success parent");
   }
 
   // route: PUT /:id
   // Updates a parent object with the given id
   async updateParent(req, res) {
-    //   let data = await this.db.child.select.byId(req.params.id).catch(this.throwError));
+    //   let data = await this.db.parent.select.byId(req.params.id).catch(this.throwError));
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success updating parent data");
   }
 
   // route: DELETE /:id
   // Deletes a parent object with the given id
   async deleteParent(req, res) {
-    //   let data = await this.db.child.select.byId(req.params.id).catch(this.throwError));
+    //   let data = await this.db.parent.select.byId(req.params.id).catch(this.throwError));
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting parent");
   }
 }
