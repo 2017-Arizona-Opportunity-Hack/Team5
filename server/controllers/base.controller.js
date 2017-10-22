@@ -23,4 +23,12 @@ export class BaseController {
     }));
     return;
   }
+
+  sendServerError(res, message) {
+    this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, message);
+  }
+
+  throwError(err) {
+    throw err;
+  }
 }

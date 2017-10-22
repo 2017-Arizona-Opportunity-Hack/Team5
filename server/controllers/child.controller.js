@@ -29,7 +29,7 @@ export class ChildController extends BaseController {
 
     // Retrieves child object with given id
     this.router.get("/:id", (req, res) => {
-      this.getChildById(res, res).catch(err => {
+      this.getChildById(req, res).catch(err => {
         console.log("Error: ", err);
       });
     });

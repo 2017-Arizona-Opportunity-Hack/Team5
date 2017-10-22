@@ -15,7 +15,7 @@ export class AdministrationController extends BaseController {
 
     // Retrieves Administration object with given id
     this.router.get("/:id", (req, res) => {
-      this.getAdministration(res, res).catch(err => {
+      this.getAdministration(req, res).catch(err => {
         console.log("Error: ", err);
       });
     });
