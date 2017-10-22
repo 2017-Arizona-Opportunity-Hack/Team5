@@ -156,12 +156,21 @@ export default {
         // Re-send API request.
         this.showChildSelection = true;
       }
-      console.log("about to request");
-      $.get("http://localhost:8000/child/1", function(result) {
-        console.log("hi");
-        console.log(result);
+      $.get("http://localhost:8000/child/", function(result) {
+        console.log("List of childs", result);
         // Vue.set(this.posts[uID], post.post._id, post.post)
       });
+
+      $.get("http://localhost:8000/home/", function(result) {
+        console.log("List of homes", result);
+        // Vue.set(this.posts[uID], post.post._id, post.post)
+      });
+
+      $.get("http://localhost:8000/prescription/", function(result) {
+        console.log("List of prescriptions", result);
+        // Vue.set(this.posts[uID], post.post._id, post.post)
+      });
+      
     },
     grabChildInfo: function(event) {
       console.log("Chosen Child", $("select#selectedChild").val());
