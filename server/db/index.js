@@ -4,6 +4,7 @@ import child from './child/index';
 import administration from './administration/index';
 import physician from './physician/index';
 import prescription from './prescription/index';
+import custody from './custody/index';
 
 
 export default {
@@ -12,5 +13,6 @@ export default {
     child: child,
     administration: administration,
     physician: physician,
-    prescription: prescription
+    prescription: prescription,
+    custody: custody
 }
