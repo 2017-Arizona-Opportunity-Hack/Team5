@@ -19,7 +19,7 @@
                             <p>name</p>
                         </div>
                         <div class="col-sm-5">
-                            <p>home id</p>
+                            <p>home</p>
                         </div>
                         <div>
                             <i class="icon-pencil"></i>
