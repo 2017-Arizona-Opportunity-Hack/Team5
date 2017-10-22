@@ -33,11 +33,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/child': {
-      target: 'http://localhost:8000/',
-      changeOrigin: true,
-      secure: false,
-      autoRewrite: true
-    }
+          target: 'http://localhost:8000/',
+          changeOrigin: true,
+          secure: false,
+          autoRewrite: true
+      },
   },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
