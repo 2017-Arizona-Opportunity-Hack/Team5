@@ -20,6 +20,7 @@
                     <input class="form-control" id="max_date" type="date" name="max_date">
                 </div>
                 <button v-on:click="getReport()" type="submit" class="btn btn-primary">Submit</button>
+                <button v-on:click="csvReport()" class="btn btn-primary">Download</button>
             </form>
             <table>
                 <thead>
@@ -89,6 +90,23 @@ export default {
         max_date: new Date(...maxDateVals).getTime(),
       });
     },
+    csvReport() {
+        var minDateVals = ($('#min_date').val() + '').split('-').map(val => {
+        return parseInt(val);
+      });
+      minDateVals[1]--;
+
+      var maxDateVals = ($('#max_date').val() + '').split('-').map(val => {
+        return parseInt(val);
+      });
+
+      maxDateVals[1]--;
+
+
+        var minDate = new Date(...minDateVals).getTime();
+        var maxDate = new Date(...maxDateVals).getTime();
+        window.open('http://localhost:8000/report/csv/'+ $('#child_id').val() + "?mindate=" + minDate+ "&maxdate=" + maxDate, "Download")
+    }
   },
 };
 </script>
