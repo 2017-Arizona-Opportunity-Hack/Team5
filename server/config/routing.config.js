@@ -50,7 +50,7 @@ export class Router {
     this.server.app.use('/physician', this.physicianController.router);
     this.server.app.use('/administration', this.administrationController.router);
     this.server.app.use('/prescription', this.prescriptionController.router);
-    this.server.app.use('/custody', this.prescriptionController.router);
+    this.server.app.use('/custody', this.custodyController.router);
     this.server.app.use('/report', this.reportController.router);
     this.server.app.use('/', this.indexController.router);
   }
