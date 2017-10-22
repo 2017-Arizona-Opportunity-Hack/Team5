@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,700i');
+$enable-shadows: true;
+$font-family-serif: 'Playfair Display',
+serif;
+$font-family-base: $font-family-serif;
+
+#navWrap a {
+    color: #f8f9fa;
+}
+
+.container-fluid {
+    padding: 20px;
+}
+
+#headers p {
+    margin-bottom: 0;
+}

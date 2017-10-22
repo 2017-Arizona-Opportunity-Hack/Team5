@@ -47,7 +47,7 @@ export default {
   methods: {
     addNew() {
       console.log(this.$store);
-      this.$store.dispatch("createChild", new Child(0, ""));
+      this.$store.dispatch("createChild", new Child(0, "", 0));
     }
   }
 };
@@ -56,12 +56,6 @@ export default {
 <style lang="scss" scoped>
 .childrow {
   margin-bottom: 10px;
-}
-.container-fluid {
-  padding: 20px;
-}
-#headers p {
-  margin-bottom: 0;
 }
 </style>
 

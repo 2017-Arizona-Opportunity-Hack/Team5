@@ -57,9 +57,7 @@ export default {
 .childrow {
   margin-bottom: 10px;
 }
-.container-fluid {
-  padding: 20px;
-}
+
 #headers p {
   margin-bottom: 0;
 }

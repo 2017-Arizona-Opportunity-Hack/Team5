@@ -23,8 +23,8 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit("newChild", new Child(12, "Chuck"));
-    this.$store.commit("newChild", new Child(19, "James"));
+    this.$store.commit("newChild", new Child(12, "Chuck", 0));
+    this.$store.commit("newChild", new Child(19, "James", 0));
   },
   components: {
     "tb-nav": Nav
@@ -37,7 +37,7 @@ export default {
   width: 300px;
   float: left;
   height: 100vh;
-  background: url('/static/mountain.jpg');
+  background: url("/static/mountain.jpg");
   background-size: cover;
   background-position: center center;
 }

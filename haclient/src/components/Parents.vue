@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <div class="navbar navbar-light bg-light">
       <span class="navbar-brand mb-0 h1">Parents</span>
       <form class="form-inline">
@@ -8,7 +8,8 @@
       </form>
     </div>
     <div class="container-fluid">
-        <div class="list-group">
+
+      <div class="list-group">
         <div class="list-group-item" id="headers">
           <div class="form-row">
             <div class="col-sm-1">
@@ -17,7 +18,6 @@
             <div class="col-sm-10">
               <p for="name">name</p>
             </div>
-            
           </div>
         </div>
         <!-- <child-item v-for="child in children" :key="child.id" :id="child.id" /> -->
@@ -25,6 +25,6 @@
           <div class="btn btn-success" @click="addNew">New</div>
         </div>
       </div>
-        </div>
-</div>
+    </div>
+  </div>
 </template>
