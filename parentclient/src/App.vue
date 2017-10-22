@@ -6,6 +6,7 @@
 </template>
 
 <script>
+//IMPORT COMPONENTS
 import Nav from "./components/Nav";
 
 export default {
