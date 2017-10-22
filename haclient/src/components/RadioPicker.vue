@@ -1,10 +1,10 @@
 <template>
     <div class="" ref="customInput" :disabled="disabled">
-        <input class="form-control" type="text" ref="displayer" @focus="focused=true" name="name-output" id="name-output" :value="checkedNames" @blur="stopBlur($event)" :disabled="disabled">
+        <input class="form-control" type="text" ref="displayer" @focus="focused=true" name="name-output" id="name-output" :value="checkedName" @blur="stopBlur($event)" :disabled="disabled">
         <div v-if="focused" class="list-group  lcard" :style="styleObj">
             <div class="form-check list-group-item" v-for="item in collection" :key="item.id">
                 <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" v-model="checkedItems" :value="item.id"> {{item.name}}
+                    <input type="radio" class="form-check-input" v-model="checkedItem" :value="item.id"> {{item.name}}
                 </label>
             </div>
         </div>
@@ -16,7 +16,7 @@ export default {
 
     data() {
         return {
-            checkedItems: this.value,
+            checkedItem: this.value,
             focused: false
         }
     },
@@ -29,8 +29,8 @@ export default {
                 { id: item.id, name: item.name || item.address}
             ));
         },
-        checkedNames() {
-            return this.value.map((itemid: number) => this.collection.filter((item: any) => item.id == itemid).map((item: any) => " " + item.name));
+        checkedName() {
+            return  this.collection.filter((item: any) => item.id == this.checkedItem).map((item: any) => " " + item.name)[0];
         },
         styleObj(){
             return {
@@ -39,8 +39,8 @@ export default {
         }
     },
     watch: {
-        "checkedItems": function () {
-            this.$emit('input', this.checkedItems);
+        "checkedItem": function () {
+            this.$emit('input', this.checkedItem);
         }
     },
     methods: {

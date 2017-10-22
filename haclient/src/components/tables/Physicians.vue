@@ -15,12 +15,18 @@
                         <div class="col-sm-1">
                             <p for="name">id</p>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col">
                             <p for="name">name</p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p for="name">name</p>
+                        </div>
+                        <div>
+                            <i class="icon-pencil"></i>
                         </div>
                     </div>
                 </div>
-                <!-- <child-item v-for="child in children" :key="child.id" :id="child.id" /> -->
+                <physician-item v-for="physician in physicians" :key="physician.id" :id="physician.id" />
                 <div class="list-group-item">
                     <div class="btn btn-success" @click="addNew">New</div>
                 </div>
@@ -28,3 +34,24 @@
         </div>
     </div>
 </template>
+
+<script lang="ts">
+import PhysicianItem from "@/components/items/PhysicianItem";
+import Physician from "@/store/classes/Physician";
+
+export default {
+computed:{
+    physicians(){ return this.$store.getters.physicians;}
+},
+methods: {
+    addNew(){
+            this.$store.dispatch("createPhysician", new Physician(0,"",""));
+    }
+},
+components: {
+    PhysicianItem
+}
+}
+</script>
+<style lang="scss">
+</style>
