@@ -32,6 +32,14 @@ export class ReportController extends BaseController {
       });
     });
 
+    // Retrieves a report by date range
+    this.router.get("/csv/:id", (req, res) => {
+      this.getCsvReport(req, res).catch(err => {
+        console.log("Error getting report by date range: ", err);
+        this.sendServerError(res, "Error getting report by date range");
+      });
+    });
+
     // Error handling
     this.router.all("/", (req, res) => {
       res.status(this.HttpStatus.METHOD_NOT_ALLOWED);
@@ -66,9 +74,7 @@ export class ReportController extends BaseController {
       custodyData
     }
 
-    report = report.toJSON();
-    let csv;
-    // jsonexport({ lang: 'Node.js', module: 'jsonexport' }, { rowDelimiter: '|' })
+    // console.log(csvData);
     this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
   }
 
@@ -105,5 +111,24 @@ export class ReportController extends BaseController {
       custodyData
     }
     this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
+  }
+
+  async getCsvReport(req, res) {
+    let data = {
+      id: req.params.id,
+      minDate: req.query.mindate,
+      maxDate: req.query.maxDate
+    }
+
+    let csv = await this.db.report.select.forCsv(data.id, data.minDate, data.maxDate).catch(this.throwError);
+    // let reportAttempt = [report];
+    // let csvData;
+    // jsonexport(administrationData, function(err, csv) {
+    //   if (err) {
+    //     console.log("Error: ", err);
+    //   }
+    //   csvData = csv;
+    // });
+    this.sendResponse(res, this.HttpStatus.OK, true, csv, "Success retrieving report");
   }
 }
