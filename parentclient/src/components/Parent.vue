@@ -29,8 +29,8 @@
         <br>
         <label>
               Off
-              <input type="checkbox">
-              <span class="lever"></span>
+              <input type="checkbox" id="switchChildStatus">
+              <span class="lever" v-on:click="toggleMedicineViewing"></span>
               On
             </label>
       </div>
@@ -42,16 +42,17 @@
           <!-- V for loop for listing different medications as li elements -->
           <li v-for="med in medicineListings" :key="med.id" class="collection-item avatar medicine-listings">
             <i class="material-icons circle">event_note</i>
-            <span class="medicine-title">{{med}}</span><p>Medication Taken:</p>
+            <span class="medicine-title">{{med.name}}</span><span style="margin-left: 15px;">Dosage: {{med.dosage + med.units}}</span>
+            <p>Medication Taken:</p>
             
             <div class="container row">
               <div class="col m6 s6">
-                <label for="datepicker">Date Taken:</label>
-                <input type="text" class="datepicker">
+                <label for="datepicker">Date Taken:</label><input type="text" class="datepicker">
+                <!-- <label for="datepicker">Date Taken:</label><input type="date" class="datepicker"> -->
               </div>
               <div class="col m6 s6">
-                <label for="timepicker">Time Taken:</label>
-                <input type="text" class="timepicker">
+                <label for="timepicker">Time Taken:</label><input type="text" class="timepicker">
+                <!-- <label for="timepicker">Time Taken:</label><input type="time" class="timepicker"> -->
               </div>
             </div>
             <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
@@ -74,102 +75,109 @@ export default {
     return {
       msg: "Welcome to Your Sunshine Acres",
       homeListings: [],
-      selectedHomeID: '',
-      selectedChildID: '',
+      selectedHomeID: "",
+      selectedChildID: "",
       childListings: [],
-      // childListings: [
-      //   {name: "Josh",medicine: ["Molly", "Perc", "Lean"]},
-      //   {name: "Ali",medicine: ["Devils Lettuce", "Mary J", "Ganja"]},
-      //   {name: "James",medicine: ["Bailey", "Jack", "Svedka"]},
-      //   {name: "Chuck",medicine: ["Soylent", "Cheetos", "Pancakes"]},
-      //   {name: "Saul",medicine: ["Apple", "Xanax", "Peach"]}
-      // ],
       medicineListings: [],
       showMedicineDetails: false,
       showChildSelection: false
     };
   },
   methods: {
-    toggleMedicineDetails: function() {
+    toggleMedicineViewing: function() {
+      // TODO: Fix toggle states
+      // $('#switchChildStatus').prop('checked')
       this.showMedicineDetails = !this.showMedicineDetails;
     },
     toggleMedicineDetails: function(event) {
+      this.medicineListings = [];
       // Child menu selection toggles medicineselection
+      var selectedName = $("select#selectedChild").val();
+      // console.log("Found child match", this.childListings.filter((child)=>(child.name == selectedName))[0].id);
+      this.selectedChildID = this.childListings.filter(
+        child => child.name == selectedName
+      )[0].id;
+      var urlGetPrescriptionByChild =
+        "http://localhost:8000/prescription/bychildid/";
+      urlGetPrescriptionByChild += this.selectedChildID;
+      $.get(urlGetPrescriptionByChild, result => {
+        // console.log("List of prescriptions", result);
+        result.data.forEach(element => {
+          // console.log(element);
+          this.medicineListings.push(element);
+        }, this);
+
+        this.$nextTick(() => {
+          // After all listened items are changed on DOM,
+          // lets render/register components such as calendar.
+          $(".datepicker").pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: "Today",
+            clear: "Clear",
+            close: "Ok",
+            closeOnSelect: true, // Close upon selecting a date,
+            format: "yyyy-mm-dd" //http://amsul.ca/pickadate.js/date/
+          });
+          $(".timepicker").pickatime({
+            // Initialize time picker as well.
+            default: "now", // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: true, // Use AM/PM or 24-hour format
+            donetext: "OK", // text for done-button
+            cleartext: "Clear", // text for clear-button
+            canceltext: "Cancel", // Text for cancel-button
+            autoclose: true, // automatic close timepicker
+            ampmclickable: true // make AM PM clickable
+            // aftershow: function(){} //Function for after opening timepicker
+          });
+        });
+      });
+      // Toggle viewing
       if (!this.showChildSelection) {
         this.showMedicineDetails = !this.showMedicineDetails;
       } else {
         // Re-send API request.
         this.showMedicineDetails = true;
       }
-      var selectedName = $("select#selectedChild").val();
-      // console.log(this.childListings.filter((child)=>(child.name == selectedName))[0].medicine);
-      this.medicineListings = this.childListings.filter(
-        child => child.name == selectedName
-      )[0].medicine;
-      // console.log("Selected Medicine", this.medicineListings);
-      // console.log("Chosen Child", $("select#selectedChild").val());
-      
-      this.$nextTick(() => {          
-        // After all listened items are changed on DOM,
-        // lets render/register components such as calendar.
-        $(".datepicker").pickadate({
-          selectMonths: true, // Creates a dropdown to control month
-          selectYears: 15, // Creates a dropdown of 15 years to control year,
-          today: "Today",
-          clear: "Clear",
-          close: "Ok",
-          closeOnSelect: true, // Close upon selecting a date,
-          format: "yyyy-mm-dd" //http://amsul.ca/pickadate.js/date/
-        });
-        $(".timepicker").pickatime({      // Initialize time picker as well.
-          default: "now", // Set default time: 'now', '1:30AM', '16:30'
-          fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
-          twelvehour: true, // Use AM/PM or 24-hour format
-          donetext: "OK", // text for done-button
-          cleartext: "Clear", // text for clear-button
-          canceltext: "Cancel", // Text for cancel-button
-          autoclose: true, // automatic close timepicker
-          ampmclickable: true // make AM PM clickable
-          // aftershow: function(){} //Function for after opening timepicker
-        });
-      });
     },
-    toggleChildSelection: function(event) {   // Home menu selection toggles childselection
+    toggleChildSelection: function(event) {
+      // Home menu selection toggles childselection
       var selectedHome = $("select#selectedHome").val();
       // Match the address to retrieve the ID
-      this.selectedHomeID = this.homeListings.filter((home)=>(home.address == selectedHome))[0].id;
+      this.selectedHomeID = this.homeListings.filter(
+        home => home.address == selectedHome
+      )[0].id;
       // console.log($('select#selectedChild').val());
       if (!this.showChildSelection) {
         this.showChildSelection = !this.showChildSelection;
         this.showMedicineDetails = false;
-      } else {      // Re-send API request.
+      } else {
+        // Re-send API request.
         this.showChildSelection = true;
       }
       // $.get("http://localhost:8000/child/", function(result) {
-      var urlGetChildByHome = 'http://localhost:8000/child/byhomeid/';
+      var urlGetChildByHome = "http://localhost:8000/child/byhomeid/";
       urlGetChildByHome += this.selectedHomeID;
-      $.get(urlGetChildByHome, function(result) {
-        console.log("List of childs", result);
-        // TODO: Get prescriptions by child ID
-        let retrievedChildren = [];
-            result.data.forEach(function(element) {
-              // console.log(element.address);
-              retrievedChildren.push(element);
-            }, this);
-            this.childListings = retrievedChildren;
-            // console.log("Acquired children", this.childListings);
-            this.$nextTick(() => {
-              $("select#selectedChild").material_select(
-                this.toggleChildSelection.bind(this)
-              );
-            });
-          }.bind(this)
+      $.get(
+        urlGetChildByHome,
+        function(result) {
+          // console.log("List of childs", result);
+          let retrievedChildren = [];
+          result.data.forEach(function(element) {
+            // console.log(element.address);
+            retrievedChildren.push(element);
+          }, this);
+          this.childListings = retrievedChildren;
+          // console.log("Acquired children", this.childListings);
+          this.$nextTick(() => {
+            $("select#selectedChild").material_select(
+              this.toggleMedicineDetails.bind(this)
+            );
+          });
+        }.bind(this)
       );
-
-      // $.get("http://localhost:8000/prescription/", function(result) {
-      //   console.log("List of prescriptions", result);
-      // });
-    },
+    }
   },
   mounted() {
     $(document).ready(
@@ -177,14 +185,11 @@ export default {
         $.get(
           "http://localhost:8000/home/",
           function(result) {
-            // console.log("List of homes", result.data);
             let retrievedHomes = [];
             result.data.forEach(function(element) {
-              // console.log(element.address);
               retrievedHomes.push(element);
             }, this);
             this.homeListings = retrievedHomes;
-            // console.log(retrievedHomes);
             // console.log(this.homeListings);
             this.$nextTick(() => {
               $("select#selectedHome").material_select(
@@ -205,7 +210,9 @@ export default {
       }.bind(this)
     );
   },
-  updated() {}
+  updated() {
+      console.log($('#switchChildStatus').prop('checked'));
+  }
 };
 </script>
 
