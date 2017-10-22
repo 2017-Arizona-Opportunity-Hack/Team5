@@ -1,12 +1,16 @@
+
 <template>
     <div id="app">
-        {{num}}
-        <img src="./assets/logo.png">
-        <router-view/>
+      <tb-nav id="navWrap" />
+      <div class="container-fluid">
+        <router-view id="main"/>
+      </div>
     </div>
 </template>
 
 <script lang="ts">
+import Nav from "@/components/Nav.vue";
+
 export default {
   name: "app",
   data: function() {
@@ -29,17 +33,20 @@ export default {
     );
     this.$store.commit("newChild", 12);
     this.$store.commit("newChild", 100);
+  },
+  components: {
+    "tb-nav": Nav
   }
 };
 </script>
-
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+@import "./scss/main.scss";
+#navWrap {
+  width: 300px;
+  float: left;
+  height: 100vh;
+}
+#main {
+  margin-left: 300px;
 }
 </style>

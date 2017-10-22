@@ -2,6 +2,7 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
+const webpack = require('webpack')
 const vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve(dir) {
@@ -18,7 +19,18 @@ module.exports = {
         publicPath: process.env.NODE_ENV === 'production' ?
             config.build.assetsPublicPath : config.dev.assetsPublicPath
     },
+    plugins: [
+        //provide bootstrap requirements
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+            Popper: ['popper.js', 'default']
+
+        }),
+    ],
     resolve: {
+        // extensions: ['.js', '.ts', '.vue', '.json', '.scss'],
         extensions: ['.js', '.ts', '.vue', '.json'],
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
@@ -45,8 +57,24 @@ module.exports = {
                 include: [resolve('src'), resolve('test')]
             },
             {
-                test: /\.s[a|c]ss$/,
-                loader: 'style!css!sass'
+                test: /\.scss$/,
+                use: [{
+                    loader: 'style-loader', // inject CSS to page
+                }, {
+                    loader: 'css-loader', // translates CSS into CommonJS modules
+                }, {
+                    loader: 'postcss-loader', // Run post css actions
+                    options: {
+                        plugins: function() { // post css plugins, can be exported to postcss.config.js
+                            return [
+                                require('precss'),
+                                require('autoprefixer')
+                            ];
+                        }
+                    }
+                }, {
+                    loader: 'sass-loader' // compiles SASS to CSS
+                }]
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
