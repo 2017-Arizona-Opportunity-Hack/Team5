@@ -4,7 +4,7 @@ import * as getters from './getters'
 import * as actions from './actions'
 import * as mutations from './mutations'
 //modules
-// import mod1 from './modules/mod1'
+import login from './modules/Login_module.js'
 
 Vue.use(Vuex)
 const state = {
@@ -12,7 +12,9 @@ const state = {
 const store = new Vuex.Store({
   actions,
   getters,
-  //modules: {mod1, mod2}, //?
+  modules: {
+    login,
+  },
   mutations,
   state,
 })
