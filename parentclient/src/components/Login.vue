@@ -4,7 +4,6 @@
   <div class="login">
     <!-- Modal Trigger --> <!--check if can fix modal design: http://materializecss.com/modals.html-->
     <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
       <div class="modal-content">
@@ -13,20 +12,20 @@
             <div class="row">
               <div class="input-field">
                 <i class="material-icons prefix">account_circle</i>
-                <input id="full_name" type="text" class="validate">
+                <input id="full_name" type="text" class="validate" v-model="fullNameVal">
                 <label for="full_name">Full Name</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field">
                 <i class="material-icons prefix">email</i>
-                <input id="email" type="email" class="validate">
+                <input id="email" type="email" class="validate" v-model="emailVal">
                 <label for="email">Email</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field">
-                <input id="password" type="password" class="validate">
+                <input id="password" type="password" class="validate" v-model="passwordVal">
                 <label for="password">Password</label>
               </div>
             </div>
@@ -39,16 +38,17 @@
     </div> <!--/modal-->
   </div>
 </template>
-
 <script>
+const data = {
+  fullNameVal: "",
+  emailVal: "",
+  passwordVal: "",
+}
 export default {
   name: "login",
   props: [],
-  data() {
-    return {};
-  },
+  data: () => data, //data must be a function for vue components, obj for vue object.
   methods: {
-
   },
   mounted() {
     //modal animates
@@ -56,11 +56,9 @@ export default {
       // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
       $('.modal').modal();
     });
-
   }
 };
 </script>
-
 <style scoped>
 /*TODO change modal style */
   .modal-content {
@@ -94,5 +92,4 @@ export default {
    .input-field .prefix.active {
      color: #000;
    }
-
 </style>

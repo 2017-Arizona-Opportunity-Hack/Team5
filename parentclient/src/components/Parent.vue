@@ -72,7 +72,8 @@ export default {
   data: function() {
     return {
       msg: "Welcome to Your Sunshine Acres",
-      homeListings: ["Mesa", "Gilbert", "Chandler"],
+      homeListings: [],
+      // childListings: [],
       childListings: [
         {
           name: "Josh",
@@ -147,6 +148,7 @@ export default {
       });
     },
     toggleChildSelection: function(event) {
+      // console.log("Chosen Home", $("select#selectedHome").val());
       // Home menu selection toggles childselection
       // console.log($('select#selectedChild').val());
       if (!this.showChildSelection) {
@@ -161,16 +163,9 @@ export default {
         // Vue.set(this.posts[uID], post.post._id, post.post)
       });
 
-      $.get("http://localhost:8000/home/", function(result) {
-        console.log("List of homes", result);
-        // Vue.set(this.posts[uID], post.post._id, post.post)
-      });
-
-      $.get("http://localhost:8000/prescription/", function(result) {
-        console.log("List of prescriptions", result);
-        // Vue.set(this.posts[uID], post.post._id, post.post)
-      });
-      
+      // $.get("http://localhost:8000/prescription/", function(result) {
+      //   console.log("List of prescriptions", result);
+      // });
     },
     grabChildInfo: function(event) {
       console.log("Chosen Child", $("select#selectedChild").val());
@@ -179,20 +174,39 @@ export default {
   mounted() {
     $(document).ready(
       function() {
+        $.get(
+          "http://localhost:8000/home/",
+          function(result) {
+            // console.log("List of homes", result.data);
+            let retrievedHomes = [];
+            result.data.forEach(function(element) {
+              console.log(element.address);
+              retrievedHomes.push(element.address);
+            }, this);
+            this.homeListings = retrievedHomes;
+            // console.log(retrievedHomes);
+            // console.log(this.homeListings);
+            this.$nextTick(() => {
+              $("select#selectedHome").material_select(
+                this.toggleChildSelection.bind(this)
+              );
+            });
+          }.bind(this)
+        );
+
         $("select").material_select();
-        // $("select").material_select(this.toggleMedicineDetails.bind(this));
         // Basically saying that for material select bind the function call for toggling
         // children selection.
-        $("select#selectedHome").material_select(
-          this.toggleChildSelection.bind(this)
-        );
+        // $("select").material_select(this.toggleMedicineDetails.bind(this));
         // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
+
         $("select#selectedChild").material_select(
           this.toggleMedicineDetails.bind(this)
         );
       }.bind(this)
     );
-  }
+  },
+  updated() {}
 };
 </script>
 
