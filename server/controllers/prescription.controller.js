@@ -105,6 +105,7 @@ export class PrescriptionController extends BaseController {
       }
     } catch (err) {
       this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
+      return;
     }
 
     let qData = await this.db.prescription.insert.one(data).catch(this.throwError);
@@ -121,6 +122,42 @@ export class PrescriptionController extends BaseController {
   // route: PUT /:id
   // Updates prescription object with given id
   async updatePrescription(req, res) {
+    // Data sanitization
+    // let data = {
+    //   physician_id: req.body.physician_id,
+    //   child_id: req.body.child_id,
+    //   name: req.body.name,
+    //   reason: req.body.reason,
+    //   dosage: req.body.dosage,
+    //   original_amount: req.body.original_amount,
+    //   units: req.body.units
+    // };
+    //
+    // // Data validation
+    // try {
+    //   // Check for presence of data
+    //   if (!data.physician_id || !data.child_id || !data.name || !data.reason) {
+    //     throw "Invalid data - Data not present";
+    //   }
+    //   if (!data.dosage || !data.original_amount || !data.units) {
+    //     throw "Invalid data - Data not present";
+    //   }
+    //
+    //   // Validates types
+    //   if (typeof data.physician_id != "number" || typeof data.child_id != "number") {
+    //     throw "Invalid data";
+    //   }
+    //   if (typeof data.name != "string" || typeof data.reason != "string" || typeof data.dosage != "number") {
+    //     throw "Invalid data";
+    //   }
+    //   if (typeof data.original_amount != "number" || typeof data.units != "string") {
+    //     throw "Invalid data";
+    //   }
+    // } catch (err) {
+    //   this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
+    // return;
+    // }
+
     //   let data = await this.db.prescription.select.all().catch(this.throwError);
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all prescriptions");
   }
