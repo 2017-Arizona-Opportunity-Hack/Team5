@@ -42,7 +42,7 @@ export default {
     data() {
         return {
             editing: this.id == 0,
-            editableParent: new Parent(0,"");
+            editableParent: new Parent(0,"")
         };
     },
     props: ["id"],
