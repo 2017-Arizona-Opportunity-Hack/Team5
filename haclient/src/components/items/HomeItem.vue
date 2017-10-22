@@ -6,13 +6,15 @@
                 <div class="col col-sm-1">
                     <input v-if="home.id!=0" id="name" type="text" class="form-control-plaintext" v-model="home.id" disabled>
                 </div>
-                <div class="col col-sm-5">
+                <div class="col col">
                     <input id="address" type="text" class="form-control" v-model="home.address" disabled>
                 </div>
-                <div class="col col-sm-5">
+                <div class="col col-sm-4">
                     <input id="phone" type="text" class="form-control" v-model="home.phone_number" disabled>
                 </div>
-                <button type="button" class="btn btn-block col-sm-1 btn-primary" @click="beginEdit"><i class="icon-pencil"></i></button>
+                <a class="" href="#" @click="beginEdit">
+                    <i class="icon-pencil"></i>
+                </a>
             </div>
         </div>
         <div id="edit" v-if="editing">
@@ -21,19 +23,20 @@
                     <label for="name">id</label>
                     <input id="name" type="text" class="form-control-plaintext" v-model="editableHome.id" disabled>
                 </div>
-                <div class="form-group col col-sm-5">
+                <div class="form-group col">
                     <label for="address">address</label>
                     <input id="address" type="text" class="form-control" v-model="editableHome.address">
                 </div>
-                <div class="form-group col-sm-5">
+                <div class="form-group col-sm-4">
                     <label for="phone">phone</label>
                     <input id="phone" type="text" class="form-control" v-model="editableHome.phone_number">
                 </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn col btn-sm btn-block btn-danger" @click="cancelEdit"><i class="icon-cancel"></i></button>
-                    <button type="button" class="btn col btn-block btn-success" @click="applyEdit"><i class="icon-ok"></i></button>
-                    
-                </div>
+                <a href="#" class="text-danger" @click="cancelEdit">
+                    <i class="icon-cancel"></i>
+                </a>
+                <a href="#" class="text-success" @click="applyEdit">
+                    <i class="icon-ok"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -52,8 +55,8 @@ export default {
     computed: {
         classObj: function () {
             return {
-                "bg-dark": this.editing,
-                "text-light": this.editing
+                "bg-light": this.editing,
+                "text-dark": this.editing
             };
         },
         home: function () {

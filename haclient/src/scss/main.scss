@@ -5,3 +5,6 @@
 body {
     // background: orange;
 }
+
+$link-color:theme-color("light");
+$link-hover-color:   darken(theme-color("light"), 15%);

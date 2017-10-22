@@ -7,7 +7,11 @@
         // if using webpack 2+ or rollup, to leverage tree shaking:
         "module": "es2015",
         "moduleResolution": "node",
-        "noImplicitThis": false
+        "noImplicitThis": false,
+        "baseUrl": "./",
+        "paths": {
+            "@/*" : ["src/*"]   // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
+        }
     },
     "types": [
         "core-js"

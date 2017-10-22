@@ -13,8 +13,8 @@
                     <input id="name" type="text" class="form-control" v-model="child.home_id" disabled>
                 </div>
                 <!-- <button type="button" class="btn btn-block col-sm-1 btn-primary" @click="beginEdit">
-                        <i class="icon-pencil"></i>
-                    </button> -->
+                            <i class="icon-pencil"></i>
+                        </button> -->
                 <a class="" href="#" @click="beginEdit">
                     <i class="icon-pencil"></i>
                 </a>
@@ -35,20 +35,12 @@
                     <label for="home">home id</label>
                     <input id="name" type="text" class="form-control" v-model="editableChild.home_id">
                 </div>
-                <!-- <div class="col"> -->
-                <!-- <button type="button" class="btn col btn-block btn-danger" @click="cancelEdit">
-                            <i class="icon-cancel"></i>
-                        </button>
-                        <button type="button" class="btn col btn-block btn-success" @click="applyEdit">
-                            <i class="icon-ok"></i>
-                        </button> -->
-                <!-- </div> -->
-            <a href="#" class="text-danger" @click="cancelEdit">
-                <i class="icon-cancel"></i>
-            </a>
-            <a href="#" class="text-success" @click="applyEdit">
-                <i class="icon-ok"></i>
-            </a>
+                <a href="#" class="text-danger" @click="cancelEdit">
+                    <i class="icon-cancel"></i>
+                </a>
+                <a href="#" class="text-success" @click="applyEdit">
+                    <i class="icon-ok"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -97,4 +89,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 </style>

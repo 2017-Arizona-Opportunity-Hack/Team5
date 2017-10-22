@@ -15,12 +15,13 @@
             <div class="col-sm-1">
               <p>id</p>
             </div>
-            <div class="col-sm-5">
+            <div class="col">
               <p>address</p>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               <p>phone</p>
             </div>
+                    <i class="icon-pencil"></i>
           </div>
         </div>
         <home-item v-for="home in homes" :key="home.id" :id="home.id" />
