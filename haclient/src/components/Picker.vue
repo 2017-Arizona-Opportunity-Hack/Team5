@@ -1,7 +1,7 @@
 <template>
-    <div class="card" ref="customInput" :disabled="disabled">
-        <input type="text" ref="displayer" @focus="focused=true" name="name-output" id="name-output" :value="checkedNames" @blur="stopBlur($event)" :disabled="disabled">
-        <div v-if="focused" class="list-group list-group-flush">
+    <div class="" ref="customInput" :disabled="disabled">
+        <input class="form-control" type="text" ref="displayer" @focus="focused=true" name="name-output" id="name-output" :value="checkedNames" @blur="stopBlur($event)" :disabled="disabled">
+        <div v-if="focused" class="list-group  lcard" :style="styleObj">
             <div class="form-check list-group-item" v-for="item in collection" :key="item.id">
                 <label class="form-check-label">
                     <input type="checkbox" class="form-check-input" v-model="checkedItems" :value="item.id"> {{item.name}}
@@ -26,11 +26,16 @@ export default {
     computed: {
         collection: function () {
             return this.$store.getters[this.collectionSource].map((item: any) => (
-                { id: item.id, name: item.name }
+                { id: item.id, name: item.name || item.address}
             ));
         },
         checkedNames() {
             return this.value.map((itemid: number) => this.collection.filter((item: any) => item.id == itemid).map((item: any) => " " + item.name));
+        },
+        styleObj(){
+            return {
+                width: window.getComputedStyle(this.$refs.displayer).width
+            }
         }
     },
     watch: {
@@ -44,7 +49,7 @@ export default {
             if (this.$refs.customInput.contains(target)) {
                 console.log("clicked in!")
                 this.$nextTick(() => {
-
+                    console.log(this.$refs.displayer)
                     this.$refs.displayer.focus();
                 })
                 console.log(this.$refs.displayer)
@@ -57,6 +62,21 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style scoped lang="scss">
+    input[type="text"]{
+        // border: none;
+        margin: 0;
+        display: block;
+    }
+    card{
+        padding: 0;
+    }
+    .lcard{
+        position: absolute;
+        z-index: 3000;
+        top: 70px;
+        display: block;
+        // width: 30vw;
+        // float: left;
+    }
 </style>

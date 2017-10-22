@@ -7,7 +7,7 @@
                     <input v-if="home.id!=0" id="name" type="text" class="form-control-plaintext" v-model="home.id" disabled>
                 </div>
                 <div class="col">
-                    <picker id="parents" collectionSource="parents" class="form-control" v-model="parents" disabled />
+                    <picker id="parents" collectionSource="parents"  v-model="parents" disabled />
                 </div>
                 <div class="col col-sm-3">
                     <input id="address" type="text" class="form-control" v-model="home.address" disabled>
@@ -29,7 +29,7 @@
                 <div class="form-group col">
                     <label for="parents">parents</label>
                     <!-- <input id="parents" type="text" class="form-control" v-model="editableHome.address"> -->
-                    <picker id="parents" collectionSource="parents" class="form-control" v-model="parents" />
+                    <picker id="parents" collectionSource="parents"  v-model="parents" />
                 </div>
                 <div class="form-group col-sm-3">
                     <label for="address">address</label>
@@ -57,7 +57,8 @@ export default {
     data() {
         return {
             editing: this.id == 0,
-            editableHome: new Home(0, "", "")
+            editableHome: new Home(0, "", ""),
+            parents: this.$store.getters.parentsByHomeId(this.id)
         };
     },
     props: ["id"],
@@ -70,9 +71,6 @@ export default {
         },
         home: function () {
             return this.$store.getters.specificHome(this.id);
-        },
-        parents() {
-            return this.$store.getters.parentsByHomeId(this.id);
         }
     },
     methods: {
@@ -88,7 +86,12 @@ export default {
             this.editing = false;
         },
         applyEdit: function () {
+            console.log("You should commit these parents to this house ", this.parents)
+
             console.log("going to commit", this.editableHome);
+            this.parents.forEach((parent: any)=>{
+                this.$store.dispatch("associateParentHome", {home_id: this.home.id, parent_id: parent});
+            })
             this.$store.commit("updateHome", this.editableHome);
             this.editing = false;
         }

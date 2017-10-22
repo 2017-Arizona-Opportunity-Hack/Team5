@@ -9,6 +9,9 @@
                 <div class="col">
                     <input id="name" type="text" class="form-control" v-model="parent.name" disabled>
                 </div>
+                <div class="col-sm-5">
+                    <picker id="homes" collection-source="homes" v-model="homes" disabled />
+                </div>
                 <a class="" href="#" @click="beginEdit">
                     <i class="icon-pencil"></i>
                 </a>
@@ -25,6 +28,10 @@
                     <label for="name">name</label>
                     <input id="name" type="text" class="form-control" v-model="editableParent.name">
                 </div>
+                <div class="form-group col">
+                    <label for="homes">homes</label>
+                    <picker id="homes" collection-source="homes" v-model="homes" />
+                </div>
                 <a href="#" class="text-danger" @click="cancelEdit">
                     <i class="icon-cancel"></i>
                 </a>
@@ -37,12 +44,14 @@
 </template>
 
 <script lang="ts">
+import Picker from "@/components/picker";
 import Parent from "@/store/classes/Parent";
 export default {
     data() {
         return {
             editing: this.id == 0,
-            editableParent: new Parent(0,"")
+            editableParent: new Parent(0,""),
+            homes: this.$store.getters.homesByParentId(this.id)
         };
     },
     props: ["id"],
@@ -71,9 +80,15 @@ export default {
         },
         applyEdit: function () {
             console.log("going to commit", this.editableParent);
+            this.homes.forEach((home: number)=>{
+                this.$store.dispatch("associateParentHome", {home_id: home, parent_id: this.parent.id});
+            })
             this.$store.commit("updateParent", this.editableParent);
             this.editing = false;
         }
+    },
+    components:{
+        Picker
     }
 };
 </script>

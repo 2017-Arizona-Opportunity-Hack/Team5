@@ -82,6 +82,12 @@ export default new Vuex.Store({
             var hits = state.parent_homes.filter((item:any)=>item.home_id==id);
             console.debug(hits);
             return hits.map((item:any)=>item.parent_id)
+        },
+        homesByParentId: state => (id: number) => {
+            console.debug("Finding a person's homes!",id)
+            var hits = state.parent_homes.filter((item:any)=>item.parent_id==id);
+            console.debug(hits);
+            return hits.map((item:any)=>item.home_id)
         }
     },
     mutations: {
@@ -132,6 +138,12 @@ export default new Vuex.Store({
         },
         setCustody: (state, custody_events) => {
             state.custody = custody_events;
+        },
+        newPH:(state, parent_home)=>{
+            state.parent_homes.push(parent_home);
+        },
+        updateParent: (state, parent) => {
+            console.log(parent.name)
         }
     },
     actions: {
@@ -217,6 +229,16 @@ export default new Vuex.Store({
         },
         createScrip: ({ commit, state }, scrip) => {
             commit("newScrip", scrip);
+        },
+        associateParentHome: ({commit, dispatch, state}, parent_home) => {
+            var i;
+            for(i = 0; i < state.parent_homes.length; i++){
+                if(parent_home.parent_id == state.parent_homes[i].parent_id && parent_home.home_id == state.parent_homes[i].home_id){
+                    console.debug("breaking");
+                    break;
+                }
+            }
+            commit("newPH", parent_home);
         }
     }
 });
