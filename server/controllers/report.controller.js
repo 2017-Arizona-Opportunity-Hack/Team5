@@ -1,3 +1,5 @@
+let jsonexport = require('jsonexport');
+
 import {
   BaseController
 } from "./base.controller";
@@ -57,12 +59,15 @@ export class ReportController extends BaseController {
       maxDate: req.query.maxdate
     }
 
-    let adminstrationData = await this.db.report.select.byChildIdAndDateRange(data.id, data.minDate, data.maxDate).catch(this.throwError);
+    let administrationData = await this.db.report.select.byChildIdAndDateRange(data.id, data.minDate, data.maxDate).catch(this.throwError);
     let custodyData = await this.db.custody.select.byChildIdAndDateRange(data.id, data.minDate, data.maxDate).catch(this.throwError);
     let report = {
       adminstrationData,
       custodyData
     }
+
+    report = report.toJSON();
+    // let csv
     this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
   }
 
@@ -74,7 +79,7 @@ export class ReportController extends BaseController {
       id: req.params.parentid
     }
 
-    let adminstrationData = await this.db.report.select.byParentId(data.id).catch(this.throwError);
+    let administrationData = await this.db.report.select.byParentId(data.id).catch(this.throwError);
     let custodyData = await this.db.custody.select.byParentId(data.id).catch(this.throwError);
     let report = {
       adminstrationData,
@@ -92,7 +97,7 @@ export class ReportController extends BaseController {
       maxDate: req.query.maxdate
     }
 
-    let adminstrationData = await this.db.report.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
+    let administrationData = await this.db.report.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
     let custodyData = await this.db.custody.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
     let report = {
       adminstrationData,
