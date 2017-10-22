@@ -37,6 +37,13 @@ class Server {
     });
 
     this.app.use(sessionMiddleware);
+    this.app.use((req, res, next) => {
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+      res.setHeader('Access-Control-Allow-Method', 'GET, POST, PUT DELETE');
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+      res.setHeader('Access-Control-Allow-Credentials', true);
+      next();
+    });
 
     // Passport config
     // require('./config/passport.config')(this.passport);

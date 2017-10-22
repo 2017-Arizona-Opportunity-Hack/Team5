@@ -81,8 +81,18 @@ export class ChildController extends BaseController {
   // route: POST /
   // Creates a new child object
   async createChild(req, res) {
-    //   let data = await this.db.home.select.all().catch(this.throwError);
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
+    let data = {
+      name: req.body.name,
+      home_id: req.body.home_id
+    };
+
+    // Validates input
+    if (!data.name || !data.home_id || typeof data.name != "string" || typeof data.home_id != "number") {
+      this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
+    }
+
+    qData = await this.db.home.insert.one(data).catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success retrieving all homes");
   }
 
   // route: GET /:id
