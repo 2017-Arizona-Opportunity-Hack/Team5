@@ -1,7 +1,7 @@
 export default class Child {
     constructor(
-        id: number,
-        name: string,
-        home_id: number
+        public id: number,
+        public name: string,
+        public home_id: number
     ) { }
 }
