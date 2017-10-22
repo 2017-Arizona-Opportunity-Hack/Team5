@@ -8,7 +8,8 @@
       <div class="input-field selection-fields">
         <select id="selectedHome">
                 <option value="" disabled selected>Choose your option</option>
-                <option v-for="home in homeListings" :key="home.id">{{home}}</option>
+                <!-- Each home object has the address and id. -->
+                <option v-for="home in homeListings" :key="home.id">{{home.address}}</option>
               </select>
         <label>Home Selection</label>
       </div>
@@ -73,29 +74,16 @@ export default {
     return {
       msg: "Welcome to Your Sunshine Acres",
       homeListings: [],
-      // childListings: [],
-      childListings: [
-        {
-          name: "Josh",
-          medicine: ["Molly", "Perc", "Lean"]
-        },
-        {
-          name: "Ali",
-          medicine: ["Devils Lettuce", "Mary J", "Ganja"]
-        },
-        {
-          name: "James",
-          medicine: ["Bailey", "Jack", "Svedka"]
-        },
-        {
-          name: "Chuck",
-          medicine: ["Soylent", "Cheetos", "Pancakes"]
-        },
-        {
-          name: "Saul",
-          medicine: ["Apple", "Xanax", "Peach"]
-        }
-      ],
+      selectedHomeID: '',
+      selectedChildID: '',
+      childListings: [],
+      // childListings: [
+      //   {name: "Josh",medicine: ["Molly", "Perc", "Lean"]},
+      //   {name: "Ali",medicine: ["Devils Lettuce", "Mary J", "Ganja"]},
+      //   {name: "James",medicine: ["Bailey", "Jack", "Svedka"]},
+      //   {name: "Chuck",medicine: ["Soylent", "Cheetos", "Pancakes"]},
+      //   {name: "Saul",medicine: ["Apple", "Xanax", "Peach"]}
+      // ],
       medicineListings: [],
       showMedicineDetails: false,
       showChildSelection: false
@@ -114,16 +102,16 @@ export default {
         this.showMedicineDetails = true;
       }
       var selectedName = $("select#selectedChild").val();
-      // console.log(selectedName);
       // console.log(this.childListings.filter((child)=>(child.name == selectedName))[0].medicine);
       this.medicineListings = this.childListings.filter(
         child => child.name == selectedName
       )[0].medicine;
       // console.log("Selected Medicine", this.medicineListings);
-
-      // After all listened items are changed on DOM,
-      // lets render/register components such as calendar.
-      this.$nextTick(() => {
+      // console.log("Chosen Child", $("select#selectedChild").val());
+      
+      this.$nextTick(() => {          
+        // After all listened items are changed on DOM,
+        // lets render/register components such as calendar.
         $(".datepicker").pickadate({
           selectMonths: true, // Creates a dropdown to control month
           selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -133,8 +121,7 @@ export default {
           closeOnSelect: true, // Close upon selecting a date,
           format: "yyyy-mm-dd" //http://amsul.ca/pickadate.js/date/
         });
-        // Initialize time picker as well.
-        $(".timepicker").pickatime({
+        $(".timepicker").pickatime({      // Initialize time picker as well.
           default: "now", // Set default time: 'now', '1:30AM', '16:30'
           fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
           twelvehour: true, // Use AM/PM or 24-hour format
@@ -147,29 +134,42 @@ export default {
         });
       });
     },
-    toggleChildSelection: function(event) {
-      // console.log("Chosen Home", $("select#selectedHome").val());
-      // Home menu selection toggles childselection
+    toggleChildSelection: function(event) {   // Home menu selection toggles childselection
+      var selectedHome = $("select#selectedHome").val();
+      // Match the address to retrieve the ID
+      this.selectedHomeID = this.homeListings.filter((home)=>(home.address == selectedHome))[0].id;
       // console.log($('select#selectedChild').val());
       if (!this.showChildSelection) {
         this.showChildSelection = !this.showChildSelection;
         this.showMedicineDetails = false;
-      } else {
-        // Re-send API request.
+      } else {      // Re-send API request.
         this.showChildSelection = true;
       }
-      $.get("http://localhost:8000/child/", function(result) {
+      // $.get("http://localhost:8000/child/", function(result) {
+      var urlGetChildByHome = 'http://localhost:8000/child/byhomeid/';
+      urlGetChildByHome += this.selectedHomeID;
+      $.get(urlGetChildByHome, function(result) {
         console.log("List of childs", result);
-        // Vue.set(this.posts[uID], post.post._id, post.post)
-      });
+        // TODO: Get prescriptions by child ID
+        let retrievedChildren = [];
+            result.data.forEach(function(element) {
+              // console.log(element.address);
+              retrievedChildren.push(element);
+            }, this);
+            this.childListings = retrievedChildren;
+            // console.log("Acquired children", this.childListings);
+            this.$nextTick(() => {
+              $("select#selectedChild").material_select(
+                this.toggleChildSelection.bind(this)
+              );
+            });
+          }.bind(this)
+      );
 
       // $.get("http://localhost:8000/prescription/", function(result) {
       //   console.log("List of prescriptions", result);
       // });
     },
-    grabChildInfo: function(event) {
-      console.log("Chosen Child", $("select#selectedChild").val());
-    }
   },
   mounted() {
     $(document).ready(
@@ -180,8 +180,8 @@ export default {
             // console.log("List of homes", result.data);
             let retrievedHomes = [];
             result.data.forEach(function(element) {
-              console.log(element.address);
-              retrievedHomes.push(element.address);
+              // console.log(element.address);
+              retrievedHomes.push(element);
             }, this);
             this.homeListings = retrievedHomes;
             // console.log(retrievedHomes);
@@ -193,13 +193,12 @@ export default {
             });
           }.bind(this)
         );
-
+        // Select is tag type, we can use # of id's after or . for classes
         $("select").material_select();
         // Basically saying that for material select bind the function call for toggling
         // children selection.
         // $("select").material_select(this.toggleMedicineDetails.bind(this));
         // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
-
         $("select#selectedChild").material_select(
           this.toggleMedicineDetails.bind(this)
         );

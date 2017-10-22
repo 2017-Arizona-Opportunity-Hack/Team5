@@ -8,29 +8,32 @@
     <div id="modal1" class="modal">
       <div class="modal-content">
           <!-- Form -->
-          <form class="col s12">
-            <div class="row">
-              <div class="input-field">
+          <form class="container">
+            <div class="row" style="margin-bottom: -10px;">
+
+              <div class="input-field col s6 m6">
                 <i class="material-icons prefix">account_circle</i>
                 <input id="full_name" type="text" class="validate" v-model="fullNameVal">
                 <label for="full_name">Full Name</label>
               </div>
-            </div>
-            <div class="row">
-              <div class="input-field">
+              <div class="input-field col s6 m6">
                 <i class="material-icons prefix">email</i>
                 <input id="email" type="email" class="validate" v-model="emailVal">
                 <label for="email">Email</label>
               </div>
+
             </div>
-            <div class="row">
+            <!-- Password field -->
+            <div class="row" style="padding-left:12px;">
               <div class="input-field">
+                <i class="material-icons prefix">edit</i>
                 <input id="password" type="password" class="validate" v-model="passwordVal">
                 <label for="password">Password</label>
               </div>
             </div>
+
             <!--submit button-->
-            <div class="row">
+            <div class="row" style="display: flex;align-items: center;justify-content: center;">
               <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">SUBMIT</a>
             </div><!-- TODO actions {validator, close modal, handle data} -->
           </form><!--/Form-->
@@ -62,7 +65,7 @@ export default {
 <style scoped>
 /*TODO change modal style */
   .modal-content {
-    background-color: gray;
+    background-color: #cccccc;
   }
 /* Generic CSS */
   /* label color */
