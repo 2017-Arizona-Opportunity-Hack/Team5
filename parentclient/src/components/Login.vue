@@ -11,21 +11,21 @@
           <!-- Form -->
           <form class="col s12">
             <div class="row">
-              <div class="input-field">
+              <div class="input-field col s10 m10 l10">
                 <i class="material-icons prefix">account_circle</i>
                 <input id="full_name" type="text" class="validate">
                 <label for="full_name">Full Name</label>
               </div>
             </div>
             <div class="row">
-              <div class="input-field">
+              <div class="input-field col s10 m10 l10">
                 <i class="material-icons prefix">email</i>
                 <input id="email" type="email" class="validate">
                 <label for="email">Email</label>
               </div>
             </div>
             <div class="row">
-              <div class="input-field">
+              <div class="input-field col s10 m10 l10 ">
                 <input id="password" type="password" class="validate">
                 <label for="password">Password</label>
               </div>
