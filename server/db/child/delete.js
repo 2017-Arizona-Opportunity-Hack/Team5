@@ -4,12 +4,13 @@ import {
 } from "../config";
 
 var mysql = require('mysql');
-var table = DBConfig.dbs.home;
+var table = DBConfig.dbs.child;
 
 export default {
   byId: async(id) => {
-    var sql = "DELETE FROM " + table + " WHERE id=?";
-    sql = mysql.format(sql, [id]);
+    var sql = "UPDATE " + table + " WHERE id=? SET is_deleted=true";
+    var inserts = [id];
+    sql = mysql.format(sql, inserts);
     return executeQuery(sql);
   }
 };
