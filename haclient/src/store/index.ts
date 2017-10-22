@@ -36,5 +36,8 @@ export default new Vuex.Store({
         newChild: (state, id) => {
             Vue.set(state.children, id, new Child(id, "chuck"));
         }
+    },
+    actions: {
+
     }
 })
