@@ -6,10 +6,13 @@
                 <div class="col col-sm-1">
                     <input v-if="home.id!=0" id="name" type="text" class="form-control-plaintext" v-model="home.id" disabled>
                 </div>
-                <div class="col col">
+                <div class="col">
+                    <picker id="parents" collectionSource="parents" class="form-control" v-model="parents" disabled />
+                </div>
+                <div class="col col-sm-3">
                     <input id="address" type="text" class="form-control" v-model="home.address" disabled>
                 </div>
-                <div class="col col-sm-4">
+                <div class="col col-sm-3">
                     <input id="phone" type="text" class="form-control" v-model="home.phone" disabled>
                 </div>
                 <a class="" href="#" @click="beginEdit">
@@ -24,10 +27,15 @@
                     <input id="name" type="text" class="form-control-plaintext" v-model="editableHome.id" disabled>
                 </div>
                 <div class="form-group col">
+                    <label for="parents">parents</label>
+                    <!-- <input id="parents" type="text" class="form-control" v-model="editableHome.address"> -->
+                    <picker id="parents" collectionSource="parents" class="form-control" v-model="parents" />
+                </div>
+                <div class="form-group col-sm-3">
                     <label for="address">address</label>
                     <input id="address" type="text" class="form-control" v-model="editableHome.address">
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-3">
                     <label for="phone">phone</label>
                     <input id="phone" type="text" class="form-control" v-model="editableHome.phone">
                 </div>
@@ -43,6 +51,7 @@
 </template>
 
 <script lang="ts">
+import Picker from "@/components/Picker";
 import Home from "@/store/classes/Home";
 export default {
     data() {
@@ -61,6 +70,9 @@ export default {
         },
         home: function () {
             return this.$store.getters.specificHome(this.id);
+        },
+        parents() {
+            return this.$store.getters.parentsByHomeId(this.id);
         }
     },
     methods: {
@@ -80,6 +92,9 @@ export default {
             this.$store.commit("updateHome", this.editableHome);
             this.editing = false;
         }
+    },
+    components: {
+        Picker
     }
 };
 </script>

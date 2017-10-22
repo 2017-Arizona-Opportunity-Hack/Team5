@@ -18,7 +18,16 @@ export default new Vuex.Store({
         parents: <parentDict>{},
         prescriptions: <scripDict>{},
         physicians: <any>{},
-        hphomes: {},
+        parent_homes: [
+            {
+            parent_id: 1,
+            home_id: 2
+        },
+        {
+            parent_id: 1,
+            home_id: 4
+        }
+    ],
         administrations: [],
         custody: []
     },
@@ -67,6 +76,13 @@ export default new Vuex.Store({
         specificPhysician: state => (id: number) => state.physicians[id]
         ,
         specificParent: state => (id: number) => state.parents[id]
+        ,
+        parentsByHomeId: state => (id: number) => {
+            console.debug("Finding a person's homes!",id)
+            var hits = state.parent_homes.filter((item:any)=>item.home_id==id);
+            console.debug(hits);
+            return hits.map((item:any)=>item.parent_id)
+        }
     },
     mutations: {
         newChild: (state, child) => {

@@ -1,6 +1,6 @@
 <template>
-    <div class="card" ref="customInput">
-        <input type="text" ref="displayer" @focus="focused=true" name="name-output" id="name-output" :value="checkedNames" @blur="stopBlur($event)">
+    <div class="card" ref="customInput" :disabled="disabled">
+        <input type="text" ref="displayer" @focus="focused=true" name="name-output" id="name-output" :value="checkedNames" @blur="stopBlur($event)" :disabled="disabled">
         <div v-if="focused" class="list-group list-group-flush">
             <div class="form-check list-group-item" v-for="item in collection" :key="item.id">
                 <label class="form-check-label">
@@ -21,7 +21,7 @@ export default {
         }
     },
     props: [
-        "collectionSource", "multiple-select", "value"
+        "collectionSource", "multiple-select", "value", "disabled"
     ],
     computed: {
         collection: function () {
