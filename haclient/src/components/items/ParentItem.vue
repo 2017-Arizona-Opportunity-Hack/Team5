@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import Picker from "@/components/picker";
+import Picker from "@/components/Picker";
 import Parent from "@/store/classes/Parent";
 export default {
     data() {
