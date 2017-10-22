@@ -14,9 +14,14 @@ test();
 
 
 async function test() {
-    var results = await DB.physician.insert.one({
-        name: "Dr. Dre",
-        phone: "135-791-1130"
+    var results = await DB.prescription.insert.one({
+        physician_id: 2,
+        child_id: 2,
+        name: "Naproxen Sodium",
+        reason: "Dislocated Shoulder",
+        dosage: 600,
+        original_amount: 6000,
+        units: "mg"
     }).catch((error) => {
         console.log("shits fucked", error);
     });
