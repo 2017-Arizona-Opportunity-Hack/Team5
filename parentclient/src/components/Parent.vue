@@ -20,9 +20,23 @@
               </select>
         <label>Child Selection</label>
       </div>
-      <h5>Medications</h5>
+
+      <!-- Toggle Child Away Status -->
+      <!-- <div v-show="showChildSelection" v-on:click="toggleMedicineDetails"  class="switch" id="toggleChildStatus"> -->
+        <div v-show="showChildSelection" class="switch" id="toggleChildStatus">
+        <label>Child was away this weekend.</label>
+        <br>
+        <label>
+              Off
+              <input type="checkbox">
+              <span class="lever"></span>
+              On
+            </label>
+      </div>
+
       <!-- Medicine List information -->
-      <div v-show="showMedicineDetails" class="">
+      <div v-show="showMedicineDetails" class=""  style="margin-bottom: 50px;">
+        <h5>Medications</h5>
         <ul class="collection col s12">
           <!-- V for loop for listing different medications as li elements -->
           <li v-for="med in medicineListings" :key="med.id" class="collection-item avatar medicine-listings">
@@ -43,18 +57,6 @@
           </li>
           
         </ul>
-      </div>
-  
-      <!-- Checkout -->
-      <div class="switch" id="toggleChildStatus">
-        <label>Child was away this weekend.</label>
-        <br>
-        <label>
-              Off
-              <input type="checkbox">
-              <span class="lever"></span>
-              On
-            </label>
       </div>
   
     </div>
@@ -99,6 +101,9 @@ export default {
     };
   },
   methods: {
+    toggleMedicineDetails: function() {
+      this.showMedicineDetails = !this.showMedicineDetails;
+    },
     toggleMedicineDetails: function(event) {    // Child menu selection toggles medicineselection
       if (!this.showChildSelection) {
         this.showMedicineDetails = !this.showMedicineDetails;
