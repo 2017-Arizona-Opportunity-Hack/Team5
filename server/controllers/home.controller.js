@@ -86,6 +86,7 @@ export class HomeController extends BaseController {
       }
     } catch (err) {
       this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
+      return;
     }
 
     let qData = await this.db.home.insert.one(data).catch(this.throwError);
