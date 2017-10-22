@@ -9,7 +9,7 @@
 
 <script>
 //IMPORT COMPONENTS
-import importedComponentVar from "./Component.vue";
+import importedComponentVar from "./Component.vue"
 
 export default {
   name: "whatever",
@@ -21,6 +21,11 @@ export default {
   },
   methods: {
   },
+  computed: {
+    methodName() { //<tag>{{methodName}}</tag>, <tag v-for="info in methodName"></tag>,
+      return this.$store.state.data
+    }
+  }
   mounted() {
   }
 };

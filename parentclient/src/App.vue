@@ -12,8 +12,11 @@ import Nav from "./components/Nav";
 export default {
   name: 'app',
   components: {
-        "tb-nav": Nav,
-    },
+      "tb-nav": Nav,
+  },
+  mounted() {
+      this.$store.dispatch("init");
+  },
 }
 </script>
 
