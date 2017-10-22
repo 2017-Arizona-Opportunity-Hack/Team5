@@ -1,7 +1,7 @@
-export default class Child {
+export default class Physician {
     constructor(
         id: number,
         name: string,
-        home_id: number
+        phone: string
     ) { }
 }
