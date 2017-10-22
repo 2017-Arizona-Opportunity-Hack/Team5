@@ -26,7 +26,6 @@ import {
 class Server {
   constructor() {
     this.app = express();
-    // this.passport = passportPackage();
 
     let nonSecure = http.createServer(this.app).listen(portNumber);
 

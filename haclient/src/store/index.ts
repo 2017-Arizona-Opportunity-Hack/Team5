@@ -57,10 +57,17 @@ export default new Vuex.Store({
             ).sort((a, b)=>(a.id - b.id));
         },
         administrations: state => {
-            return state.administrations;
+            return state.administrations.map((administration: any) => {
+                administration.date = new Date(administration.date);
+                return administration;
+            });
         },
         custody: state => {
-            return state.custody;
+            return state.custody.map((custody: any) => {
+                custody.checkout = new Date(custody.checkout);
+                custody.checkin = new Date(custody.checkin);
+                return custody;
+            })
         },
         specificChild: state => (id: number) => {
             return state.children[id];
@@ -212,11 +219,11 @@ export default new Vuex.Store({
         getReport: ({ commit, state }, search) => {
             console.log(search);
 
-            $.get('http://localhost:8000/report/bychildanddate/' + search.child_id + "?mindate=" + search.mindate + "&maxdate=" + search.maxdate).then((response) => {
-                console.log(response);
+            $.get('http://localhost:8000/report/bychildanddate/' + search.child_id + "?mindate=" + search.min_date + "&maxdate=" + search.max_date).then((response) => {
+                console.log("Report: ", response.data);
                 if (response.success) {
-                    commit("setAdministrations", response.data.administrations);
-                    commit("setCustody", response.data.custody);
+                    commit("setAdministrations", response.data.administrationData);
+                    commit("setCustody", response.data.custodyData);
                 }
 
             })

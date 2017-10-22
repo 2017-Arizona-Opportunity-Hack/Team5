@@ -12,7 +12,7 @@ export default {
         if (item.checkin) {
             checkin = item.checkin;
         } else {
-            checkin = "DEFAULT";
+            checkin = Date.now();
         }
         var sql = "INSERT INTO " + table + " (child_id, checkout, checkin) VALUES(?,?," + checkin + ")";
         var inserts = [item.child_id, item.checkout]
