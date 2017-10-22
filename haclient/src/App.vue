@@ -34,8 +34,9 @@ export default {
 @import "../static/icons/css/icons.css";
 @import "./scss/main.scss";
 #navWrap {
+    position: fixed;
     width: 300px;
-    float: left;
+    // float: left;
     height: 100vh;
     background: #333;
     background: url("/static/mountain.jpg");

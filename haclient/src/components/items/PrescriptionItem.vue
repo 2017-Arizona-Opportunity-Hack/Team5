@@ -101,7 +101,7 @@ export default {
     data() {
         return {
             editing: this.id == 0,
-            editableScrip: (<any>Object).assign({},new Child(0, "", 0),{datestring:"",timestring:""})
+            editableScrip: (<any>Object).assign({},new Prescription(0, 0,0,"","","","",0,new Date()),{datestring:"",timestring:""})
         };
     },
     props: ["id"],
