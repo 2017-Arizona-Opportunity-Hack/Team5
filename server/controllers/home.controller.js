@@ -13,6 +13,13 @@ export class HomeController extends BaseController {
       });
     });
 
+    // Retrieves all homes
+    this.router.get("/", (req, res) => {
+      this.getAllHomes(req, res).catch(err => {
+        console.log("Error: ", err);
+      });
+    });
+
     // Retrieves home object with given id
     this.router.get("/:id", (req, res) => {
       this.getHome(res, res).catch(err => {
@@ -51,34 +58,67 @@ export class HomeController extends BaseController {
   }
 
   async createHome(req, res) {
+    // try {
+    //   let data = await this.db.home.select.all().catch(err => {
+    //     console.log("Error: ", err);
+    //     this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+    //   });
+    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
+    // } catch (err) {
+    //   console.log("Error retrieving all homes: ", err);
+    //   this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+    // }
+  }
+
+  async getAllHomes(req, res) {
     try {
-
+      let data = await this.db.home.select.all().catch(err => {
+        console.log("Error: ", err);
+        this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+      });
+      this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
     } catch (err) {
-
+      console.log("Error retrieving all homes: ", err);
+      this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
     }
   }
 
   async getHome(req, res) {
     try {
-
+      let data = await this.db.home.select.byId(req.params.id).catch(err => {
+        console.log("Error: ", err);
+        this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+      });
+      this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving home");
     } catch (err) {
-
+      console.log("Error retrieving all homes: ", err);
+      this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
     }
   }
 
   async updateHome(req, res) {
-    try {
-
-    } catch (err) {
-
-    }
+    // try {
+    //   let data = await this.db.home.select.all().catch(err => {
+    //     console.log("Error: ", err);
+    //     this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+    //   });
+    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
+    // } catch (err) {
+    //   console.log("Error retrieving all homes: ", err);
+    //   this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+    // }
   }
 
   async deleteHome(req, res) {
-    try {
-
-    } catch (err) {
-
-    }
+    // try {
+    //   let data = await this.db.home.select.all().catch(err => {
+    //     console.log("Error: ", err);
+    //     this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+    //   });
+    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
+    // } catch (err) {
+    //   console.log("Error retrieving all homes: ", err);
+    //   this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving home data");
+    // }
   }
 }
