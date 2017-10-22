@@ -31,6 +31,12 @@ export default {
         return executeQuery(sql);
     },
 
+    byParentId: async(id) => {
+        var sql = "SELECT child_id, checkout, checkin FROM ((" + DBConfig.dbs.parent_home + " JOIN Child ON " + DBConfig.dbs.child + ".home_id=" + DBConfig.dbs.parent_home + ".home_id ) JOIN " + table + " ON " + table + ".child_id=" + DBConfig.dbs.child + ".id) WHERE parent_id = ?;";
+        sql = mysql.format(sql, [id]);
+        return executeQuery(sql);
+    },
+
     all: async() => {
         var sql = "SELECT * FROM " + table;
         return executeQuery(sql);
