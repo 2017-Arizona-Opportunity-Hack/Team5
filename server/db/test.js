@@ -14,8 +14,11 @@ test();
 
 
 async function test() {
-    var results = await DB.home.select.all().catch((error) => {
-        console.log("shits fucked");
+    var results = await DB.home.insert.one({
+        address: "9876 Main Street",
+        phone: "987-654-3210"
+    }).catch((error) => {
+        console.log("shits fucked", error);
     });
     console.log(results);
 }

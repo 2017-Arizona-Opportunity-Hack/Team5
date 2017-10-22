@@ -15,7 +15,7 @@ export default {
 
     byParentId: async(id) => {
         var hp_home = DBConfig.dbs.parent_home;
-        var sql = "SELECT " + table + ".id, " + table + ".address, " + table + ".phone FROM (" + hp_home + " JOIN " + table + " ON " + hp_home + ".home_id=" + table + ".id) WHERE " + hp_home + ".hp_id=?";
+        var sql = "SELECT " + table + ".id, " + table + ".address, " + table + ".phone FROM (" + hp_home + " JOIN " + table + " ON " + hp_home + ".home_id=" + table + ".id) WHERE " + hp_home + ".parent_id=?";
         sql = mysql.format(sql, [id]);
         return executeQuery(sql);
     },
