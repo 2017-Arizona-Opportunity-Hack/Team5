@@ -107,11 +107,4 @@ export class PhysicianController extends BaseController {
     let data = await this.db.physician.select.byId(req.params.id).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success updating physician");
   }
-
-  // route: DELETE /:id
-  // Deletes a physician object with the given id
-  async deletePhysician(req, res) {
-    let data = await this.db.physician.select.byId(req.params.id).catch(this.throwError);
-    this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting physician");
-  }
 }

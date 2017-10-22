@@ -98,11 +98,4 @@ export class CustodyController extends BaseController {
     //   let data = await this.db.custody.select.byId(req.params.id).catch(this.throwError));
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success updating custody data");
   }
-
-  // route: DELETE /:id
-  // Deletes a custody object with the given id
-  async deleteCustody(req, res) {
-    //   let data = await this.db.custody.select.byId(req.params.id).catch(this.throwError));
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting custody");
-  }
 }
