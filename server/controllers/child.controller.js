@@ -91,7 +91,7 @@ export class ChildController extends BaseController {
       this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
     }
 
-    qData = await this.db.home.insert.one(data).catch(this.throwError);
+    let qData = await this.db.child.insert.one(data).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success retrieving all homes");
   }
 

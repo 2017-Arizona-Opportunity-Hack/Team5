@@ -16,6 +16,9 @@ import {
 import {
   AdministrationController
 } from "../controllers/administration.controller";
+import {
+  PrescriptionController
+} from "../controllers/prescription.controller";
 
 export class Router {
   constructor(server) {
@@ -27,6 +30,7 @@ export class Router {
     this.parentController = new ParentController(this.server);
     this.physicianController = new PhysicianController(this.server);
     this.administrationController = new AdministrationController(this.server);
+    this.prescriptionController = new PrescriptionController(this.server);
 
     this.init();
   }
@@ -37,6 +41,7 @@ export class Router {
     this.server.app.use('/parent', this.parentController.router);
     this.server.app.use('/physician', this.physicianController.router);
     this.server.app.use('/administration', this.administrationController.router);
+    this.server.app.use('/prescription', this.prescriptionController.router);
     this.server.app.use('/', this.indexController.router);
   }
 }
