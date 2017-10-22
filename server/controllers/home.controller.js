@@ -72,8 +72,22 @@ export class HomeController extends BaseController {
   // route: POST /
   // Creates home object
   async createHome(req, res) {
-    //   let data = await this.db.home.select.all().catch(this.throwError);
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
+    let data = req.body;
+    console.log(data);
+
+    try {
+      if (!data.address || !data.phone || typeof data.address != "string" || typeof data.phone != "string") {
+        throw "Data invalid";
+      }
+      if (!data.phone.match(/^\([2-9]\d\d\) \d\d\d-\d{4}/)) {
+        throw "Data invalid";
+      }
+    } catch (err) {
+      this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
+    }
+
+    data = await this.db.home.select.insert(data).catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all homes");
   }
 
   // route: GET /:id
