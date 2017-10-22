@@ -69,105 +69,121 @@
 export default {
   name: "parentview",
   props: [],
-  data() {
+  data: function() {
     return {
       msg: "Welcome to Your Sunshine Acres",
       homeListings: ["Mesa", "Gilbert", "Chandler"],
       childListings: [
         {
           name: "Josh",
-          medicine: ['Molly', 'Perc', "Lean"]
+          medicine: ["Molly", "Perc", "Lean"]
         },
         {
           name: "Ali",
-          medicine: ['Devils Lettuce', 'Mary J', "Ganja"]
+          medicine: ["Devils Lettuce", "Mary J", "Ganja"]
         },
         {
           name: "James",
-          medicine: ['Bailey', 'Jack', "Svedka"]
+          medicine: ["Bailey", "Jack", "Svedka"]
         },
         {
           name: "Chuck",
-          medicine: ['Soylent', 'Cheetos', "Pancakes"]
+          medicine: ["Soylent", "Cheetos", "Pancakes"]
         },
         {
           name: "Saul",
-          medicine: ['Apple', 'Xanax', 'Peach']
+          medicine: ["Apple", "Xanax", "Peach"]
         }
       ],
       medicineListings: [],
       showMedicineDetails: false,
-      showChildSelection: false,
+      showChildSelection: false
     };
   },
   methods: {
     toggleMedicineDetails: function() {
       this.showMedicineDetails = !this.showMedicineDetails;
     },
-    toggleMedicineDetails: function(event) {    // Child menu selection toggles medicineselection
+    toggleMedicineDetails: function(event) {
+      // Child menu selection toggles medicineselection
       if (!this.showChildSelection) {
         this.showMedicineDetails = !this.showMedicineDetails;
-      } else {  // Re-send API request.
+      } else {
+        // Re-send API request.
         this.showMedicineDetails = true;
       }
-      var selectedName = $('select#selectedChild').val();
-      console.log(selectedName);
+      var selectedName = $("select#selectedChild").val();
+      // console.log(selectedName);
       // console.log(this.childListings.filter((child)=>(child.name == selectedName))[0].medicine);
-      this.medicineListings = this.childListings.filter((child)=>(child.name == selectedName))[0].medicine;
+      this.medicineListings = this.childListings.filter(
+        child => child.name == selectedName
+      )[0].medicine;
       // console.log("Selected Medicine", this.medicineListings);
 
-      // After all listened items are changed on DOM, 
+      // After all listened items are changed on DOM,
       // lets render/register components such as calendar.
-      this.$nextTick(()=>{
-        $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year,
-            today: 'Today',
-            clear: 'Clear',
-            close: 'Ok',
-            closeOnSelect: true, // Close upon selecting a date,
-            format: 'yyyy-mm-dd',   //http://amsul.ca/pickadate.js/date/
+      this.$nextTick(() => {
+        $(".datepicker").pickadate({
+          selectMonths: true, // Creates a dropdown to control month
+          selectYears: 15, // Creates a dropdown of 15 years to control year,
+          today: "Today",
+          clear: "Clear",
+          close: "Ok",
+          closeOnSelect: true, // Close upon selecting a date,
+          format: "yyyy-mm-dd" //http://amsul.ca/pickadate.js/date/
         });
         // Initialize time picker as well.
-        $('.timepicker').pickatime({
-          default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-          fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+        $(".timepicker").pickatime({
+          default: "now", // Set default time: 'now', '1:30AM', '16:30'
+          fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
           twelvehour: true, // Use AM/PM or 24-hour format
-          donetext: 'OK', // text for done-button
-          cleartext: 'Clear', // text for clear-button
-          canceltext: 'Cancel', // Text for cancel-button
+          donetext: "OK", // text for done-button
+          cleartext: "Clear", // text for clear-button
+          canceltext: "Cancel", // Text for cancel-button
           autoclose: true, // automatic close timepicker
-          ampmclickable: true, // make AM PM clickable
+          ampmclickable: true // make AM PM clickable
           // aftershow: function(){} //Function for after opening timepicker
         });
-      })
+      });
     },
-    toggleChildSelection: function(event) {     // Home menu selection toggles childselection
+    toggleChildSelection: function(event) {
+      // Home menu selection toggles childselection
       // console.log($('select#selectedChild').val());
       if (!this.showChildSelection) {
         this.showChildSelection = !this.showChildSelection;
         this.showMedicineDetails = false;
-      } else {  // Re-send API request.
+      } else {
+        // Re-send API request.
         this.showChildSelection = true;
       }
+      console.log("about to request");
+      $.get("http://localhost:8000/child/1", function(result) {
+        console.log("hi");
+        console.log(result);
+        // Vue.set(this.posts[uID], post.post._id, post.post)
+      });
     },
     grabChildInfo: function(event) {
-      console.log("Chosen Child", $('select#selectedChild').val());
+      console.log("Chosen Child", $("select#selectedChild").val());
     }
   },
   mounted() {
     $(document).ready(
       function() {
-        $('select').material_select();
+        $("select").material_select();
         // $("select").material_select(this.toggleMedicineDetails.bind(this));
         // Basically saying that for material select bind the function call for toggling
         // children selection.
-        $("select#selectedHome").material_select(this.toggleChildSelection.bind(this));
+        $("select#selectedHome").material_select(
+          this.toggleChildSelection.bind(this)
+        );
         // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
-        $("select#selectedChild").material_select(this.toggleMedicineDetails.bind(this));
+        $("select#selectedChild").material_select(
+          this.toggleMedicineDetails.bind(this)
+        );
       }.bind(this)
     );
-  },
+  }
 };
 </script>
 

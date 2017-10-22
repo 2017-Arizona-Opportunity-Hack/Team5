@@ -44,7 +44,8 @@
 export default {
   name: "login",
   props: [],
-  data: {
+  data() {
+    return {};
   },
   methods: {
 
