@@ -22,7 +22,7 @@ export class HomeController extends BaseController {
 
     // Retrieves home object with given id
     this.router.get("/:id", (req, res) => {
-      this.getHome(res, res).catch(err => {
+      this.getHome(req, res).catch(err => {
         console.log("Error: ", err);
       });
     });
