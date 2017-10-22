@@ -9,28 +9,32 @@ export class AdministrationController extends BaseController {
     // Creates a Administration object
     this.router.post("/", (req, res) => {
       this.createAdministration(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log(": ", err);
+        this.sendServerError(res, "");
       });
     });
 
     // Retrieves Administration object with given id
     this.router.get("/:id", (req, res) => {
       this.getAdministration(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log(": ", err);
+        this.sendServerError(res, "");
       });
     });
 
     // Updates Administration object with given id
     this.router.put("/:id", (req, res) => {
       this.updateAdministration(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log(": ", err);
+        this.sendServerError(res, "");
       });
     });
 
     // Deletes Administration object with given id
     this.router.delete("/:id", (req, res) => {
       this.deleteAdministration(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log(": ", err);
+        this.sendServerError(res, "");
       });
     });
 
@@ -50,35 +54,11 @@ export class AdministrationController extends BaseController {
     })
   }
 
-  async createAdministration(req, res) {
-    try {
+  async createAdministration(req, res) {}
 
-    } catch (err) {
+  async getAdministration(req, res) {}
 
-    }
-  }
+  async updateAdministration(req, res) {}
 
-  async getAdministration(req, res) {
-    try {
-
-    } catch (err) {
-
-    }
-  }
-
-  async updateAdministration(req, res) {
-    try {
-
-    } catch (err) {
-
-    }
-  }
-
-  async deleteAdministration(req, res) {
-    try {
-
-    } catch (err) {
-
-    }
-  }
+  async deleteAdministration(req, res) {}
 }

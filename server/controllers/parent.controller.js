@@ -9,35 +9,40 @@ export class ParentController extends BaseController {
     // Retrieves all parent objects
     this.router.get("/", (req, res) => {
       this.getAllParents(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log("Error getting all parent objects: ", err);
+        this.sendServerError(res, "Error getting all parent objects");
       });
     });
 
     // Creates a parent object
     this.router.post("/", (req, res) => {
       this.createParent(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log("Error creating a parent object: ", err);
+        this.sendServerError(res, "Error creating a parent object");
       });
     });
 
     // Retrieves parent object with given id
     this.router.get("/:id", (req, res) => {
       this.getParentById(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log("Error retrieving parent object: ", err);
+        this.sendServerError(res, "Error retrieving parent object");
       });
     });
 
     // Updates parent object with given id
     this.router.put("/:id", (req, res) => {
       this.updateParent(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log("Error updating parent object: ", err);
+        this.sendServerError(res, "Error updating parent object");
       });
     });
 
     // Deletes parent object with given id
     this.router.delete("/:id", (req, res) => {
       this.deleteParent(req, res).catch(err => {
-        console.log("Error: ", err);
+        console.log("Error deleting parent object: ", err);
+        this.sendServerError(res, "Error deleting parent object");
       });
     });
 
@@ -61,55 +66,35 @@ export class ParentController extends BaseController {
   // route: GET /
   // Retrieves all parent objects
   async getAllParents(req, res) {
-    let data = await this.db.child.select.all().catch(err => {
-      console.log("Error: ", err);
-      this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving parent data");
-    });
+    let data = await this.db.child.select.all().catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all parents");
   }
 
   // route: POST /
   // Creates a new parent object
   async createParent(req, res) {
-    // try {
-    //   let data = await this.db.child.select.byId(req.params.id).catch(err => {
-    //     console.log("Error: ", err);
-    //     this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving parent data");
-    //   });
+    //   let data = await this.db.child.select.byId(req.params.id).catch(this.throwError);
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all parents");
-    // } catch (err) {
-    //   console.log("Error retrieving all parents: ", err);
-    //   this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving parent data");
-    // }
   }
 
   // route: GET /:id
   // Retrieves a parent object with the given id
   async getParentById(req, res) {
-    let data = await this.db.child.select.byId(req.params.id).catch(err => {
-      console.log("Error: ", err);
-      this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error retrieving parent data");
-    });
+    let data = await this.db.child.select.byId(req.params.id).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success parent");
   }
 
   // route: PUT /:id
   // Updates a parent object with the given id
   async updateParent(req, res) {
-    //   let data = await this.db.child.select.byId(req.params.id).catch(err => {
-    //     console.log("Error: ", err);
-    //     this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error updating parent data");
-    //   });
+    //   let data = await this.db.child.select.byId(req.params.id).catch(this.throwError));
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success updating parent data");
   }
 
   // route: DELETE /:id
   // Deletes a parent object with the given id
   async deleteParent(req, res) {
-    //   let data = await this.db.child.select.byId(req.params.id).catch(err => {
-    //     console.log("Error: ", err);
-    //     this.sendResponse(res, this.HttpStatus.INTERNAL_SERVER_ERROR, false, null, "Error deleting parent");
-    //   });
+    //   let data = await this.db.child.select.byId(req.params.id).catch(this.throwError));
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting parent");
   }
 }
