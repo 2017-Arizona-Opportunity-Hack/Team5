@@ -8,7 +8,21 @@
       </form>
     </div>
     <div class="container-fluid">
+
       <div class="list-group">
+        <div class="list-group-item" id="headers">
+          <div class="form-row">
+            <div class="col-sm-1">
+              <p for="name">id</p>
+            </div>
+            <div class="col-sm-5">
+              <p for="name">name</p>
+            </div>
+            <div class="col-sm-5">
+              <p for="home">home id</p>
+            </div>
+          </div>
+        </div>
         <child-item v-for="child in children" :key="child.id" :child="child" />
       </div>
     </div>
@@ -35,6 +49,9 @@ export default {
 }
 .container-fluid {
   padding: 20px;
+}
+#headers p {
+  margin-bottom: 0;
 }
 </style>
 
