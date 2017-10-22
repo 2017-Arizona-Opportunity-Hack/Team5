@@ -15,12 +15,15 @@
             <div class="col-sm-1">
               <p>id</p>
             </div>
-            <div class="col-sm-10">
+            <div class="col">
               <p>name</p>
             </div>
+                        <div>
+                            <i class="icon-pencil"></i>
+                        </div>
           </div>
         </div>
-        <!-- <child-item v-for="child in children" :key="child.id" :id="child.id" /> -->
+        <parent-item v-for="parent in parents" :key="parent.id" :id="parent.id" />
         <div class="list-group-item">
           <div class="btn btn-success" @click="addNew">New</div>
         </div>
@@ -30,16 +33,22 @@
 </template>
 
 <script lang="ts">
+import ParentItem from "@/components/items/ParentItem";
 import Parent from "@/store/classes/Parent";
 
 export default {
     computed: {
-        parents: ()=> this.$state.getters.parents
+        parents() {
+            return this.$store.getters.parents
+            }
     },
     methods:{
         addNew(){
             this.$store.dispatch("createParent", new Parent(0,""));
         }
+    },
+    components: {
+        ParentItem
     }
 }
 </script>

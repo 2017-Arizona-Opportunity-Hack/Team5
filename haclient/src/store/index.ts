@@ -15,7 +15,7 @@ export default new Vuex.Store({
     state: {
         children: <childDict>{},
         homes: <homeDict>{},
-        houseparents: <parentDict>{},
+        parents: <parentDict>{},
         prescriptions: <scripDict>{},
         physicians: <any>{},
         hphomes: {}
@@ -28,33 +28,37 @@ export default new Vuex.Store({
         children: state => {
             return Object.keys(state.children).map(
                 key => state.children[parseInt(key)]
-            );
+            ).sort((a, b)=>(a.name < b.name? -1 : 1));
         },
         parents: state => {
-            return Object.keys(state.houseparents).map(
-                key => state.houseparents[parseInt(key)]
-            );
+            return Object.keys(state.parents).map(
+                key => state.parents[parseInt(key)]
+            ).sort((a, b)=>(a.id - b.id));
         },
         physicians: state => {
             return Object.keys(state.physicians).map(
                 key => state.physicians[parseInt(key)]
-            );
+            ).sort((a, b)=>(a.id - b.id));
         },
         prescriptions: state => {
             return Object.keys(state.prescriptions).map(
                 key => state.prescriptions[parseInt(key)]
-            );
+            ).sort((a, b)=>(a.id - b.id));
         },
         specificChild: state => (id: number) => {
             return state.children[id];
         },
         homes: state =>
-            Object.keys(state.homes).map(key => state.homes[parseInt(key)])
+            Object.keys(state.homes).map(key => state.homes[parseInt(key)]).sort((a, b)=>(a.id - b.id))
         ,
         specificHome: state => (id: number) =>
             state.homes[id]
         ,
         specificScrip: state => (id: number) => state.prescriptions[id]
+        ,
+        specificPhysician: state => (id: number) => state.physicians[id]
+        ,
+        specificParent: state => (id: number) => state.parents[id]
     },
     mutations: {
         newChild: (state, child) => {
@@ -71,7 +75,7 @@ export default new Vuex.Store({
             state.children = children;
         },
         newParent: (state, parent) => {
-            Vue.set(state.houseparents, parent.id, parent);
+            Vue.set(state.parents, parent.id, parent);
         },
         newPhysician: (state, physician) => {
             Vue.set(state.physicians, physician.id, physician);
@@ -106,6 +110,7 @@ export default new Vuex.Store({
             dispatch("getParents");
             dispatch("getPhysicians");
             dispatch("getPrescriptions");
+            dispatch("getHomes");
         },
         getChildren: ({ commit, state }) => {
             $.get('http://localhost:8000/child').then((response: any) => {
@@ -128,13 +133,27 @@ export default new Vuex.Store({
                 }
             });
         },
+        getHomes: ({ commit, state }) => {
+            $.get('http://localhost:8000/home').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var home of response.data) {
+                        console.debug("New home!", home)
+                        commit("newHome", home);
+                    }
+                }
+            });
+        },
         getPhysicians: ({ commit, state }) => {
             $.get('http://localhost:8000/physician').then((response) => {
                 console.log(response);
                 if (response.success) {
-                    for (var physician of response.data) {
-                        commit("newPhysician", physician);
-                    }
+                    window.setTimeout(()=>{
+                        for (var physician of response.data) {
+                            commit("newPhysician", physician);
+                        }
+                    }, 600)
+                    
                 }
             });
         },
