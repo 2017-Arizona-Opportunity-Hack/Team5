@@ -1,7 +1,7 @@
 export default class Physician {
     constructor(
-        id: number,
-        name: string,
-        phone: string
+        public id: number,
+        public name: string,
+        public phone: string
     ) { }
 }
