@@ -23,6 +23,14 @@ export class PrescriptionController extends BaseController {
     });
 
     // Retrieves prescription object with given id
+    this.router.get("/bychildid/:id", (req, res) => {
+      this.getPrescriptionByChildId(req, res).catch(err => {
+        console.log("Error retrieving prescription object: ", err);
+        this.sendServerError(res, "Error retrieving prescription object");
+      });
+    });
+
+    // Retrieves prescription object with given id
     this.router.get("/:id", (req, res) => {
       this.getPrescriptionById(req, res).catch(err => {
         console.log("Error retrieving prescription object: ", err);
@@ -116,6 +124,13 @@ export class PrescriptionController extends BaseController {
   // Retrieves prescription object with given id
   async getPrescriptionById(req, res) {
     let data = await this.db.prescription.select.byId(req.params.id).catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving prescription");
+  }
+
+  // route: GET /bychildid/:id
+  // Retrieves prescription object associated with the given id
+  async getPrescriptionByChildId(req, res) {
+    let data = await this.db.prescription.select.byChildId(req.params.id).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving prescription");
   }
 
