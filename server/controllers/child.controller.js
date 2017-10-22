@@ -27,8 +27,16 @@ export class ChildController extends BaseController {
       this.getChildByName(req, res).catch(err => {
         console.log("Error retrieving children by name: ", err);
         this.sendServerError(res, "Error retrieving children by name");
-      })
-    })
+      });
+    });
+
+    // Retrieves child object with given parent id
+    this.router.get("/byparentid/:id", (req, res) => {
+      this.getChildByParentId(req, res).catch(err => {
+        console.log("Error retrieving children by parent id: ", err);
+        this.sendServerError(res, "Error retrieving children by parent id");
+      });
+    });
 
     // Retrieves child object with given id
     this.router.get("/:id", (req, res) => {
@@ -107,6 +115,13 @@ export class ChildController extends BaseController {
   async getChildByName(req, res) {
     let data = await this.db.child.select.byName(req.params.name).catch(this.throwError);
     this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all children");
+  }
+
+  // route: GET /:id
+  // Retrieves child object with given id
+  async getChildById(req, res) {
+    let data = await this.db.child.select.byParentId(req.params.id).catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving children");
   }
 
   // route: PUT /:id
