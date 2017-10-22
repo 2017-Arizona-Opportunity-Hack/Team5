@@ -72,24 +72,43 @@ export class PrescriptionController extends BaseController {
   // route: POST /
   // Creates prescription object
   async createPrescription(req, res) {
+    // Data sanitization
     let data = {
-      address: req.body.address,
-      phone: req.body.phone
+      physician_id: req.body.physician_id,
+      child_id: req.body.child_id,
+      name: req.body.name,
+      reason: req.body.reason,
+      dosage: req.body.dosage,
+      original_amount: req.body.original_amount,
+      units: req.body.units
     };
 
+    // Data validation
     try {
-      if (!data.address || !data.phone || typeof data.address != "string" || typeof data.phone != "string") {
-        throw "Data invalid";
+      // Check for presence of data
+      if (!data.physician_id || !data.child_id || !data.name || !data.reason) {
+        throw "Invalid data - Data not present";
       }
-      if (!data.phone.match(/^\([2-9]\d\d\) \d\d\d-\d{4}/)) {
-        throw "Data invalid";
+      if (!data.dosage || !data.original_amount || !data.units) {
+        throw "Invalid data - Data not present";
+      }
+
+      // Validates types
+      if (typeof data.physician_id != "number" || typeof data.child_id != "number") {
+        throw "Invalid data";
+      }
+      if (typeof data.name != "string" || typeof data.reason != "string" || typeof data.dosage != "number") {
+        throw "Invalid data";
+      }
+      if (typeof data.original_amount != "number" || typeof data.units != "string") {
+        throw "Invalid data";
       }
     } catch (err) {
       this.sendResponse(res, this.HttpStatus.BAD_REQUEST, false, null, "Invalid data");
     }
 
     let qData = await this.db.prescription.insert.one(data).catch(this.throwError);
-    this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success retrieving all prescriptions");
+    this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success creating prescription");
   }
 
   // route: GET /:id
