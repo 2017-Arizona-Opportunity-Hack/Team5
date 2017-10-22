@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Dashboard from '@/components/Dashboard.vue'
-import Children from '@/components/Children.vue'
-import Homes from '@/components/Homes.vue'
-import Parents from '@/components/Parents.vue'
-import Prescriptions from '@/components/Prescriptions.vue'
-import Physicians from '@/components/Physicians.vue'
+import Children from '@/components/tables/Children.vue'
+import Homes from '@/components/tables/Homes.vue'
+import Parents from '@/components/tables/Parents.vue'
+import Prescriptions from '@/components/tables/Prescriptions.vue'
+import Physicians from '@/components/tables/Physicians.vue'
 
 Vue.use(Router)
 

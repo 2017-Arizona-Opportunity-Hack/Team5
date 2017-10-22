@@ -1,11 +1,12 @@
 export default class Prescription {
-    constructor(id: number,
-        physician_id: number,
-        child_id: number,
-        name: string,
-        reason: string,
-        dosage: string,
-        units: string,
-        original_amount: number,
-        date: Date,){} //constructor shorthand!
+    constructor(
+        public id: number,
+        public physician_id: number,
+        public child_id: number,
+        public name: string,
+        public reason: string,
+        public dosage: string,
+        public units: string,
+        public original_amount: number,
+        public date: Date,){} //constructor shorthand!
 }

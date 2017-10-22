@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navbar navbar-light bg-light">
-      <span class="navbar-brand mb-0 h1">Homes</span>
+      <span class="navbar-brand mb-0 h1">Parents</span>
       <form class="form-inline">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -13,13 +13,10 @@
         <div class="list-group-item" id="headers">
           <div class="form-row">
             <div class="col-sm-1">
-              <p for="name">id</p>
+              <p>id</p>
             </div>
-            <div class="col-sm-5">
-              <p for="name">address</p>
-            </div>
-            <div class="col-sm-5">
-              <p for="home">phone</p>
+            <div class="col-sm-10">
+              <p>name</p>
             </div>
           </div>
         </div>
@@ -31,36 +28,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import Home from "../store/classes/Home";
-import ChildItem from "./ChildItem.vue";
-export default {
-  computed: {
-    children() {
-      return this.$store.getters.children;
-    }
-  },
-  components: {
-    ChildItem
-  },
-  methods: {
-    addNew() {
-      console.log(this.$store);
-      this.$store.dispatch("createHome", new Home("", ""));
-    }
-  }
-};
-</script>
-
-<style lang="scss" scoped>
-.childrow {
-  margin-bottom: 10px;
-}
-
-#headers p {
-  margin-bottom: 0;
-}
-</style>
-
-
