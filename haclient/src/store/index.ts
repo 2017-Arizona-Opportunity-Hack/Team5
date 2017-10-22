@@ -18,7 +18,9 @@ export default new Vuex.Store({
         parents: <parentDict>{},
         prescriptions: <scripDict>{},
         physicians: <any>{},
-        hphomes: {}
+        hphomes: {},
+        administrations: [],
+        custody: []
     },
     getters: {
         numberOfChildren: state => {
@@ -44,6 +46,12 @@ export default new Vuex.Store({
             return Object.keys(state.prescriptions).map(
                 key => state.prescriptions[parseInt(key)]
             ).sort((a, b)=>(a.id - b.id));
+        },
+        administrations: state => {
+            return state.administrations;
+        },
+        custody: state => {
+            return state.custody;
         },
         specificChild: state => (id: number) => {
             return state.children[id];
@@ -102,6 +110,12 @@ export default new Vuex.Store({
         deleteScrip: (state, id) => {
             Vue.set(state.prescriptions, id, undefined);
             delete state.prescriptions[id];
+        },
+        setAdministrations: (state, administrations) => {
+            state.administrations = administrations;
+        },
+        setCustody: (state, custody_events) => {
+            state.custody = custody_events;
         }
     },
     actions: {
@@ -166,6 +180,18 @@ export default new Vuex.Store({
                     }
                 }
             });
+        },
+        getReport: ({ commit, state }, search) => {
+            console.log(search);
+
+            $.get('http://localhost:8000/report/bychildanddate/' + search.child_id + "?mindate=" + search.mindate + "&maxdate=" + search.maxdate).then((response) => {
+                console.log(response);
+                if (response.success) {
+                    commit("setAdministrations", response.data.administrations);
+                    commit("setCustody", response.data.custody);
+                }
+
+            })
         },
         createChild: ({ commit, state }, child) => {
             commit("newChild", child);
