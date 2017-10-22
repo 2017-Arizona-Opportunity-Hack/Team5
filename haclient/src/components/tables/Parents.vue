@@ -28,3 +28,18 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import Parent from "@/store/classes/Parent";
+
+export default {
+    computed: {
+        parents: ()=> this.$state.getters.parents
+    },
+    methods:{
+        addNew(){
+            this.$store.dispatch("createParent", new Parent(0,""));
+        }
+    }
+}
+</script>

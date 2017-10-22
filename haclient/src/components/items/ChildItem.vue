@@ -4,13 +4,13 @@
         <div id="view" v-if="!editing">
             <div class="form-row align-items-center">
                 <div class="col col-sm-1">
-                    <input v-if="child.id!=0" id="name" type="text" class="form-control-plaintext" v-model="child.id" disabled>
+                    <input v-if="child.id!=0" id="id" type="text" class="form-control-plaintext" v-model="child.id" disabled>
                 </div>
                 <div class="col col">
                     <input id="name" type="text" class="form-control" v-model="child.name" disabled>
                 </div>
                 <div class="col col-sm-5">
-                    <input id="name" type="text" class="form-control" v-model="child.home_id" disabled>
+                    <input id="home" type="text" class="form-control" v-model="child.home_id" disabled>
                 </div>
                 <!-- <button type="button" class="btn btn-block col-sm-1 btn-primary" @click="beginEdit">
                             <i class="icon-pencil"></i>
@@ -24,8 +24,8 @@
         <div id="edit" v-if="editing">
             <div class="form-row align-items-center">
                 <div class="form-group col col-sm-1">
-                    <label for="name">id</label>
-                    <input id="name" type="text" class="form-control-plaintext" v-model="editableChild.id" disabled>
+                    <label for="id">id</label>
+                    <input id="id" type="text" class="form-control-plaintext" v-model="editableChild.id" disabled>
                 </div>
                 <div class="form-group col">
                     <label for="name">name</label>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group col-sm-5">
                     <label for="home">home id</label>
-                    <input id="name" type="text" class="form-control" v-model="editableChild.home_id">
+                    <input id="home" type="text" class="form-control" v-model="editableChild.home_id">
                 </div>
                 <a href="#" class="text-danger" @click="cancelEdit">
                     <i class="icon-cancel"></i>
