@@ -11,11 +11,21 @@ const state = {
 }
 const store = new Vuex.Store({
   actions,
-  getters,
   modules: {
     login,
   },
+  getters: {
+    retrieveChildLists: state => {
+      return state.childListing;
+    }
+  },
+  //modules: {mod1, mod2}, //?
   mutations,
-  state,
+  state: {
+    counterState: 5,
+    homeListing: [],
+    childListing: [],
+    medicationListing: [],
+  },
 })
 export default store

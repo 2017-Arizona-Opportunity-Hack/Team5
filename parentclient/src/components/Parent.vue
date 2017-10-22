@@ -80,7 +80,8 @@ export default {
       childListings: [],
       medicineListings: [],
       showMedicineDetails: false,
-      showChildSelection: false
+      showChildSelection: false,
+      dummyCounter: this.$store.state.counterState,
     };
   },
   methods: {
@@ -212,6 +213,7 @@ export default {
   },
   updated() {
       console.log($('#switchChildStatus').prop('checked'));
+      // console.log(this.dummyCounter);
   }
 };
 </script>
