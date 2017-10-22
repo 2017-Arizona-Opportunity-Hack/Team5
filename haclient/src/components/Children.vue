@@ -1,21 +1,41 @@
 <template>
-  <ul>
-      <li v-for="child in children" :key="child.id">{{child.name}}</li>
-  </ul>
+  <div>
+    <div class="navbar navbar-light bg-light">
+      <span class="navbar-brand mb-0 h1">Children</span>
+      <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+    <div class="container-fluid">
+      <div class="list-group">
+        <child-item v-for="child in children" :key="child.id" :child="child" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
+import ChildItem from "./ChildItem.vue";
 export default {
   computed: {
     children() {
       return this.$store.getters.children;
     }
+  },
+  components: {
+    ChildItem
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
+.childrow {
+  margin-bottom: 10px;
+}
+.container-fluid {
+  padding: 20px;
+}
 </style>
 
 

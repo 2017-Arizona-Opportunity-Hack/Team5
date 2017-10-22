@@ -29,7 +29,7 @@ var router = new Router({
       component: Homes
     },
     {
-      path: '/parenst',
+      path: '/parents',
       name: 'Parents',
       component: Parents
     },

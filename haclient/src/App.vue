@@ -1,11 +1,9 @@
 
 <template>
-    <div id="app">
-      <tb-nav id="navWrap" />
-      <div class="container-fluid">
-        <router-view id="main"/>
-      </div>
-    </div>
+  <div id="app">
+    <tb-nav id="navWrap" />
+    <router-view id="main" />
+  </div>
 </template>
 
 <script lang="ts">
