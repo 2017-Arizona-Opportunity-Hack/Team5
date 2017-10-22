@@ -50,7 +50,7 @@ export default {
     methods: {
         addNew() {
             console.log(this.$store);
-            this.$store.dispatch("createChild", new Child(0, "", 0));
+            this.$store.dispatch("createChild", new Child(0, "", 0, false));
         }
     }
 };

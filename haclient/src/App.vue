@@ -37,6 +37,7 @@ export default {
     position: fixed;
     width: 300px;
     // float: left;
+    overflow: auto;
     height: 100vh;
     background: #333;
     background: url("/static/mountain.jpg");
