@@ -7,7 +7,8 @@ export class IndexController extends BaseController {
     super(server);
 
     this.router.get('/', (req, res) => {
-      this.test(req, res);
+      res.status(this.HttpStatus.OK);
+      res.send('Hi (:');
     });
   }
 }
