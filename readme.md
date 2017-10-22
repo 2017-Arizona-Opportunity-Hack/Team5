@@ -5,6 +5,6 @@ Members:
     Chuck Dries
     James Quigley
     Josh Hewlett
-    Saul Lopez
+    Saul Lopez.
 
 Project: Sunshine Acres
