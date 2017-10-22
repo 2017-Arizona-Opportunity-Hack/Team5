@@ -10,11 +10,8 @@
                     <input id="name" type="text" class="form-control" v-model="child.name" disabled>
                 </div>
                 <div class="col col-sm-5">
-                    <input id="home" type="text" class="form-control" v-model="child.home_id" disabled>
+                    <radio-picker id="home"  v-model="child.home_id" collection-source="homes" disabled />
                 </div>
-                <!-- <button type="button" class="btn btn-block col-sm-1 btn-primary" @click="beginEdit">
-                            <i class="icon-pencil"></i>
-                        </button> -->
                 <a class="" href="#" @click="beginEdit">
                     <i class="icon-pencil"></i>
                 </a>
@@ -32,8 +29,9 @@
                     <input id="name" type="text" class="form-control" v-model="editableChild.name">
                 </div>
                 <div class="form-group col-sm-5">
-                    <label for="home">home id</label>
-                    <input id="home" type="text" class="form-control" v-model="editableChild.home_id">
+                    <label for="home">home</label>
+                    <radio-picker id="home"  v-model="editableChild.home_id" collection-source="homes" />
+                    <!-- <input id="home" type="text" class="form-control" v-model="editableChild.home_id"> -->
                 </div>
                 <a href="#" class="text-danger" @click="cancelEdit">
                     <i class="icon-cancel"></i>
@@ -47,12 +45,14 @@
 </template>
 
 <script lang="ts">
+import RadioPicker from "../RadioPicker.vue";
 import Child from "@/store/classes/Child";
 export default {
     data() {
         return {
             editing: this.id == 0,
-            editableChild: new Child(0, "", 0, false)
+            editableChild: new Child(0, "", 0, false),
+            home: this.$store.getters.specificChild(this.id).home_id
         };
     },
     props: ["id"],
@@ -84,6 +84,9 @@ export default {
             this.$store.commit("updateChild", this.editableChild);
             this.editing = false;
         }
+    },
+    components:{
+        RadioPicker
     }
 };
 </script>

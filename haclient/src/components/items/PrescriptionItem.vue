@@ -121,9 +121,8 @@ export default {
             return String("00" + s).slice(-2);
         },
         beginEdit: function () {
-            this.editableScrip = (<any>Object).assign({}, this.scrip,{datestring:this.scrip.date.getFullYear()+"-"+this.padzero(this.scrip.date.getMonth()+1) + "-" + this.padzero(this.scrip.date.getDate()) ,timestring:this.scrip.date.getHours()+":"+this.padzero(this.scrip.date.getMinutes())});
-            console.debug(this.editableScrip.date.getMonth());
-            console.debug(this.editableScrip.datestring);
+            console.debug(this.scrip.date.split("T"))
+            this.editableScrip = (<any>Object).assign({}, this.scrip,{datestring:this.scrip.date.split("T")[0], timestring: this.scrip.date.split("T")[1]});
             this.editing = true;
         },
         cancelEdit: function () {
@@ -134,7 +133,7 @@ export default {
             this.editing = false;
         },
         applyEdit: function () {
-            console.debug(this.editableScrip.datestring)
+            console.debug(this.editableScrip.timestring)
             this.editableScrip.date = new Date(this.editableScrip.datestring+" "+this.editableScrip.timestring);
             console.debug(this.editableScrip.date);
             this.editableScrip.datestring = undefined;
