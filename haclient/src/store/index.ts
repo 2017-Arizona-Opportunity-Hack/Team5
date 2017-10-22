@@ -17,9 +17,9 @@ interface homeDict {
 export default new Vuex.Store({
     state: {
         children: <childDict>{},
-        prescriptions: <homeDict>{},
+        homes: <homeDict>{},
         houseparents: {},
-        homes: {},
+        prescriptions: {},
         physicians: {},
         hphomes: {}
     },
@@ -48,6 +48,12 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        createChild: ({ commit, state }, child) => {
+            commit('newChild', child);
+        },
+        createHome: ({ commit, state }, home) => {
+            commit('newHome', home);
+        }
 
     }
 })

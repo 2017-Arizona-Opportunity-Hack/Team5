@@ -47,7 +47,7 @@ export default {
   methods: {
     addNew() {
       console.log(this.$store);
-      this.$store.commit("newChild", new Child(0, ""));
+      this.$store.dispatch("createChild", new Child(0, ""));
     }
   }
 };
