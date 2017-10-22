@@ -14,8 +14,9 @@ test();
 
 
 async function test() {
-    var results = await DB.parent.insert.one({
-        name: "Jane Doe"
+    var results = await DB.child.insert.one({
+        name: "Sally",
+        home_id: 1
     }).catch((error) => {
         console.log("shits fucked", error);
     });
