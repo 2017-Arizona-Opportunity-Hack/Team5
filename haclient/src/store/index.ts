@@ -36,11 +36,15 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        newChild: (state, id) => {
-            Vue.set(state.children, id, new Child(id, "chuck"));
+        newChild: (state, child) => {
+            Vue.set(state.children, child.id, child);
         },
         updateChild: (state, child) => {
             state.children[child.id] = child;
+        },
+        deleteChild: (state, id) => {
+            Vue.set(state.children, '0', undefined);
+            delete state.children[id];
         }
     },
     actions: {

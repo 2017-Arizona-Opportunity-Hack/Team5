@@ -4,7 +4,7 @@
         <div id="view" v-if="!editing">
             <div class="form-row align-items-center">
                 <div class="col col-sm-1">
-                    <input id="name" type="text" class="form-control-plaintext" v-model="child.id" disabled>
+                    <input v-if="child.id!=0" id="name" type="text" class="form-control-plaintext" v-model="child.id" disabled>
                 </div>
                 <div class="col col-sm-5">
                     <input id="name" type="text" class="form-control" v-model="child.name" disabled>
@@ -16,29 +16,23 @@
             </div>
         </div>
         <div id="edit" v-if="editing">
-            <div class="form-row">
-                <div class="col-sm-1">
-                    <p for="name">id</p>
-                </div>
-                <div class="col-sm-4">
-                    <p for="name">name</p>
-                </div>
-                <div class="col-sm-3">
-                    <p for="home">home id</p>
-                </div>
-            </div>
             <div class="form-row align-items-center">
-                <div class="col col-sm-1">
+                <div class="form-group col col-sm-1">
+                    <label for="name">id</label>
                     <input id="name" type="text" class="form-control-plaintext" v-model="editableChild.id" disabled>
                 </div>
-                <div class="col col-sm-4">
+                <div class="form-group col col-sm-5">
+                    <label for="name">name</label>
                     <input id="name" type="text" class="form-control" v-model="editableChild.name">
                 </div>
-                <div class="col-sm-4">
+                <div class="form-group col-sm-5">
+                    <label for="home">home id</label>
                     <input id="name" type="text" class="form-control" v-model="editableChild.home_id">
                 </div>
-                <button type="button" class="btn col btn-danger" @click="cancelEdit">Cancel</button>
-                <button type="button" class="btn col btn-success" @click="applyEdit">Apply</button>
+                <div class="col-sm-1">
+                    <button type="button" class="btn col btn-block btn-danger" @click="cancelEdit">Cancel</button>
+                    <button type="button" class="btn col btn-block btn-success" @click="applyEdit">Apply</button>
+                </div>
             </div>
         </div>
     </div>
@@ -49,8 +43,8 @@ import Child from "../store/classes/Child";
 export default {
   data() {
     return {
-      editing: false,
-      editableChild: new Child(0, "nothing")
+      editing: this.id == 0,
+      editableChild: new Child(0, "")
     };
   },
   props: ["id"],
@@ -72,6 +66,9 @@ export default {
     },
     cancelEdit: function() {
       this.editableChild = (<any>Object).assign({}, this.child);
+      if (this.child.id == 0) {
+        this.$store.commit("deleteChild", 0);
+      }
       this.editing = false;
     },
     applyEdit: function() {

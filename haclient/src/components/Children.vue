@@ -24,12 +24,16 @@
           </div>
         </div>
         <child-item v-for="child in children" :key="child.id" :id="child.id" />
+        <div class="list-group-item">
+          <div class="btn btn-success" @click="addNew">New</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import Child from "../store/classes/Child";
 import ChildItem from "./ChildItem.vue";
 export default {
   computed: {
@@ -39,6 +43,12 @@ export default {
   },
   components: {
     ChildItem
+  },
+  methods: {
+    addNew() {
+      console.log(this.$store);
+      this.$store.commit("newChild", new Child(0, ""));
+    }
   }
 };
 </script>

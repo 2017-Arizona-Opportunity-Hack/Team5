@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+import Child from "./store/classes/Child";
 import Nav from "@/components/Nav.vue";
 
 export default {
@@ -22,15 +23,8 @@ export default {
     }
   },
   mounted() {
-    window.setTimeout(
-      function() {
-        console.log("hi there");
-        this.$store.commit("newChild", 14);
-      }.bind(this),
-      600
-    );
-    this.$store.commit("newChild", 12);
-    this.$store.commit("newChild", 100);
+    this.$store.commit("newChild", new Child(12, "Chuck"));
+    this.$store.commit("newChild", new Child(19, "James"));
   },
   components: {
     "tb-nav": Nav
