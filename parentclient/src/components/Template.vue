@@ -17,7 +17,7 @@ export default {
     "customComponentTagName": importedComponentVar,
   },
   props: [],
-  data: {
+  data() {
   },
   methods: {
   },
