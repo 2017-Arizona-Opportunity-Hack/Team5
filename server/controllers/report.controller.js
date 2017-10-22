@@ -74,8 +74,13 @@ export class ReportController extends BaseController {
       id: req.params.parentid
     }
 
-    let qData = await this.db.report.select.byParentId(data.id).catch(this.throwError);
-    this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success retrieving report");
+    let adminstrationData = await this.db.report.select.byParentId(data.id).catch(this.throwError);
+    let custodyData = await this.db.custody.select.byParentId(data.id).catch(this.throwError);
+    let report = {
+      adminstrationData,
+      custodyData
+    }
+    this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
   }
 
   // route: GET /:id
@@ -87,7 +92,12 @@ export class ReportController extends BaseController {
       maxDate: req.query.maxdate
     }
 
-    let qData = await this.db.report.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
-    this.sendResponse(res, this.HttpStatus.OK, true, qData, "Success retrieving report");
+    let adminstrationData = await this.db.report.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
+    let custodyData = await this.db.custody.select.byDateRange(data.minDate, data.maxDate).catch(this.throwError);
+    let report = {
+      adminstrationData,
+      custodyData
+    }
+    this.sendResponse(res, this.HttpStatus.OK, true, report, "Success retrieving report");
   }
 }

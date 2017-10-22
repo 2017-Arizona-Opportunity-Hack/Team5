@@ -15,12 +15,12 @@ export default {
 
   byChildIdAndDateRange: async(id, minDate, maxDate) => {
     if (!maxDate) {
-      maxDate = new Date();
+      maxDate = Date.now();
     } else {
-      maxDate = new Date(parseInt(maxDate));
+      maxDate = parseInt(maxDate);
     }
 
-    minDate = new Date(parseInt(minDate));
+    minDate = parseInt(minDate);
 
     var sql = "SELECT * FROM " + table + " WHERE child_id=? AND checkout > ? AND checkout < ?";
     sql = mysql.format(sql, [id, minDate, maxDate]);
@@ -29,12 +29,12 @@ export default {
 
   byDateRange: async(minDate, maxDate) => {
     if (!maxDate) {
-      maxDate = new Date();
+      maxDate = Date.now();
     } else {
-      maxDate = new Date(parseInt(maxDate));
+      maxDate = parseInt(maxDate);
     }
 
-    minDate = new Date(parseInt(minDate));
+    minDate = parseInt(minDate);
 
     var sql = "SELECT * FROM " + table + " WHERE checkout > ? AND checkout < ?";
     sql = mysql.format(sql, [minDate, maxDate]);
