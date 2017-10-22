@@ -13,20 +13,20 @@
             <div class="row">
               <div class="input-field">
                 <i class="material-icons prefix">account_circle</i>
-                <input id="full_name" type="text" class="validate">
+                <input id="full_name" type="text" class="validate" v-model="fullNameVal">
                 <label for="full_name">Full Name</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field">
                 <i class="material-icons prefix">email</i>
-                <input id="email" type="email" class="validate">
+                <input id="email" type="email" class="validate" v-model="emailVal">
                 <label for="email">Email</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field">
-                <input id="password" type="password" class="validate">
+                <input id="password" type="password" class="validate" v-model="passwordVal">
                 <label for="password">Password</label>
               </div>
             </div>
@@ -41,11 +41,15 @@
 </template>
 
 <script>
+const data = {
+  fullNameVal: "",
+  emailVal: "",
+  passwordVal: "",
+}
 export default {
   name: "login",
   props: [],
-  data: {
-  },
+  data: () => data, //data must be a function for vue components, obj for vue object.
   methods: {
 
   },
