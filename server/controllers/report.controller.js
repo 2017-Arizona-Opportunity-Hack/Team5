@@ -121,14 +121,21 @@ export class ReportController extends BaseController {
     }
 
     let csv = await this.db.report.select.forCsv(data.id, data.minDate, data.maxDate).catch(this.throwError);
-    // let reportAttempt = [report];
-    // let csvData;
-    // jsonexport(administrationData, function(err, csv) {
-    //   if (err) {
-    //     console.log("Error: ", err);
-    //   }
-    //   csvData = csv;
-    // });
-    this.sendResponse(res, this.HttpStatus.OK, true, csv, "Success retrieving report");
+    for (let element of csv) {
+      element.DateAdministered = new Date(element.DateAdministered);
+    }
+    let csvData;
+    jsonexport(csv, function(err, csv) {
+      if (err) {
+        console.log("Error: ", err);
+      }
+      csvData = csv;
+    });
+    console.log("=====");
+    console.log(csvData);
+    res.set('Content-Type', 'text/csv');
+    res.set('Content-Disposition', 'attachment; filename=report.csv');
+    res.status(this.HttpStatus.OK);
+    res.send(csvData);
   }
 }
