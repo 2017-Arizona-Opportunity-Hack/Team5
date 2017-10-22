@@ -48,7 +48,10 @@ export default new Vuex.Store({
             );
         },
         administrations: state => {
-            return state.administrations;
+            return state.administrations.map((administration: any) => {
+                administration.date = new Date(administration.date);
+                return administration;
+            });
         },
         custody: state => {
             return state.custody;
@@ -165,10 +168,10 @@ export default new Vuex.Store({
         getReport: ({ commit, state }, search) => {
             console.log(search);
 
-            $.get('http://localhost:8000/report/bychildanddate/' + search.child_id + "?mindate=" + search.mindate + "&maxdate=" + search.maxdate).then((response) => {
-                console.log(response);
+            $.get('http://localhost:8000/report/bychildanddate/' + search.child_id + "?mindate=" + search.min_date + "&maxdate=" + search.max_date).then((response) => {
+                console.log("Report: ", response);
                 if (response.success) {
-                    commit("setAdministrations", response.data.administrations);
+                    commit("setAdministrations", response.data);
                     commit("setCustody", response.data.custody);
                 }
 
