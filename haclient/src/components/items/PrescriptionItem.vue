@@ -70,9 +70,13 @@
                     <label for="original_amount">qty</label>
                     <input id="original_amount" type="text" class="form-control" v-model="editableScrip.original_amount">
                 </div>
-                <div class="form-group col-sm-2">
+                <div class="form-group col">
                     <label for="date">date</label>
-                    <input id="date" type="text" class="form-control" v-model="editableScrip.date">
+                    <input id="date" type="date" class="form-control" v-model="editableScrip.datestring">
+                </div>
+                <div class="form-group col">
+                    <label for="time">time</label>
+                    <input id="time" type="time" class="form-control" v-model="editableScrip.timestring">
                 </div>
                 <!-- <div class="col-sm-1"> -->
                 <a href="#" class="text-danger" @click="cancelEdit">
@@ -92,11 +96,12 @@
 
 <script lang="ts">
 import Child from "@/store/classes/Child";
+import Prescription from "@/store/classes/Prescription";
 export default {
     data() {
         return {
             editing: this.id == 0,
-            editableScrip: new Child(0, "", 0)
+            editableScrip: (<any>Object).assign({},new Prescription(0, 0,0,"","","","",0,new Date()),{datestring:"",timestring:""})
         };
     },
     props: ["id"],
@@ -107,13 +112,18 @@ export default {
                 "text-dark": this.editing
             };
         },
-        scrip: function () {
+        scrip: function (): Prescription {
             return this.$store.getters.specificScrip(this.id);
         }
     },
     methods: {
+        padzero(s: string): string{
+            return String("00" + s).slice(-2);
+        },
         beginEdit: function () {
-            this.editableScrip = (<any>Object).assign({}, this.scrip);
+            this.editableScrip = (<any>Object).assign({}, this.scrip,{datestring:this.scrip.date.getFullYear()+"-"+this.padzero(this.scrip.date.getMonth()+1) + "-" + this.padzero(this.scrip.date.getDate()) ,timestring:this.scrip.date.getHours()+":"+this.padzero(this.scrip.date.getMinutes())});
+            console.debug(this.editableScrip.date.getMonth());
+            console.debug(this.editableScrip.datestring);
             this.editing = true;
         },
         cancelEdit: function () {
@@ -124,6 +134,11 @@ export default {
             this.editing = false;
         },
         applyEdit: function () {
+            console.debug(this.editableScrip.datestring)
+            this.editableScrip.date = new Date(this.editableScrip.datestring+" "+this.editableScrip.timestring);
+            console.debug(this.editableScrip.date);
+            this.editableScrip.datestring = undefined;
+            this.editableScrip.timestring = undefined;
             console.log("going to commit", this.editableScrip);
             this.$store.commit("updateScrip", this.editableScrip);
             this.editing = false;

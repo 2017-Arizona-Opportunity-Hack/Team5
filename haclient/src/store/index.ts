@@ -2,12 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { SOME_MUTATION } from "./mutation-types";
 
-import { childDict, homeDict, scripDict } from "./storedicts";
+import { childDict, homeDict, scripDict, parentDict } from "./storedicts";
 import Child from "./classes/Child";
 import Home from "./classes/Home";
 import Prescription from "./classes/Prescription";
 
-import * as $ from 'jquery';
 
 Vue.use(Vuex);
 //This is an index signature
@@ -16,10 +15,12 @@ export default new Vuex.Store({
     state: {
         children: <childDict>{},
         homes: <homeDict>{},
-        houseparents: {},
+        houseparents: <parentDict>{},
         prescriptions: <scripDict>{},
-        physicians: {},
-        hphomes: {}
+        physicians: <any>{},
+        hphomes: {},
+        administrations: [],
+        custody: []
     },
     getters: {
         numberOfChildren: state => {
@@ -31,6 +32,27 @@ export default new Vuex.Store({
                 key => state.children[parseInt(key)]
             );
         },
+        parents: state => {
+            return Object.keys(state.houseparents).map(
+                key => state.houseparents[parseInt(key)]
+            );
+        },
+        physicians: state => {
+            return Object.keys(state.physicians).map(
+                key => state.physicians[parseInt(key)]
+            );
+        },
+        prescriptions: state => {
+            return Object.keys(state.prescriptions).map(
+                key => state.prescriptions[parseInt(key)]
+            );
+        },
+        administrations: state => {
+            return state.administrations;
+        },
+        custody: state => {
+            return state.custody;
+        },
         specificChild: state => (id: number) => {
             return state.children[id];
         },
@@ -39,9 +61,6 @@ export default new Vuex.Store({
         ,
         specificHome: state => (id: number) =>
             state.homes[id]
-        ,
-        prescriptions: state =>
-            Object.keys(state.prescriptions).map(key => state.prescriptions[parseInt(key)])
         ,
         specificScrip: state => (id: number) => state.prescriptions[id]
     },
@@ -55,6 +74,18 @@ export default new Vuex.Store({
         deleteChild: (state, id) => {
             Vue.set(state.children, "0", undefined);
             delete state.children[id];
+        },
+        setChildren: (state, children) => {
+            state.children = children;
+        },
+        newParent: (state, parent) => {
+            Vue.set(state.houseparents, parent.id, parent);
+        },
+        newPhysician: (state, physician) => {
+            Vue.set(state.physicians, physician.id, physician);
+        },
+        newPrescription: (state, prescription) => {
+            Vue.set(state.prescriptions, prescription.id, prescription);
         },
         newHome: (state, home) => {
             Vue.set(state.homes, home.id, home);
@@ -75,23 +106,73 @@ export default new Vuex.Store({
         deleteScrip: (state, id) => {
             Vue.set(state.prescriptions, id, undefined);
             delete state.prescriptions[id];
+        },
+        setAdministrations: (state, administrations) => {
+            state.administrations = administrations;
+        },
+        setCustody: (state, custody_events) => {
+            state.custody = custody_events;
         }
     },
     actions: {
         init({ dispatch, state }) {
-            //mock data
             dispatch("getChildren");
-            dispatch("createChild", new Child(12, "Chuck", 0));
-            dispatch("createChild", new Child(19, "James", 0));
-            dispatch("createHome", new Home(27, "10240 N. 66th St.", "(602) 618-0414"));
-            dispatch("createScrip", new Prescription(12, 13, 14, "adderall", "adhd therapy", "20", "mg", 30, new Date()))
+            dispatch("getParents");
+            dispatch("getPhysicians");
+            dispatch("getPrescriptions");
         },
         getChildren: ({ commit, state }) => {
-            //Do API Call
-            //Commit results
-            $.get('localhost:8000/child').then((response: any) => {
+            $.get('http://localhost:8000/child').then((response: any) => {
                 console.log(response);
+
+                if (response.success) {
+                    for (var child of response.data) {
+                        commit("newChild", child);
+                    }
+                }
             });
+        },
+        getParents: ({ commit, state }) => {
+            $.get('http://localhost:8000/parent').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var parent of response.data) {
+                        commit("newParent", parent);
+                    }
+                }
+            });
+        },
+        getPhysicians: ({ commit, state }) => {
+            $.get('http://localhost:8000/physician').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var physician of response.data) {
+                        commit("newPhysician", physician);
+                    }
+                }
+            });
+        },
+        getPrescriptions: ({ commit, state }) => {
+            $.get('http://localhost:8000/prescription').then((response) => {
+                console.log(response);
+                if (response.success) {
+                    for (var prescription of response.data) {
+                        commit("newPrescription", prescription);
+                    }
+                }
+            });
+        },
+        getReport: ({ commit, state }, search) => {
+            console.log(search);
+
+            $.get('http://localhost:8000/report/bychildanddate/' + search.child_id + "?mindate=" + search.mindate + "&maxdate=" + search.maxdate).then((response) => {
+                console.log(response);
+                if (response.success) {
+                    commit("setAdministrations", response.data.administrations);
+                    commit("setCustody", response.data.custody);
+                }
+
+            })
         },
         createChild: ({ commit, state }, child) => {
             commit("newChild", child);
