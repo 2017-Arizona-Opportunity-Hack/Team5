@@ -14,10 +14,14 @@ test();
 
 
 async function test() {
-    var results = await DB.administration.insert.one({
-        child_id: 1,
-        prescription_id: 1,
-        parent_id: 1
+    var results = await DB.prescription.insert.one({
+        physician_id: 2,
+        child_id: 2,
+        name: "Naproxen Sodium",
+        reason: "Dislocated Shoulder",
+        dosage: 600,
+        original_amount: 6000,
+        units: "mg"
     }).catch((error) => {
         console.log("shits fucked", error);
     });

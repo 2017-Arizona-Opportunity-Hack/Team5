@@ -1,5 +1,7 @@
 import select from './select';
+import insert from './insert';
 
 export default {
-    select: select
+    select: select,
+    insert: insert
 };
