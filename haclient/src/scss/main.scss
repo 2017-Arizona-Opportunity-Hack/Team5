@@ -2,9 +2,6 @@
 @import "~bootstrap/scss/bootstrap";
 // @import "../static/icons/css/icons.css";
 
-body {
-    // background: orange;
-}
 
-$link-color:theme-color("light");
-$link-hover-color:   darken(theme-color("light"), 15%);
+$link-color:theme-color("white");
+// $link-hover-color:   darken(theme-color("white"), 15%);
