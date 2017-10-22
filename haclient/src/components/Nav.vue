@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-dark p-4 text-white">
+  <div class="p-4 text-light">
       <nav>
           <ul class="nav flex-column">
               <li class="nav-item">

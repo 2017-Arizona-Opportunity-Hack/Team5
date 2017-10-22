@@ -37,6 +37,9 @@ export default {
   width: 300px;
   float: left;
   height: 100vh;
+  background: url('/static/mountain.jpg');
+  background-size: cover;
+  background-position: center center;
 }
 #main {
   margin-left: 300px;
