@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-        <child-item v-for="child in children" :key="child.id" :child="child" />
+        <child-item v-for="child in children" :key="child.id" :id="child.id" />
       </div>
     </div>
   </div>

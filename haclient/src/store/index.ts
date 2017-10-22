@@ -30,11 +30,17 @@ export default new Vuex.Store({
         },
         children: state => {
             return (Object.keys(state.children)).map((key) => state.children[parseInt(key)])
+        },
+        specificChild: state => (id: number) => {
+            return state.children[id];
         }
     },
     mutations: {
         newChild: (state, id) => {
             Vue.set(state.children, id, new Child(id, "chuck"));
+        },
+        updateChild: (state, child) => {
+            state.children[child.id] = child;
         }
     },
     actions: {
