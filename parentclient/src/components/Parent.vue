@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 id="welcome-msg">{{ msg }}</h1>
+  <div class="container" style="font-family: 'Montserrat', sans-serif;">
+    <h1 id="welcome-msg" style="display: flex;align-items: center;justify-content: center;">{{ msg }}</h1>
   
     <!-- Drop down Home selection -->
     <div class="container col m12">
@@ -55,7 +55,10 @@
                 <!-- <label for="timepicker">Time Taken:</label><input type="time" class="timepicker"> -->
               </div>
             </div>
-            <span v-on:click="submitTime(med.id)" class="secondary-content"><i class="material-icons">add_circle_outline</i></span>
+            <span v-on:click="submitTime(med.id)" class="secondary-content">
+              <i v-show="addTimeShow" class="material-icons">add_circle_outline</i>
+              <i v-show="successShowTime" class="material-icons">check_circle</i>
+            </span>
           </li>
           
         </ul>
@@ -75,29 +78,36 @@ export default {
   props: [],
   data: function() {
     return {
-      msg: "Welcome to Your Sunshine Acres",
+      msg: "Welcome to Sunshine Acres",
       homeListings: [],
       selectedHomeID: "",
       selectedChildID: "",
+      addTimeShow: true,
+      successShowTime: false,
       selectedPrescriptionID: "",
       childListings: [],
       medicineListings: [],
       showMedicineDetails: false,
       showChildSelection: false,
-      // dummyCounter: this.$store.state.counterState,
     };
   },
   methods: {
-    ...mapActions([
-        'getHomeListingsFromServer'
-    ]),
+    // ...mapActions([
+    //     'getHomeListingsFromServer'
+    // ]),
+    turnOffOtherFields: function() {
+      console.log("Chosen");
+      if (this.showChildSelection) {
+        this.showMedicineDetails = false;
+        this.showChildSelection = false;
+        this.successShowTime = false;
+        this.addTimeShow = true;
+      }
+    },
     submitTime: function(medicationID) {
-      // console.log(medicationID);
       var chosenDate = $(".datepicker").val();
       var chosenTime = $(".timepicker").val();
       if (!(chosenDate === "") && !(chosenTime === "")) {
-          // console.log($(".datepicker").val());
-          // console.log($(".timepicker").val());
           var fullDateString = chosenDate + " " + chosenTime;
           console.log(fullDateString);
           var setDate = new Date(fullDateString).getTime();
@@ -107,8 +117,6 @@ export default {
             "date" : setDate,
             "prescription_id" : medicationID,
           }
-          // console.log(this.selectedChildID);
-          // console.log(setDate);
           $.ajax({
             url: 'http://localhost:8000/administration',
             type: 'POST',
@@ -116,6 +124,8 @@ export default {
             success: (response) => {
                 var resultant = response;
                 console.log(resultant);
+                this.addTimeShow = false;
+                this.successShowTime = true;
             },
             error: (error) => {
                 console.log("Error creating post: ", error);
@@ -130,6 +140,8 @@ export default {
     },
     toggleMedicineDetails: function(event) {
       this.medicineListings = [];
+      this.successShowTime = false;
+      this.addTimeShow = true;
       // Child menu selection toggles medicineselection
       var selectedName = $("select#selectedChild").val();
       // console.log("Found child match", this.childListings.filter((child)=>(child.name == selectedName))[0].id);
@@ -181,6 +193,8 @@ export default {
       }
     },
     toggleChildSelection: function(event) {
+      this.successShowTime = false;
+      this.addTimeShow = true;
       // Home menu selection toggles childselection
       var selectedHome = $("select#selectedHome").val();
       // Match the address to retrieve the ID
@@ -201,14 +215,11 @@ export default {
       $.get(
         urlGetChildByHome,
         function(result) {
-          // console.log("List of childs", result);
           let retrievedChildren = [];
           result.data.forEach(function(element) {
-            // console.log(element.address);
             retrievedChildren.push(element);
           }, this);
           this.childListings = retrievedChildren;
-          // console.log("Acquired children", this.childListings);
           this.$nextTick(() => {
             $("select#selectedChild").material_select(
               this.toggleMedicineDetails.bind(this)
@@ -218,11 +229,14 @@ export default {
       );
     }
   },
-  computed: {
-    ...mapGetters([
-      'homeListings'
-    ])
-  },
+  // computed: {
+  //   homes() {
+  //     return this.$store.getters.homeListings;
+  //   },
+  //   ...mapGetters([
+  //     'homeListings'
+  //   ])
+  // },
   mounted() {
     $(document).ready(
       function() {
@@ -254,9 +268,6 @@ export default {
       }.bind(this)
     );
   },
-  // updated() {
-  //     console.log($('#switchChildStatus').prop('checked'));
-  // }
 };
 </script>
 

@@ -23,6 +23,10 @@ const mutations = {
 }
 
 const actions = {
+    init({ dispatch, state }) {
+        //mock data
+        dispatch("getHomeListingsFromServer");
+    },
     getHomeListingsFromServer: ({ commit }, payload) => {
         $.get(
             "http://localhost:8000/home/",
