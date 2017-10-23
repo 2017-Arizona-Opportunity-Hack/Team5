@@ -1,9 +1,11 @@
 import select from './select';
 import insert from './insert';
 import deleteQueries from './delete';
+import update from './update';
 
 export default {
-  select: select,
-  insert: insert,
-  delete: deleteQueries
+    select,
+    insert,
+    delete: deleteQueries,
+    update
 };
