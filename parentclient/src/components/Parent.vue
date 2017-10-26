@@ -41,24 +41,10 @@
         <ul class="collection col s12">
           <!-- V for loop for listing different medications as li elements -->
           <li v-for="med in medicineListings" :key="med.id" class="collection-item avatar medicine-listings">
-            <i class="material-icons circle">event_note</i>
-            <span class="medicine-title">{{med.name}}</span><span style="margin-left: 15px;">Dosage: {{med.dosage + med.units}}</span>
-            <p>Medication Taken:</p>
-            <!-- TODO: Last Taken -->
-            <div class="container row">
-              <div class="col m6 s6">
-                <label for="datepicker">Date Taken:</label><input type="text" class="datepicker">
-                <!-- <label for="datepicker">Date Taken:</label><input type="date" class="datepicker"> -->
-              </div>
-              <div class="col m6 s6">
-                <label for="timepicker">Time Taken:</label><input type="text" class="timepicker">
-                <!-- <label for="timepicker">Time Taken:</label><input type="time" class="timepicker"> -->
-              </div>
-            </div>
-            <span v-on:click="submitTime(med.id)" class="secondary-content">
-              <i v-show="addTimeShow" class="material-icons">add_circle_outline</i>
-              <i v-show="successShowTime" class="material-icons">check_circle</i>
-            </span>
+            
+            <medicineCard :med="med" :medChildID="selectedChildID"></medicineCard>
+            
+            
           </li>
           
         </ul>
@@ -72,10 +58,14 @@
 
 <script>
 import {mapGetters, mapMutations, mapActions} from 'vuex';
+import MedicineCard from './MedicineCard';
 
 export default {
   name: "parentview",
   props: [],
+  components: {
+    'medicineCard' : MedicineCard,
+  },
   data: function() {
     return {
       msg: "Welcome to Sunshine Acres",
@@ -134,8 +124,6 @@ export default {
       }
     },
     toggleMedicineViewing: function() {
-      // TODO: Fix toggle states
-      // $('#switchChildStatus').prop('checked')
       this.showMedicineDetails = !this.showMedicineDetails;
     },
     toggleMedicineDetails: function(event) {
@@ -260,7 +248,6 @@ export default {
         $("select").material_select();
         // Basically saying that for material select bind the function call for toggling
         // children selection.
-        // $("select").material_select(this.toggleMedicineDetails.bind(this));
         // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
         $("select#selectedChild").material_select(
           this.toggleMedicineDetails.bind(this)
@@ -271,8 +258,8 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<!-- No "scoped" attribute becuase we want all descendants of this component to share this CSS attibutes. -->
+<style>
 #welcome-msg {
   margin-bottom: 100px;
 }
@@ -297,10 +284,6 @@ export default {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-weight: bold;
-}
-
-.secondary-content:hover {
-  cursor: pointer;
 }
 
 h1,
