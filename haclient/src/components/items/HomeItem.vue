@@ -6,11 +6,14 @@
                 <div class="col col-sm-1">
                     <input v-if="home.id!=0" id="name" type="text" class="form-control-plaintext" v-model="home.id" disabled>
                 </div>
-                <div class="col col">
+                <div class="col">
+                    <picker id="parents" collectionSource="parents"  v-model="parents" disabled />
+                </div>
+                <div class="col col-sm-3">
                     <input id="address" type="text" class="form-control" v-model="home.address" disabled>
                 </div>
-                <div class="col col-sm-4">
-                    <input id="phone" type="text" class="form-control" v-model="home.phone_number" disabled>
+                <div class="col col-sm-3">
+                    <input id="phone" type="text" class="form-control" v-model="home.phone" disabled>
                 </div>
                 <a class="" href="#" @click="beginEdit">
                     <i class="icon-pencil"></i>
@@ -24,12 +27,17 @@
                     <input id="name" type="text" class="form-control-plaintext" v-model="editableHome.id" disabled>
                 </div>
                 <div class="form-group col">
+                    <label for="parents">parents</label>
+                    <!-- <input id="parents" type="text" class="form-control" v-model="editableHome.address"> -->
+                    <picker id="parents" collectionSource="parents"  v-model="parents" />
+                </div>
+                <div class="form-group col-sm-3">
                     <label for="address">address</label>
                     <input id="address" type="text" class="form-control" v-model="editableHome.address">
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-3">
                     <label for="phone">phone</label>
-                    <input id="phone" type="text" class="form-control" v-model="editableHome.phone_number">
+                    <input id="phone" type="text" class="form-control" v-model="editableHome.phone">
                 </div>
                 <a href="#" class="text-danger" @click="cancelEdit">
                     <i class="icon-cancel"></i>
@@ -43,12 +51,14 @@
 </template>
 
 <script lang="ts">
+import Picker from "@/components/Picker";
 import Home from "@/store/classes/Home";
 export default {
     data() {
         return {
             editing: this.id == 0,
-            editableHome: new Home(0, "", "")
+            editableHome: new Home(0, "", ""),
+            parents: this.$store.getters.parentsByHomeId(this.id)
         };
     },
     props: ["id"],
@@ -76,10 +86,18 @@ export default {
             this.editing = false;
         },
         applyEdit: function () {
+            console.log("You should commit these parents to this house ", this.parents)
+
             console.log("going to commit", this.editableHome);
+            this.parents.forEach((parent: any)=>{
+                this.$store.dispatch("associateParentHome", {home_id: this.home.id, parent_id: parent});
+            })
             this.$store.commit("updateHome", this.editableHome);
             this.editing = false;
         }
+    },
+    components: {
+        Picker
     }
 };
 </script>

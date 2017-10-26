@@ -19,7 +19,7 @@
                             <p>name</p>
                         </div>
                         <div class="col-sm-5">
-                            <p>home id</p>
+                            <p>home</p>
                         </div>
                         <div>
                             <i class="icon-pencil"></i>
@@ -50,7 +50,7 @@ export default {
     methods: {
         addNew() {
             console.log(this.$store);
-            this.$store.dispatch("createChild", new Child(0, "", 0));
+            this.$store.dispatch("createChild", new Child(0, "", 0, false));
         }
     }
 };

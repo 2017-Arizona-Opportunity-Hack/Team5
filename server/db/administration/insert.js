@@ -12,7 +12,7 @@ export default {
         if (item.date) {
             date = item.date;
         } else {
-            date = 'DEFAULT';
+            date = Date.now();
         }
         var sql = "INSERT INTO " + table + " (child_id, prescription_id, parent_id, date) VALUES(?,?,?," + date + ")";
         var inserts = [item.child_id, item.prescription_id, item.parent_id]

@@ -1,37 +1,35 @@
+
 <template>
     <div class="list-group-item" :class="classObj">
-
         <div id="view" v-if="!editing">
             <div class="form-row align-items-center">
                 <div class="col col-sm-1">
-                    <input v-if="child.id!=0" id="id" type="text" class="form-control-plaintext" v-model="child.id" disabled>
+                    <input v-if="physician.id!=0" id="id" type="text" class="form-control-plaintext" v-model="physician.id" disabled>
                 </div>
                 <div class="col col">
-                    <input id="name" type="text" class="form-control" v-model="child.name" disabled>
+                    <input id="name" type="text" class="form-control" v-model="physician.name" disabled>
                 </div>
-                <div class="col col-sm-5">
-                    <radio-picker id="home"  v-model="child.home_id" collection-source="homes" disabled />
+                <div class="col col-sm-4">
+                    <input id="phone" type="text" class="form-control" v-model="physician.phone" disabled>
                 </div>
                 <a class="" href="#" @click="beginEdit">
                     <i class="icon-pencil"></i>
                 </a>
             </div>
-
         </div>
         <div id="edit" v-if="editing">
             <div class="form-row align-items-center">
                 <div class="form-group col col-sm-1">
                     <label for="id">id</label>
-                    <input id="id" type="text" class="form-control-plaintext" v-model="editableChild.id" disabled>
+                    <input id="id" type="text" class="form-control-plaintext" v-model="editablePhysician.id" disabled>
                 </div>
                 <div class="form-group col">
                     <label for="name">name</label>
-                    <input id="name" type="text" class="form-control" v-model="editableChild.name">
+                    <input id="name" type="text" class="form-control" v-model="editablePhysician.name">
                 </div>
-                <div class="form-group col-sm-5">
-                    <label for="home">home</label>
-                    <radio-picker id="home"  v-model="editableChild.home_id" collection-source="homes" />
-                    <!-- <input id="home" type="text" class="form-control" v-model="editableChild.home_id"> -->
+                <div class="form-group col-sm-4">
+                    <label for="phone">phone</label>
+                    <input id="phone" type="text" class="form-control" v-model="editablePhysician.phone_number">
                 </div>
                 <a href="#" class="text-danger" @click="cancelEdit">
                     <i class="icon-cancel"></i>
@@ -45,14 +43,12 @@
 </template>
 
 <script lang="ts">
-import RadioPicker from "../RadioPicker.vue";
-import Child from "@/store/classes/Child";
+import Physician from "@/store/classes/Physician";
 export default {
     data() {
         return {
             editing: this.id == 0,
-            editableChild: new Child(0, "", 0, false),
-            home: this.$store.getters.specificChild(this.id).home_id
+            editablePhysician: new Physician(0, "", "")
         };
     },
     props: ["id"],
@@ -63,34 +59,33 @@ export default {
                 "text-dark": this.editing
             };
         },
-        child: function () {
-            return this.$store.getters.specificChild(this.id);
+        physician: function () {
+            return this.$store.getters.specificPhysician(this.id);
         }
     },
     methods: {
         beginEdit: function () {
-            this.editableChild = (<any>Object).assign({}, this.child);
+            this.editablePhysician = (<any>Object).assign({}, this.physician);
             this.editing = true;
         },
         cancelEdit: function () {
-            this.editableChild = (<any>Object).assign({}, this.child);
-            if (this.child.id == 0) {
-                this.$store.commit("deleteChild", 0);
+            this.editablePhysician = (<any>Object).assign({}, this.physician);
+            if (this.physician.id == 0) {
+                this.$store.commit("deletePhysician", 0);
             }
             this.editing = false;
         },
         applyEdit: function () {
-            console.log("going to commit", this.editableChild);
-            this.$store.commit("updateChild", this.editableChild);
+            console.log("going to commit", this.editablePhysician);
+            this.$store.commit("updatePhysician", this.editablePhysician);
             this.editing = false;
         }
-    },
-    components:{
-        RadioPicker
     }
 };
 </script>
 
 <style scoped lang="scss">
-
+.btn.col {
+    margin-left: 5px;
+}
 </style>

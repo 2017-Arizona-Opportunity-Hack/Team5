@@ -98,11 +98,4 @@ export class ParentController extends BaseController {
     //   let data = await this.db.parent.select.byId(req.params.id).catch(this.throwError));
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success updating parent data");
   }
-
-  // route: DELETE /:id
-  // Deletes a parent object with the given id
-  async deleteParent(req, res) {
-    //   let data = await this.db.parent.select.byId(req.params.id).catch(this.throwError));
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting parent");
-  }
 }

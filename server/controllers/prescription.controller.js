@@ -176,11 +176,4 @@ export class PrescriptionController extends BaseController {
     //   let data = await this.db.prescription.select.all().catch(this.throwError);
     //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all prescriptions");
   }
-
-  // route: DELETE /:id
-  // Deletes prescription object with given id
-  async deletePrescription(req, res) {
-    //   let data = await this.db.prescription.select.all().catch(this.throwError);
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success retrieving all prescriptions");
-  }
 }
