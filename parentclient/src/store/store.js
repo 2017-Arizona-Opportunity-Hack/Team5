@@ -4,20 +4,19 @@ import Vuex from 'vuex'
 import login from './modules/Login_module.js'
 import Parent_Module from './modules/Parent_Module.js'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   actions: {
-  },
-  getters: {
   },
   modules: {
     login,
-    parentmod: Parent_Module,
+    Parent_Module,
+  },
+  getters: {
   },
   mutations: {
   },
   state: {
   },
 })
-export default store
