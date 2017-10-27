@@ -1,40 +1,49 @@
 /*inital state*/
 const _state = {
-  fullName: "",
   email: "",
+  fullName: "",
   password: "",
 }
-/**TODO: may need to commit with a payload. pass the field to update store.*/
 const _actions = {
-  store_fullName({state, commit, rootState}) {
-    commit('STORE_FULLNAME')
+  //loads data.
+  LOAD_EMAIL(context, payload) { //from docs: {state, commit, rootState}
+    context.commit('STORE_EMAIL', payload.data)
   },
-  store_email({state, commit, rootState}) {
-    commit('STORE_EMAIL')
+  LOAD_FORM(context, payload) {//TODO
+    context.commit('STORE_FORM', payload)
   },
-  store_password({state, commit, rootState}) {
-    commit('STORE_PASSWORD')
+  LOAD_FULLNAME(context, payload) {
+    context.commit('STORE_FULLNAME', payload.data)
+  },
+  LOAD_PASSWORD(context, payload) {
+    context.commit('STORE_PASSWORD', payload.data)
   },
 }
-/*should make mutation vars as constants*/
 /**TODO: fix mutation to store a payload correctly*/
 const _mutations = {
-  STORE_FULLNAME: (state) => {
-    state.fullName = state.fullName
+  //sets/stores the data obtained
+  STORE_EMAIL: (state, payload) => {
+    state.email += payload
   },
-  STORE_EMAIL: (state) => {
-    state.email = state.email
+  STORE_FORM: (state, payload) => {
+    state = {
+      fullName: payload.fullName,
+      email: payload.email,
+      password: payload.password,
+    } //fullName: payload.fullName, email: payload.email, password: payload.password
   },
-  STORE_PASSWORD: (state) => {
-    state.password = state.password
+  STORE_FULLNAME: (state, payload) => {
+    state.fullName+= payload
+  },
+  STORE_PASSWORD: (state, payload) => {
+    state.password += payload
   },
 }
 const _getters = {
-  get_fullName (state) { return state.fullName},
-  get_email (state) { return state.email},
-  get_password (state) { return state.password},
+  get_email: (state) => { return state.email},
+  get_fullName: (state) => { return state.fullName},
+  get_password: (state) => { return state.password},
 }
-
 const moduleA = {
   state: { ..._state,
   },
@@ -43,6 +52,6 @@ const moduleA = {
   mutations: { ..._mutations,
   },
   getters: { ..._getters,
-  }
+  },
 }
 export default moduleA;
