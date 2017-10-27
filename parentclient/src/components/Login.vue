@@ -2,7 +2,7 @@
 <template>
   <div class="login">
     <!-- TODO delete begin...-->
-    <!--  NOTE:TESTING -->
+    <!--  NOTE:TESTING. To be Deleted-->
     <!-- <h4>--</h4>
     <h4>--</h4>
     <h4>{{ get_fullName }}</h4>
@@ -87,7 +87,7 @@ export default {
       this.$store.dispatch('LOAD_FULLNAME', payload)
     },
     dispatch_load_password (payload) {
-      //basic inputHandle //for basckspace and auto-complete
+      //basic inputHandle //for basckspace and auto-complete //Check if can place this into a method.
       this.$store.dispatch('LOAD_PASSWORD', payload)
     },
     /** TODO: ADD support for backspace and auto-complete.

@@ -44,7 +44,7 @@ const _getters = {
   get_fullName: (state) => { return state.fullName},
   get_password: (state) => { return state.password},
 }
-const moduleA = {
+const login_module = {
   state: { ..._state,
   },
   actions: { ..._actions,
@@ -54,4 +54,4 @@ const moduleA = {
   getters: { ..._getters,
   },
 }
-export default moduleA;
+export default login_module;
