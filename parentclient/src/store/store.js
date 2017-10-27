@@ -9,12 +9,10 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   actions: {
   },
-  modules: {
-    login,
-  },
   getters: {
   },
   modules: {
+    login,
     parentmod: Parent_Module,
   },
   mutations: {
