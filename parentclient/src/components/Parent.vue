@@ -9,7 +9,7 @@
         <select id="selectedHome">
                 <option value="" disabled selected>Choose your option</option>
                 <!-- Each home object has the address and id. -->
-                <option v-for="home in homeListings" :key="home.id">{{home.address}}</option>
+                <option v-for="home in homes" :key="home.id">{{home.address}}</option>
               </select>
         <label>Home Selection</label>
       </div>
@@ -17,7 +17,7 @@
       <div v-show="showChildSelection" class="input-field selection-fields">
         <select id="selectedChild">
                 <option value="" disabled selected>Choose your option</option>
-                <option v-for="child in childListings" :key="child.id">{{child.name}}</option>
+                <option v-for="child in children" :key="child.id">{{child.name}}</option>
               </select>
         <label>Child Selection</label>
       </div>
@@ -81,10 +81,44 @@ export default {
       showChildSelection: false,
     };
   },
+  computed: {
+    homes() {
+      this.homeListings = this.$store.getters.getHomes;
+      this.$nextTick(() => {
+        $("select#selectedHome").material_select(
+          this.toggleChildSelection.bind(this)
+        );
+      });
+      return this.homeListings;
+    },
+    children() {
+      this.childListings = this.$store.getters.getChildren;
+      this.$nextTick(() => {
+        $("select#selectedChild").material_select(
+          this.toggleMedicineDetails.bind(this)
+        );
+      });
+      return this.childListings;
+    }
+  },
+  mounted() {
+    $(document).ready(
+      function() {
+        // Select is tag type, we can use # of id's after or . for classes
+        $("select").material_select();
+        $("select#selectedHome").material_select(
+          this.toggleChildSelection.bind(this)
+        );
+        // Basically saying that for material select bind the function call for toggling
+        // children selection.
+        // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
+        $("select#selectedChild").material_select(
+          this.toggleMedicineDetails.bind(this)
+        );
+      }.bind(this)
+    );
+  },
   methods: {
-    // ...mapActions([
-    //     'getHomeListingsFromServer'
-    // ]),
     turnOffOtherFields: function() {
       console.log("Chosen");
       if (this.showChildSelection) {
@@ -189,6 +223,11 @@ export default {
       this.selectedHomeID = this.homeListings.filter(
         home => home.address == selectedHome
       )[0].id;
+      // To invoke a store action, we must dispatch it and pass 
+      // object parameter to be our payload.
+      this.$store.dispatch('getChildrenListingsFromServer', {
+        homeID: this.selectedHomeID,
+      });
       // console.log($('select#selectedChild').val());
       if (!this.showChildSelection) {
         this.showChildSelection = !this.showChildSelection;
@@ -197,63 +236,7 @@ export default {
         // Re-send API request.
         this.showChildSelection = true;
       }
-      // $.get("http://localhost:8000/child/", function(result) {
-      var urlGetChildByHome = "http://localhost:8000/child/byhomeid/";
-      urlGetChildByHome += this.selectedHomeID;
-      $.get(
-        urlGetChildByHome,
-        function(result) {
-          let retrievedChildren = [];
-          result.data.forEach(function(element) {
-            retrievedChildren.push(element);
-          }, this);
-          this.childListings = retrievedChildren;
-          this.$nextTick(() => {
-            $("select#selectedChild").material_select(
-              this.toggleMedicineDetails.bind(this)
-            );
-          });
-        }.bind(this)
-      );
     }
-  },
-  // computed: {
-  //   homes() {
-  //     return this.$store.getters.homeListings;
-  //   },
-  //   ...mapGetters([
-  //     'homeListings'
-  //   ])
-  // },
-  mounted() {
-    $(document).ready(
-      function() {
-        $.get(
-          "http://localhost:8000/home/",
-          function(result) {
-            let retrievedHomes = [];
-            result.data.forEach(function(element) {
-              retrievedHomes.push(element);
-            }, this);
-            this.homeListings = retrievedHomes;
-            // console.log(this.homeListings);
-            this.$nextTick(() => {
-              $("select#selectedHome").material_select(
-                this.toggleChildSelection.bind(this)
-              );
-            });
-          }.bind(this)
-        );
-        // Select is tag type, we can use # of id's after or . for classes
-        $("select").material_select();
-        // Basically saying that for material select bind the function call for toggling
-        // children selection.
-        // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
-        $("select#selectedChild").material_select(
-          this.toggleMedicineDetails.bind(this)
-        );
-      }.bind(this)
-    );
   },
 };
 </script>
