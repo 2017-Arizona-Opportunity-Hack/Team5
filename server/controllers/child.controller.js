@@ -150,7 +150,7 @@ export class ChildController extends BaseController {
   // route: DELETE /:id
   // Deletes a child with given id
   async deleteChild(req, res) {
-    //   let data = await this.db.home.select.all().catch(this.throwError);
-    //   this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting child");
+    let data = await this.db.home.delete.byId().catch(this.throwError);
+    this.sendResponse(res, this.HttpStatus.OK, true, data, "Success deleting child");
   }
 }

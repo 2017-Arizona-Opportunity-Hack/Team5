@@ -10,7 +10,7 @@
     <h4>{{ get_password }}</h4> -->
     <!-- TODO delete /end-->
     <!-- Modal Trigger --> <!--check if can fix modal design: http://materializecss.com/modals.html-->
-    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+    <a class="waves-effect waves-red btn modal-trigger blue" href="#modal1">Login</a>
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
       <div class="modal-content">

@@ -1,5 +1,6 @@
 import Child from './classes/Child';
 import Home from './classes/Home';
+import Parent from './classes/Parent';
 import Prescription from './classes/Prescription';
 
 export interface childDict {
@@ -10,4 +11,8 @@ export interface homeDict {
 }
 export interface scripDict {
     [key: number]: Prescription
+}
+
+export interface parentDict {
+    [kkey: number]: Parent;
 }

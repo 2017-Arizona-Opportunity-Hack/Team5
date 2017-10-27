@@ -20,6 +20,9 @@
                 <li class="nav-item">
                     <router-link class="nav-link" to="/physicians">Physicians</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/reports">Reports</router-link>
+                </li>
             </ul>
         </nav>
         <div style="position: absolute; bottom: 20px;">&amp;</div>

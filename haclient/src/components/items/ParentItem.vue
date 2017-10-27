@@ -4,13 +4,13 @@
         <div id="view" v-if="!editing">
             <div class="form-row align-items-center">
                 <div class="col col-sm-1">
-                    <input v-if="child.id!=0" id="id" type="text" class="form-control-plaintext" v-model="child.id" disabled>
+                    <input v-if="parent.id!=0" id="id" type="text" class="form-control-plaintext" v-model="parent.id" disabled>
                 </div>
-                <div class="col col">
-                    <input id="name" type="text" class="form-control" v-model="child.name" disabled>
+                <div class="col">
+                    <input id="name" type="text" class="form-control" v-model="parent.name" disabled>
                 </div>
-                <div class="col col-sm-5">
-                    <radio-picker id="home"  v-model="child.home_id" collection-source="homes" disabled />
+                <div class="col-sm-5">
+                    <picker id="homes" collection-source="homes" v-model="homes" disabled />
                 </div>
                 <a class="" href="#" @click="beginEdit">
                     <i class="icon-pencil"></i>
@@ -22,16 +22,15 @@
             <div class="form-row align-items-center">
                 <div class="form-group col col-sm-1">
                     <label for="id">id</label>
-                    <input id="id" type="text" class="form-control-plaintext" v-model="editableChild.id" disabled>
+                    <input id="id" type="text" class="form-control-plaintext" v-model="editableParent.id" disabled>
                 </div>
                 <div class="form-group col">
                     <label for="name">name</label>
-                    <input id="name" type="text" class="form-control" v-model="editableChild.name">
+                    <input id="name" type="text" class="form-control" v-model="editableParent.name">
                 </div>
-                <div class="form-group col-sm-5">
-                    <label for="home">home</label>
-                    <radio-picker id="home"  v-model="editableChild.home_id" collection-source="homes" />
-                    <!-- <input id="home" type="text" class="form-control" v-model="editableChild.home_id"> -->
+                <div class="form-group col">
+                    <label for="homes">homes</label>
+                    <picker id="homes" collection-source="homes" v-model="homes" />
                 </div>
                 <a href="#" class="text-danger" @click="cancelEdit">
                     <i class="icon-cancel"></i>
@@ -45,14 +44,14 @@
 </template>
 
 <script lang="ts">
-import RadioPicker from "../RadioPicker.vue";
-import Child from "@/store/classes/Child";
+import Picker from "@/components/Picker";
+import Parent from "@/store/classes/Parent";
 export default {
     data() {
         return {
             editing: this.id == 0,
-            editableChild: new Child(0, "", 0, false),
-            home: this.$store.getters.specificChild(this.id).home_id
+            editableParent: new Parent(0,""),
+            homes: this.$store.getters.homesByParentId(this.id)
         };
     },
     props: ["id"],
@@ -63,30 +62,33 @@ export default {
                 "text-dark": this.editing
             };
         },
-        child: function () {
-            return this.$store.getters.specificChild(this.id);
+        parent: function () {
+            return this.$store.getters.specificParent(this.id);
         }
     },
     methods: {
         beginEdit: function () {
-            this.editableChild = (<any>Object).assign({}, this.child);
+            this.editableParent = (<any>Object).assign({}, this.parent);
             this.editing = true;
         },
         cancelEdit: function () {
-            this.editableChild = (<any>Object).assign({}, this.child);
-            if (this.child.id == 0) {
-                this.$store.commit("deleteChild", 0);
+            this.editableParent = (<any>Object).assign({}, this.parent);
+            if (this.parent.id == 0) {
+                this.$store.commit("deleteParent", 0);
             }
             this.editing = false;
         },
         applyEdit: function () {
-            console.log("going to commit", this.editableChild);
-            this.$store.commit("updateChild", this.editableChild);
+            console.log("going to commit", this.editableParent);
+            this.homes.forEach((home: number)=>{
+                this.$store.dispatch("associateParentHome", {home_id: home, parent_id: this.parent.id});
+            })
+            this.$store.commit("updateParent", this.editableParent);
             this.editing = false;
         }
     },
     components:{
-        RadioPicker
+        Picker
     }
 };
 </script>

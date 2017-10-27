@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 id="welcome-msg">{{ msg }}</h1>
+  <div class="container" style="font-family: 'Montserrat', sans-serif;">
+    <h1 id="welcome-msg" style="display: flex;align-items: center;justify-content: center;">{{ msg }}</h1>
   
     <!-- Drop down Home selection -->
     <div class="container col m12">
@@ -41,21 +41,10 @@
         <ul class="collection col s12">
           <!-- V for loop for listing different medications as li elements -->
           <li v-for="med in medicineListings" :key="med.id" class="collection-item avatar medicine-listings">
-            <i class="material-icons circle">event_note</i>
-            <span class="medicine-title">{{med.name}}</span><span style="margin-left: 15px;">Dosage: {{med.dosage + med.units}}</span>
-            <p>Medication Taken:</p>
             
-            <div class="container row">
-              <div class="col m6 s6">
-                <label for="datepicker">Date Taken:</label><input type="text" class="datepicker">
-                <!-- <label for="datepicker">Date Taken:</label><input type="date" class="datepicker"> -->
-              </div>
-              <div class="col m6 s6">
-                <label for="timepicker">Time Taken:</label><input type="text" class="timepicker">
-                <!-- <label for="timepicker">Time Taken:</label><input type="time" class="timepicker"> -->
-              </div>
-            </div>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            <medicineCard :med="med" :medChildID="selectedChildID"></medicineCard>
+            
+            
           </li>
           
         </ul>
@@ -68,30 +57,79 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations, mapActions} from 'vuex';
+import MedicineCard from './MedicineCard';
+
 export default {
   name: "parentview",
   props: [],
+  components: {
+    'medicineCard' : MedicineCard,
+  },
   data: function() {
     return {
-      msg: "Welcome to Your Sunshine Acres",
+      msg: "Welcome to Sunshine Acres",
       homeListings: [],
       selectedHomeID: "",
       selectedChildID: "",
+      addTimeShow: true,
+      successShowTime: false,
+      selectedPrescriptionID: "",
       childListings: [],
       medicineListings: [],
       showMedicineDetails: false,
       showChildSelection: false,
-      dummyCounter: this.$store.state.counterState,
     };
   },
   methods: {
+    // ...mapActions([
+    //     'getHomeListingsFromServer'
+    // ]),
+    turnOffOtherFields: function() {
+      console.log("Chosen");
+      if (this.showChildSelection) {
+        this.showMedicineDetails = false;
+        this.showChildSelection = false;
+        this.successShowTime = false;
+        this.addTimeShow = true;
+      }
+    },
+    submitTime: function(medicationID) {
+      var chosenDate = $(".datepicker").val();
+      var chosenTime = $(".timepicker").val();
+      if (!(chosenDate === "") && !(chosenTime === "")) {
+          var fullDateString = chosenDate + " " + chosenTime;
+          console.log(fullDateString);
+          var setDate = new Date(fullDateString).getTime();
+          var adminObj = {
+            "child_id" : this.selectedChildID,
+            "parent_id" : "2",
+            "date" : setDate,
+            "prescription_id" : medicationID,
+          }
+          $.ajax({
+            url: 'http://localhost:8000/administration',
+            type: 'POST',
+            data: adminObj,
+            success: (response) => {
+                var resultant = response;
+                console.log(resultant);
+                this.addTimeShow = false;
+                this.successShowTime = true;
+            },
+            error: (error) => {
+                console.log("Error creating post: ", error);
+            }
+        })
+      }
+    },
     toggleMedicineViewing: function() {
-      // TODO: Fix toggle states
-      // $('#switchChildStatus').prop('checked')
       this.showMedicineDetails = !this.showMedicineDetails;
     },
     toggleMedicineDetails: function(event) {
       this.medicineListings = [];
+      this.successShowTime = false;
+      this.addTimeShow = true;
       // Child menu selection toggles medicineselection
       var selectedName = $("select#selectedChild").val();
       // console.log("Found child match", this.childListings.filter((child)=>(child.name == selectedName))[0].id);
@@ -124,7 +162,7 @@ export default {
             // Initialize time picker as well.
             default: "now", // Set default time: 'now', '1:30AM', '16:30'
             fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
-            twelvehour: true, // Use AM/PM or 24-hour format
+            twelvehour: false, // Use AM/PM or 24-hour format
             donetext: "OK", // text for done-button
             cleartext: "Clear", // text for clear-button
             canceltext: "Cancel", // Text for cancel-button
@@ -143,6 +181,8 @@ export default {
       }
     },
     toggleChildSelection: function(event) {
+      this.successShowTime = false;
+      this.addTimeShow = true;
       // Home menu selection toggles childselection
       var selectedHome = $("select#selectedHome").val();
       // Match the address to retrieve the ID
@@ -163,14 +203,11 @@ export default {
       $.get(
         urlGetChildByHome,
         function(result) {
-          // console.log("List of childs", result);
           let retrievedChildren = [];
           result.data.forEach(function(element) {
-            // console.log(element.address);
             retrievedChildren.push(element);
           }, this);
           this.childListings = retrievedChildren;
-          // console.log("Acquired children", this.childListings);
           this.$nextTick(() => {
             $("select#selectedChild").material_select(
               this.toggleMedicineDetails.bind(this)
@@ -180,6 +217,14 @@ export default {
       );
     }
   },
+  // computed: {
+  //   homes() {
+  //     return this.$store.getters.homeListings;
+  //   },
+  //   ...mapGetters([
+  //     'homeListings'
+  //   ])
+  // },
   mounted() {
     $(document).ready(
       function() {
@@ -203,7 +248,6 @@ export default {
         $("select").material_select();
         // Basically saying that for material select bind the function call for toggling
         // children selection.
-        // $("select").material_select(this.toggleMedicineDetails.bind(this));
         // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
         $("select#selectedChild").material_select(
           this.toggleMedicineDetails.bind(this)
@@ -211,15 +255,11 @@ export default {
       }.bind(this)
     );
   },
-  updated() {
-      console.log($('#switchChildStatus').prop('checked'));
-      // console.log(this.dummyCounter);
-  }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<!-- No "scoped" attribute becuase we want all descendants of this component to share this CSS attibutes. -->
+<style>
 #welcome-msg {
   margin-bottom: 100px;
 }

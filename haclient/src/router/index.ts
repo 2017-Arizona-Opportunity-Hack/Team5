@@ -7,6 +7,7 @@ import Homes from '@/components/tables/Homes.vue'
 import Parents from '@/components/tables/Parents.vue'
 import Prescriptions from '@/components/tables/Prescriptions.vue'
 import Physicians from '@/components/tables/Physicians.vue'
+import Reports from '@/components/Reports.vue'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ var router = new Router({
       path: '/physicians',
       name: 'Physicians',
       component: Physicians
+    },
+    {
+      path: '/reports',
+      name: 'Reports',
+      component: Reports
     }
   ],
   linkExactActiveClass: "active",

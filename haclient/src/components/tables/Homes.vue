@@ -16,9 +16,12 @@
               <p>id</p>
             </div>
             <div class="col">
+                <p>parents</p>
+            </div>
+            <div class="col-sm-3">
               <p>address</p>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <p>phone</p>
             </div>
                     <i class="icon-pencil"></i>
@@ -39,9 +42,10 @@ import HomeItem from "@/components/items/HomeItem.vue";
 import {homeDict} from "@/store/storedicts";
 export default {
   computed: {
-    homes(): homeDict{
-      return <homeDict>(this.$store.getters.homes);
+    homes(){
+      return (this.$store.getters.homes);
     }
+
   },
   components: {
     HomeItem
