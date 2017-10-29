@@ -40,11 +40,8 @@
         <h5>Medications</h5>
         <ul class="collection col s12">
           <!-- V for loop for listing different medications as li elements -->
-          <li v-for="med in medicineListings" :key="med.id" class="collection-item avatar medicine-listings">
-            
+          <li v-for="med in medications" :key="med.id" class="collection-item avatar medicine-listings">
             <medicineCard :med="med" :medChildID="selectedChildID"></medicineCard>
-            
-            
           </li>
           
         </ul>
@@ -99,7 +96,37 @@ export default {
         );
       });
       return this.childListings;
-    }
+    },
+    medications() {
+      this.medicineListings = this.$store.getters.getMedication;
+      // console.log("Here is the medications retrieved:\t", this.childListings);
+      this.$nextTick(() => {
+          // After all listened items are changed on DOM,
+          // lets render/register components such as calendar.
+          $(".datepicker").pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: "Today",
+            clear: "Clear",
+            close: "Ok",
+            closeOnSelect: true, // Close upon selecting a date,
+            format: "yyyy-mm-dd" //http://amsul.ca/pickadate.js/date/
+          });
+          $(".timepicker").pickatime({
+            // Initialize time picker as well.
+            default: "now", // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: "OK", // text for done-button
+            cleartext: "Clear", // text for clear-button
+            canceltext: "Cancel", // Text for cancel-button
+            autoclose: true, // automatic close timepicker
+            ampmclickable: true // make AM PM clickable
+            // aftershow: function(){} //Function for after opening timepicker
+          });
+        });
+      return this.medicineListings;
+    },
   },
   mounted() {
     $(document).ready(
@@ -128,35 +155,6 @@ export default {
         this.addTimeShow = true;
       }
     },
-    submitTime: function(medicationID) {
-      var chosenDate = $(".datepicker").val();
-      var chosenTime = $(".timepicker").val();
-      if (!(chosenDate === "") && !(chosenTime === "")) {
-          var fullDateString = chosenDate + " " + chosenTime;
-          console.log(fullDateString);
-          var setDate = new Date(fullDateString).getTime();
-          var adminObj = {
-            "child_id" : this.selectedChildID,
-            "parent_id" : "2",
-            "date" : setDate,
-            "prescription_id" : medicationID,
-          }
-          $.ajax({
-            url: 'http://localhost:8000/administration',
-            type: 'POST',
-            data: adminObj,
-            success: (response) => {
-                var resultant = response;
-                console.log(resultant);
-                this.addTimeShow = false;
-                this.successShowTime = true;
-            },
-            error: (error) => {
-                console.log("Error creating post: ", error);
-            }
-        })
-      }
-    },
     toggleMedicineViewing: function() {
       this.showMedicineDetails = !this.showMedicineDetails;
     },
@@ -170,41 +168,9 @@ export default {
       this.selectedChildID = this.childListings.filter(
         child => child.name == selectedName
       )[0].id;
-      var urlGetPrescriptionByChild =
-        "http://localhost:8000/prescription/bychildid/";
-      urlGetPrescriptionByChild += this.selectedChildID;
-      $.get(urlGetPrescriptionByChild, result => {
-        // console.log("List of prescriptions", result);
-        result.data.forEach(element => {
-          // console.log(element);
-          this.medicineListings.push(element);
-        }, this);
 
-        this.$nextTick(() => {
-          // After all listened items are changed on DOM,
-          // lets render/register components such as calendar.
-          $(".datepicker").pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year,
-            today: "Today",
-            clear: "Clear",
-            close: "Ok",
-            closeOnSelect: true, // Close upon selecting a date,
-            format: "yyyy-mm-dd" //http://amsul.ca/pickadate.js/date/
-          });
-          $(".timepicker").pickatime({
-            // Initialize time picker as well.
-            default: "now", // Set default time: 'now', '1:30AM', '16:30'
-            fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
-            twelvehour: false, // Use AM/PM or 24-hour format
-            donetext: "OK", // text for done-button
-            cleartext: "Clear", // text for clear-button
-            canceltext: "Cancel", // Text for cancel-button
-            autoclose: true, // automatic close timepicker
-            ampmclickable: true // make AM PM clickable
-            // aftershow: function(){} //Function for after opening timepicker
-          });
-        });
+      this.$store.dispatch('getChildMediciationListingFromServer', {
+        childID: this.selectedChildID,
       });
       // Toggle viewing
       if (!this.showChildSelection) {

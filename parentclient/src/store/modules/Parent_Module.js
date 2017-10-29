@@ -13,6 +13,7 @@ const getters = {
         return state.listOfChildren;
     },
     getMedication: (state) => {
+        // console.log("Returning medicine:\t", state.listOfMedications);
         return state.listOfMedications;
     }
 }
@@ -25,6 +26,10 @@ const mutations = {
     changeChildListings: (state, retrievedChildren) => {
         state.listOfChildren = retrievedChildren;
         // console.log("From our store:\t", state.listOfChildren)
+    },
+    changeMedicineListings: (state, retrievedMedicine) => {
+        state.listOfMedications = retrievedMedicine;
+        // console.log("From our store, medicines:\t", state.listOfMedications)
     }
 }
 
@@ -61,6 +66,20 @@ const actions = {
             commit('changeChildListings', retrievedChildren);
           }
         );
+    },
+    getChildMediciationListingFromServer: ({ commit }, payload) => {
+        var urlGetPrescriptionByChild =
+        "http://localhost:8000/prescription/bychildid/";
+        urlGetPrescriptionByChild += payload.childID;
+        $.get(urlGetPrescriptionByChild, result => {
+            // console.log("List of prescriptions", result);
+            let retrievedMedicine = [];
+            result.data.forEach(element => {
+                // console.log(element);
+                retrievedMedicine.push(element);
+            }, this);
+            commit('changeMedicineListings', retrievedMedicine);
+        });
     },
 
 }
