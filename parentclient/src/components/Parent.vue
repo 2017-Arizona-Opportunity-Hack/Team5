@@ -9,7 +9,7 @@
         <select id="selectedHome">
                 <option value="" disabled selected>Choose your option</option>
                 <!-- Each home object has the address and id. -->
-                <option v-for="home in homeListings" :key="home.id">{{home.address}}</option>
+                <option v-for="home in homes" :key="home.id">{{home.address}}</option>
               </select>
         <label>Home Selection</label>
       </div>
@@ -17,7 +17,7 @@
       <div v-show="showChildSelection" class="input-field selection-fields">
         <select id="selectedChild">
                 <option value="" disabled selected>Choose your option</option>
-                <option v-for="child in childListings" :key="child.id">{{child.name}}</option>
+                <option v-for="child in children" :key="child.id">{{child.name}}</option>
               </select>
         <label>Child Selection</label>
       </div>
@@ -40,11 +40,8 @@
         <h5>Medications</h5>
         <ul class="collection col s12">
           <!-- V for loop for listing different medications as li elements -->
-          <li v-for="med in medicineListings" :key="med.id" class="collection-item avatar medicine-listings">
-            
+          <li v-for="med in medications" :key="med.id" class="collection-item avatar medicine-listings">
             <medicineCard :med="med" :medChildID="selectedChildID"></medicineCard>
-            
-            
           </li>
           
         </ul>
@@ -81,72 +78,29 @@ export default {
       showChildSelection: false,
     };
   },
-  methods: {
-    // ...mapActions([
-    //     'getHomeListingsFromServer'
-    // ]),
-    turnOffOtherFields: function() {
-      console.log("Chosen");
-      if (this.showChildSelection) {
-        this.showMedicineDetails = false;
-        this.showChildSelection = false;
-        this.successShowTime = false;
-        this.addTimeShow = true;
-      }
+  computed: {
+    homes() {
+      this.homeListings = this.$store.getters.getHomes;
+      this.$nextTick(() => {
+        $("select#selectedHome").material_select(
+          this.toggleChildSelection.bind(this)
+        );
+      });
+      return this.homeListings;
     },
-    submitTime: function(medicationID) {
-      var chosenDate = $(".datepicker").val();
-      var chosenTime = $(".timepicker").val();
-      if (!(chosenDate === "") && !(chosenTime === "")) {
-          var fullDateString = chosenDate + " " + chosenTime;
-          console.log(fullDateString);
-          var setDate = new Date(fullDateString).getTime();
-          var adminObj = {
-            "child_id" : this.selectedChildID,
-            "parent_id" : "2",
-            "date" : setDate,
-            "prescription_id" : medicationID,
-          }
-          $.ajax({
-            url: 'http://localhost:8000/administration',
-            type: 'POST',
-            data: adminObj,
-            success: (response) => {
-                var resultant = response;
-                console.log(resultant);
-                this.addTimeShow = false;
-                this.successShowTime = true;
-            },
-            error: (error) => {
-                console.log("Error creating post: ", error);
-            }
-        })
-      }
+    children() {
+      this.childListings = this.$store.getters.getChildren;
+      this.$nextTick(() => {
+        $("select#selectedChild").material_select(
+          this.toggleMedicineDetails.bind(this)
+        );
+      });
+      return this.childListings;
     },
-    toggleMedicineViewing: function() {
-      this.showMedicineDetails = !this.showMedicineDetails;
-    },
-    toggleMedicineDetails: function(event) {
-      this.medicineListings = [];
-      this.successShowTime = false;
-      this.addTimeShow = true;
-      // Child menu selection toggles medicineselection
-      var selectedName = $("select#selectedChild").val();
-      // console.log("Found child match", this.childListings.filter((child)=>(child.name == selectedName))[0].id);
-      this.selectedChildID = this.childListings.filter(
-        child => child.name == selectedName
-      )[0].id;
-      var urlGetPrescriptionByChild =
-        "http://localhost:8000/prescription/bychildid/";
-      urlGetPrescriptionByChild += this.selectedChildID;
-      $.get(urlGetPrescriptionByChild, result => {
-        // console.log("List of prescriptions", result);
-        result.data.forEach(element => {
-          // console.log(element);
-          this.medicineListings.push(element);
-        }, this);
-
-        this.$nextTick(() => {
+    medications() {
+      this.medicineListings = this.$store.getters.getMedication;
+      // console.log("Here is the medications retrieved:\t", this.childListings);
+      this.$nextTick(() => {
           // After all listened items are changed on DOM,
           // lets render/register components such as calendar.
           $(".datepicker").pickadate({
@@ -171,6 +125,52 @@ export default {
             // aftershow: function(){} //Function for after opening timepicker
           });
         });
+      return this.medicineListings;
+    },
+  },
+  mounted() {
+    $(document).ready(
+      function() {
+        // Select is tag type, we can use # of id's after or . for classes
+        $("select").material_select();
+        $("select#selectedHome").material_select(
+          this.toggleChildSelection.bind(this)
+        );
+        // Basically saying that for material select bind the function call for toggling
+        // children selection.
+        // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
+        $("select#selectedChild").material_select(
+          this.toggleMedicineDetails.bind(this)
+        );
+      }.bind(this)
+    );
+  },
+  methods: {
+    turnOffOtherFields: function() {
+      console.log("Chosen");
+      if (this.showChildSelection) {
+        this.showMedicineDetails = false;
+        this.showChildSelection = false;
+        this.successShowTime = false;
+        this.addTimeShow = true;
+      }
+    },
+    toggleMedicineViewing: function() {
+      this.showMedicineDetails = !this.showMedicineDetails;
+    },
+    toggleMedicineDetails: function(event) {
+      this.medicineListings = [];
+      this.successShowTime = false;
+      this.addTimeShow = true;
+      // Child menu selection toggles medicineselection
+      var selectedName = $("select#selectedChild").val();
+      // console.log("Found child match", this.childListings.filter((child)=>(child.name == selectedName))[0].id);
+      this.selectedChildID = this.childListings.filter(
+        child => child.name == selectedName
+      )[0].id;
+
+      this.$store.dispatch('getChildMediciationListingFromServer', {
+        childID: this.selectedChildID,
       });
       // Toggle viewing
       if (!this.showChildSelection) {
@@ -189,6 +189,11 @@ export default {
       this.selectedHomeID = this.homeListings.filter(
         home => home.address == selectedHome
       )[0].id;
+      // To invoke a store action, we must dispatch it and pass 
+      // object parameter to be our payload.
+      this.$store.dispatch('getChildrenListingsFromServer', {
+        homeID: this.selectedHomeID,
+      });
       // console.log($('select#selectedChild').val());
       if (!this.showChildSelection) {
         this.showChildSelection = !this.showChildSelection;
@@ -197,63 +202,7 @@ export default {
         // Re-send API request.
         this.showChildSelection = true;
       }
-      // $.get("http://localhost:8000/child/", function(result) {
-      var urlGetChildByHome = "http://localhost:8000/child/byhomeid/";
-      urlGetChildByHome += this.selectedHomeID;
-      $.get(
-        urlGetChildByHome,
-        function(result) {
-          let retrievedChildren = [];
-          result.data.forEach(function(element) {
-            retrievedChildren.push(element);
-          }, this);
-          this.childListings = retrievedChildren;
-          this.$nextTick(() => {
-            $("select#selectedChild").material_select(
-              this.toggleMedicineDetails.bind(this)
-            );
-          });
-        }.bind(this)
-      );
     }
-  },
-  // computed: {
-  //   homes() {
-  //     return this.$store.getters.homeListings;
-  //   },
-  //   ...mapGetters([
-  //     'homeListings'
-  //   ])
-  // },
-  mounted() {
-    $(document).ready(
-      function() {
-        $.get(
-          "http://localhost:8000/home/",
-          function(result) {
-            let retrievedHomes = [];
-            result.data.forEach(function(element) {
-              retrievedHomes.push(element);
-            }, this);
-            this.homeListings = retrievedHomes;
-            // console.log(this.homeListings);
-            this.$nextTick(() => {
-              $("select#selectedHome").material_select(
-                this.toggleChildSelection.bind(this)
-              );
-            });
-          }.bind(this)
-        );
-        // Select is tag type, we can use # of id's after or . for classes
-        $("select").material_select();
-        // Basically saying that for material select bind the function call for toggling
-        // children selection.
-        // $("select#selectedChild").material_select(this.grabChildInfo.bind(this));
-        $("select#selectedChild").material_select(
-          this.toggleMedicineDetails.bind(this)
-        );
-      }.bind(this)
-    );
   },
 };
 </script>
