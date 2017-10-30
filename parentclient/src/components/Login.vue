@@ -4,8 +4,8 @@
     <!-- TODO delete begin...-->
     <!--  NOTE:TESTING. To be Deleted-->
     <!-- <h4>--</h4>
-    <h4>--</h4>
-    <h4>{{ get_fullName }}</h4>
+    <h4>--</h4> -->
+    <!-- <h4>{{ get_fullName }}</h4>
     <h4>{{ get_email }}</h4>
     <h4>{{ get_password }}</h4> -->
     <!-- TODO delete /end-->
@@ -41,7 +41,9 @@
             </div>
             <!--submit button-->
             <div class="row" style="display: flex;align-items: center;justify-content: center;">
-              <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat"  >SUBMIT</a><!-- v-onClick:"dispatch_load_form"; fullName, email, password -->
+              <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat" v-on="{ click: dispatch_load_form }" >SUBMIT</a>
+              <!-- v-onClick:"dispatch_load_form"; fullName, email, password -->
+              <!-- <button class="modal-action modal-close waves-effect waves-red btn-flat" v-on="{ click: dispatch_load_form }" >SUBMIT</button> -->
             </div><!-- TODO actions {validator, close modal, handle data} -->
 
           </form><!--/Form-->
@@ -60,12 +62,11 @@ export default {
       fullName: state => state.login.fullName,
       password: state => state.login.password,
     }),
-    ...mapGetters({
+    ...mapGetters({ //I think you cannot de-construct... Below is mandatory.
       get_email: "get_email",
       get_fullName: "get_fullName",
       get_password: "get_password",
     }),
-    check: function() { console.log("check: ", this.$store)}, //TODO detel this line
   },
   props: [],
   // data: () => data, //data must be a function for vue components, obj for vue object. //IGNORE - data placed in Login_module.js
@@ -73,118 +74,29 @@ export default {
     //DISPATCHERS - dispatches an action asynchronously.
       //would be cool to have a ...mapDispatchers({dispatch_load_email: {'LOAD_EMAIL', payloadMaybe}, ...})
     dispatch_load_email (payload) {
-      //basic inputHandle //for basckspace and auto-complete
       this.$store.dispatch('LOAD_EMAIL', payload)
     },
-    //TODO
-    dispatch_load_form: (payload) => {
-      //basic inputHandle //for basckspace and auto-complete
+    dispatch_load_form (payload) {
       this.$store.dispatch('LOAD_FORM', payload)
     },
     dispatch_load_fullName (payload) {
-      //basic inputHandle //for basckspace and auto-complete
-      console.log(payload)
       this.$store.dispatch('LOAD_FULLNAME', payload)
     },
     dispatch_load_password (payload) {
-      //basic inputHandle //for basckspace and auto-complete //Check if can place this into a method.
       this.$store.dispatch('LOAD_PASSWORD', payload)
     },
-    /** TODO: ADD support for backspace and auto-complete.
-     * NOTE: Below are what payloaded for certain input events.
-     * //REGULAR (letter/number input)
-    InputEvent{
-    	bubbles: true,
-    	cancelBubble: false,
-    	cancelable: false,
-    	composed: true,
-    	currentTarget: null,
-    	data: "S",
-    	dataTransfer: null,
-    	defaultPrevented: false,
-    	detail: 0,
-    	eventPhase: 0,
-    	inputType: "insertText",
-    	isComposing: false,
-    	isTrusted: true,
-    	returnValue: true,
-    	sourceCapabilities: null,
-    	path: {
-    		...
-    	},
-    	srcElement{
-    		...
-    	},
-    	target{
-    		...
-    	},
-    	timeStamp: 4643.805,
-    	type: "input",
-    	view: null,
-    	which: 0,
-    }
-     * //AUTO-COMPLETE
-    Event{
-    	bubbles: true,
-    	cancelBubble: false,
-    	cancelable: false,
-    	composed: false,
-    	currentTarget: null,
-    	defaultPrevented: false,
-    	eventPhase: 0,
-    	isTrusted: true,
-    	path: {
-    		...
-    	},
-    	returnValue: true,
-    	srcElement{
-    		...
-    	},
-    	target{
-    		...
-    	},
-    	timeStamp: 27032.155000000002,
-    	type: "input",
-    }
-     * //BACKSPACE
-    InputEvent{
-    	bubbles: true,
-    	cancelBubble: false,
-    	cancelable: false,
-    	composed: true,
-    	currentTarget: null,
-    	data: null,
-    	dataTransfer: null,
-    	defaultPrevented: false,
-    	detail: 0,
-    	eventPhase: 0,
-    	inputType: "deleteContentBackward",
-    	isComposing: false,
-    	isTrusted: true,
-    	path: {
-    		...
-    	},
-    	returnValue: true,
-    	sourceCapabilities: null,
-    	srcElement{
-    		...
-    	},
-    	target{
-    		...
-    	},
-    	timeStamp: 27032.155000000002,
-    	type: "input",
-    	view: nullwhich: 0,
-    }
-     *
-     */
   },
   mounted() {
     //modal animates
     $(document).ready(function(){
       // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-      $('.modal').modal();
-      //may need to add a jquery to obtain input submit biutton onClick
+      $('.modal').modal({
+        //dismissible: false, // Modal can be dismissed by clicking outside of the modal?
+        //when form "complete", submit all data into formAction & validate
+        // complete: function(){console.log("--Modal Closed--")}, //dispatch_load_form(), // Callback for Modal close
+      });
+      $('#modal1').modal('open');
+      //TODO: UI. can only Dismiss and execute complete callback when press submit or press enter.
     });
   }
 };

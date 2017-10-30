@@ -15,6 +15,7 @@ export default {
       "tb-nav": Nav,
   },
   mounted() {
+    console.clear();//REMOVE BEFORE git commit
       this.$store.dispatch("init");
   },
 }
