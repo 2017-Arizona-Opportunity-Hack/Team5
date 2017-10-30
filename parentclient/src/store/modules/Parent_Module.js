@@ -1,30 +1,40 @@
 const state = {
-    homeListing: [],
-    childListing: [],
-    medicationListing: [],
+    listOfHomes: [],
+    listOfChildren: [],
+    listOfMedications: [],
 }
 
 const getters = {
-    homeListings: (state) => {
-        return state.homeListing;
+    getHomes: (state) => {
+        // console.log("Trying to grab the fucking houses?:\t", state.listOfHomes);
+        return state.listOfHomes;
     },
-    childListings: (state) => {
-        return state.childListing;
+    getChildren: (state) => {
+        return state.listOfChildren;
     },
-    medicineListings: (state) => {
-        return state.medicationListing;
+    getMedication: (state) => {
+        // console.log("Returning medicine:\t", state.listOfMedications);
+        return state.listOfMedications;
     }
 }
 
 const mutations = {
-    setupHomeListings: (state, payload) => {
-        state.homeListing = payload;
+    changeHomeListings: (state, retrievedHomes) => {
+        state.listOfHomes = retrievedHomes;
+        // console.log(state.listOfHomes)
+    },
+    changeChildListings: (state, retrievedChildren) => {
+        state.listOfChildren = retrievedChildren;
+        // console.log("From our store:\t", state.listOfChildren)
+    },
+    changeMedicineListings: (state, retrievedMedicine) => {
+        state.listOfMedications = retrievedMedicine;
+        // console.log("From our store, medicines:\t", state.listOfMedications)
     }
 }
 
 const actions = {
     init({ dispatch, state }) {
-        //mock data
         dispatch("getHomeListingsFromServer");
     },
     getHomeListingsFromServer: ({ commit }, payload) => {
@@ -35,10 +45,43 @@ const actions = {
               result.data.forEach(function(element) {
                 retrievedHomes.push(element);
               }, this);
-              commit('setupHomeListings', retrievedHomes);
+            //   console.log(retrievedHomes);
+              commit('changeHomeListings', retrievedHomes);
             }
           );
-    }
+    },
+    getChildrenListingsFromServer: ({ commit }, payload) => {
+        // Payload parameter is an object, and the object
+        // has a homeID attribute assigned, so within homeID we get ID.
+        var urlGetChildByHome = "http://localhost:8000/child/byhomeid/";
+        urlGetChildByHome += payload.homeID;
+        // console.log("Passed URL:\t", payload.homeID);
+        $.get(
+          urlGetChildByHome,
+          function(result) {
+            let retrievedChildren = [];
+            result.data.forEach(function(element) {
+              retrievedChildren.push(element);
+            }, this);
+            commit('changeChildListings', retrievedChildren);
+          }
+        );
+    },
+    getChildMediciationListingFromServer: ({ commit }, payload) => {
+        var urlGetPrescriptionByChild =
+        "http://localhost:8000/prescription/bychildid/";
+        urlGetPrescriptionByChild += payload.childID;
+        $.get(urlGetPrescriptionByChild, result => {
+            // console.log("List of prescriptions", result);
+            let retrievedMedicine = [];
+            result.data.forEach(element => {
+                // console.log(element);
+                retrievedMedicine.push(element);
+            }, this);
+            commit('changeMedicineListings', retrievedMedicine);
+        });
+    },
+
 }
 
 export default {
