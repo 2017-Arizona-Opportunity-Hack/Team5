@@ -44,7 +44,7 @@ export default Vue.extend({
         }
     },
     methods: {
-        stopBlur(event: any) {
+        stopBlur(event: any) {//check if we clicked within the dropdown. If we did, return focus to text box as necessary
             var target = event.explicitOriginalTarget;
             if (this.$refs.customInput.contains(target)) {
                 console.log("clicked in!")
