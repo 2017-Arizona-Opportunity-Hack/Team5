@@ -25,6 +25,24 @@ export default {
         return executeQuery(sql);
     },
 
+    byDate: async(mindate, maxdate) => {
+        var sql = "SELECT * FROM " + table + "WHERE date > ? AND date < ?";
+        sql = mysql.format(sql, [mindate, maxdate]);
+        return executeQuery(sql);
+    },
+
+    byChildAndDate: async(id, mindate, maxdate) => {
+        var sql = "SELECT * FROM " + table + "WHERE date > ? AND date < ? AND child_id = ?";
+        sql = mysql.format(sql, [mindate, maxdate, id]);
+        return executeQuery(sql);
+    },
+
+    byParentAndDate: async(id, mindate, maxdate) => {
+        var sql = "SELECT * FROM " + table + "WHERE date > ? AND date < ? AND parent_id = ?";
+        sql = mysql.format(sql, [mindate, maxdate, id]);
+        return executeQuery(sql);
+    },
+
     all: async() => {
         var sql = "SELECT * FROM " + table;
         return executeQuery(sql);
