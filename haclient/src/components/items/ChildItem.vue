@@ -45,9 +45,10 @@
 </template>
 
 <script lang="ts">
-import RadioPicker from "../RadioPicker.vue";
+import Vue from 'vue';
+import RadioPicker from "@/components/RadioPicker.vue";
 import Child from "@/store/classes/Child";
-export default {
+export default Vue.extend({
     data() {
         return {
             editing: this.id == 0,
@@ -88,7 +89,7 @@ export default {
     components:{
         RadioPicker
     }
-};
+});
 </script>
 
 <style scoped lang="scss">

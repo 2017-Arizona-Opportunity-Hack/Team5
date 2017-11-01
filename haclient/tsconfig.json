@@ -6,18 +6,14 @@
         "strict": true,
         // if using webpack 2+ or rollup, to leverage tree shaking:
         "module": "es2015",
-        "moduleResolution": "node"
-        // ,
-        // "noImplicitThis": false,
-        // "baseUrl": "./",
-        // "paths": {
-        //     "@/*" : ["src/*"]   // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
-        // }
+        "moduleResolution": "node",
+        "noImplicitThis": false, //coward's way out
+        "baseUrl": "./", //required for the paths thing to work
+        "paths": {
+            "@/*" : ["src/*"]   // resolve @ as webpack does in webpack.base.conf:37 (for tooling support so you dont get red squigleys)
+        }
     },
     "types": [
         "core-js"
     ]
-    // "include": [
-    //     "./src/"
-    // ]
 }

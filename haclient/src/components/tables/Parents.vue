@@ -36,11 +36,11 @@
 </template>
 
 <script lang="ts">
-
+import Vue from 'vue';
 import ParentItem from "@/components/items/ParentItem";
 import Parent from "@/store/classes/Parent";
 
-export default {
+export default Vue.extend({
     computed: {
         parents() {
             return this.$store.getters.parents
@@ -54,5 +54,5 @@ export default {
     components: {
         ParentItem
     }
-}
+});
 </script>

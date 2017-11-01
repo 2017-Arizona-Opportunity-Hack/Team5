@@ -4,7 +4,7 @@
         <div v-if="focused" class="list-group  lcard" :style="styleObj">
             <div class="form-check list-group-item" v-for="item in collection" :key="item.id">
                 <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" v-model="checkedItems" :value="item.id"> {{item.name}}
+                    <input type="checkbox" class="form-check-input" v-model="value" :value="item.id"> {{item.name}}
                 </label>
             </div>
         </div>
@@ -12,11 +12,11 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue';
+export default Vue.extend({
 
     data() {
         return {
-            checkedItems: this.value,
             focused: false
         }
     },
@@ -39,8 +39,8 @@ export default {
         }
     },
     watch: {
-        "checkedItems": function () {
-            this.$emit('input', this.checkedItems);
+        "value": function () {
+            this.$emit('input', this.value);
         }
     },
     methods: {
@@ -59,7 +59,7 @@ export default {
             }
         }
     }
-}
+});
 </script>
 
 <style scoped lang="scss">

@@ -62,7 +62,8 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue';
+export default Vue.extend({
     computed: {
         administrations() {
             return this.$store.getters.administrations;
@@ -108,5 +109,5 @@ export default {
         window.open('http://localhost:8000/report/csv/'+ $('#child_id').val() + "?mindate=" + minDate+ "&maxdate=" + maxDate, "Download")
     }
   },
-};
+});
 </script>

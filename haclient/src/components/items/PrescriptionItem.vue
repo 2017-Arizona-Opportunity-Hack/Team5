@@ -95,9 +95,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Child from "@/store/classes/Child";
 import Prescription from "@/store/classes/Prescription";
-export default {
+export default Vue.extend({
     data() {
         return {
             editing: this.id == 0,
@@ -143,7 +144,7 @@ export default {
             this.editing = false;
         }
     }
-};
+});
 </script>
 
 <style scoped lang="scss">

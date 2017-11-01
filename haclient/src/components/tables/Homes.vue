@@ -37,10 +37,11 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Home from "@/store/classes/Home";
 import HomeItem from "@/components/items/HomeItem.vue";
 import {homeDict} from "@/store/storedicts";
-export default {
+export default Vue.extend({
   computed: {
     homes(){
       return (this.$store.getters.homes);
@@ -59,7 +60,7 @@ export default {
   mounted(){
       this.homes
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

@@ -44,9 +44,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Picker from "@/components/Picker";
 import Parent from "@/store/classes/Parent";
-export default {
+export default Vue.extend({
     data() {
         return {
             editing: this.id == 0,
@@ -90,7 +91,7 @@ export default {
     components:{
         Picker
     }
-};
+});
 </script>
 
 <style scoped lang="scss">

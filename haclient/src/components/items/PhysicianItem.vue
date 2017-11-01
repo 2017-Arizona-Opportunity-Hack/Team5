@@ -43,8 +43,9 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Physician from "@/store/classes/Physician";
-export default {
+export default Vue.extend({
     data() {
         return {
             editing: this.id == 0,
@@ -81,7 +82,7 @@ export default {
             this.editing = false;
         }
     }
-};
+});
 </script>
 
 <style scoped lang="scss">

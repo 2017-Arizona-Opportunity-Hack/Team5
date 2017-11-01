@@ -52,9 +52,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Prescription from "@/store/classes/Prescription";
 import PrescriptionItem from "@/components/items/PrescriptionItem.vue";
-export default {
+export default Vue.extend({
     computed: {
         prescriptions() {
             return this.$store.getters.prescriptions;
@@ -68,5 +69,5 @@ export default {
             this.$store.dispatch("createScrip", new Prescription(0,0,0,"","","","",0,new Date()));
          }
     }
-};
+});
 </script>

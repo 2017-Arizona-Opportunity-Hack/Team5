@@ -16,15 +16,16 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Picker from "./Picker";
-export default {
+export default Vue.extend({
     data() {
         return {
             selectedChildren: []
         }
     },
     components: { Picker }
-};
+});
 </script>
 
 <style lang="scss" scoped>

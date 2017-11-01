@@ -36,9 +36,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Child from "@/store/classes/Child";
 import ChildItem from "@/components/items/ChildItem.vue";
-export default {
+export default Vue.extend({
     computed: {
         children() {
             return this.$store.getters.children;
@@ -53,7 +54,7 @@ export default {
             this.$store.dispatch("createChild", new Child(0, "", 0, false));
         }
     }
-};
+});
 </script>
 
 <style lang="scss" scoped>

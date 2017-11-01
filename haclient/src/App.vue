@@ -7,10 +7,11 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Child from "./store/classes/Child";
 import Nav from "@/components/Nav.vue";
 
-export default {
+export default Vue.extend({
     name: "app",
     data: function () {
         return {
@@ -28,7 +29,7 @@ export default {
     components: {
         "tb-nav": Nav
     }
-};
+});
 </script>
 <style lang="scss">
 @import "../static/icons/css/icons.css";

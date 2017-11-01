@@ -36,22 +36,26 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import PhysicianItem from "@/components/items/PhysicianItem";
 import Physician from "@/store/classes/Physician";
 
-export default {
-computed:{
-    physicians(){ return this.$store.getters.physicians;}
-},
-methods: {
-    addNew(){
-            this.$store.dispatch("createPhysician", new Physician(0,"",""));
+export default Vue.extend({
+  computed: {
+    physicians() {
+      return this.$store.getters.physicians;
     }
-},
-components: {
+  },
+  methods: {
+    addNew() {
+      this.$store.dispatch("createPhysician", new Physician(0, "", ""));
+    }
+  },
+  components: {
     PhysicianItem
-}
-}
+  }
+});
 </script>
 <style lang="scss">
+
 </style>

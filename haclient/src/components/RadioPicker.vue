@@ -4,7 +4,7 @@
         <div v-if="focused" class="list-group  lcard" :style="styleObj">
             <div class="form-check list-group-item" v-for="item in collection" :key="item.id">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" v-model="checkedItem" :value="item.id"> {{item.name}}
+                    <input type="radio" class="form-check-input" v-model="value" :value="item.id"> {{item.name}}
                 </label>
             </div>
         </div>
@@ -12,11 +12,11 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue';
+export default Vue.extend({
 
     data() {
         return {
-            checkedItem: this.value,
             focused: false
         }
     },
@@ -24,13 +24,13 @@ export default {
         "collectionSource", "multiple-select", "value", "disabled"
     ],
     computed: {
-        collection: function () {
+        collection: function ():any[] { //you need to type annotate computed properties, and for that I think we need typings from vuex
             return this.$store.getters[this.collectionSource].map((item: any) => (
                 { id: item.id, name: item.name || item.address}
             ));
         },
         checkedName() {
-            return  this.collection.filter((item: any) => item.id == this.checkedItem).map((item: any) => " " + item.name)[0];
+            return  this.collection.filter((item: any) => item.id == this.value).map((item: any) => " " + item.name)[0];
         },
         styleObj(){
             return {
@@ -39,8 +39,8 @@ export default {
         }
     },
     watch: {
-        "checkedItem": function () {
-            this.$emit('input', this.checkedItem);
+        "value": function () {//can't I bind to @input?
+            this.$emit('input', this.value);
         }
     },
     methods: {
@@ -59,7 +59,7 @@ export default {
             }
         }
     }
-}
+});
 </script>
 
 <style scoped lang="scss">
