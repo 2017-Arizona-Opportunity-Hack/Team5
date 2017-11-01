@@ -1,6 +1,6 @@
 trash
 node_modules
 .key.js
-
+dist
 
 server/db/config\.js
